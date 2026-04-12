@@ -1,0 +1,262 @@
+.teamPage {
+  background:
+    radial-gradient(circle at top left, rgba(47, 124, 197, 0.05), transparent 24%),
+    linear-gradient(180deg, #f8fafc 0%, #f4f7fb 100%);
+  padding: 18px 0 64px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f2a33;
+  min-height: 100vh;
+}
+
+.teamWrap {
+  width: min(1280px, calc(100% - 56px));
+  margin: 0 auto;
+}
+
+.teamBreadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0 16px;
+  font-size: 14px;
+  color: rgba(31, 42, 51, 0.55);
+  font-weight: 600;
+  flex-wrap: wrap;
+}
+
+.teamCrumbLink {
+  color: rgba(31, 42, 51, 0.55);
+  text-decoration: none;
+}
+
+.teamCrumbLink:hover {
+  color: #2f7cc5;
+}
+
+.teamCrumbActive {
+  color: rgba(31, 42, 51, 0.76);
+}
+
+.teamSep {
+  opacity: 0.55;
+}
+
+.teamH1 {
+  margin: 0 0 24px;
+  font-size: clamp(42px, 5vw, 66px);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #253040;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+}
+
+.teamCard {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 24px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 260px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(10px);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.teamCard:hover {
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+  transform: translateY(-5px);
+}
+
+.teamPhotoBox {
+  background:
+    linear-gradient(135deg, #eef3f8 0%, #dde6f0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.teamPhoto {
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  border-radius: 18px;
+  background: #f6f8fb;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.teamText {
+  padding: 22px 24px 20px;
+  min-width: 0;
+}
+
+.teamNameLink {
+  display: inline-block;
+  font-size: 24px;
+  font-weight: 800;
+  color: #244b6a;
+  text-decoration: none;
+  margin-bottom: 10px;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.teamNameLink:hover,
+.teamNameLink:focus,
+.teamNameLink:active {
+  color: #0b5ea8;
+  text-decoration: none;
+  outline: none;
+}
+
+.teamRoles {
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(31, 42, 51, 0.74);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.teamExp {
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(31, 42, 51, 0.72);
+  margin-bottom: 10px;
+}
+
+.teamExpLabel {
+  font-weight: 800;
+}
+
+.teamDegree {
+  font-size: 14px;
+  font-weight: 800;
+  color: #ff5b66;
+  margin-bottom: 10px;
+  line-height: 1.45;
+}
+
+.teamPosition {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(31, 42, 51, 0.62);
+  line-height: 1.45;
+}
+
+.doctorDetail {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 24px;
+}
+
+.doctorDetailPhotoBox {
+  background:
+    linear-gradient(135deg, #eef3f8 0%, #dde6f0 100%);
+  border-radius: 28px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  align-self: start;
+  padding: 20px;
+}
+
+.doctorDetailPhoto {
+  width: 100%;
+  height: auto;
+  max-height: 760px;
+  object-fit: contain;
+  object-position: center top;
+  display: block;
+  border-radius: 20px;
+  background: #f7f9fc;
+}
+
+.doctorDetailInfo {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  padding: 24px 24px;
+  align-self: start;
+}
+
+.doctorDetailSection {
+  grid-column: 1 / -1;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  padding: 24px 24px;
+}
+
+.doctorDetailTitle {
+  margin: 0 0 14px;
+  font-size: 28px;
+  line-height: 1.1;
+  font-weight: 800;
+  color: #2a333b;
+  letter-spacing: -0.02em;
+}
+
+.doctorDetailList {
+  margin: 0;
+  padding-left: 22px;
+  color: rgba(31, 42, 51, 0.92);
+  line-height: 1.8;
+}
+
+@media (max-width: 1100px) {
+  .teamGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .doctorDetail {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .teamWrap {
+    width: calc(100% - 24px);
+  }
+
+  .teamCard {
+    grid-template-columns: 1fr;
+  }
+
+  .teamPhotoBox {
+    min-height: 240px;
+    padding: 14px;
+  }
+
+  .teamPhoto {
+    max-height: 320px;
+    border-radius: 14px;
+  }
+
+  .teamText {
+    padding: 18px 18px 20px;
+  }
+
+  .teamNameLink {
+    font-size: 21px;
+  }
+
+  .doctorDetailPhotoBox,
+  .doctorDetailInfo,
+  .doctorDetailSection {
+    border-radius: 18px;
+    padding: 16px;
+  }
+
+  .doctorDetailPhoto {
+    border-radius: 14px;
+  }
+}

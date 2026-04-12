@@ -1,0 +1,343 @@
+.articlesPage {
+  background:
+    radial-gradient(circle at top right, rgba(47, 124, 197, 0.05), transparent 24%),
+    linear-gradient(180deg, #f8fafc 0%, #f4f7fb 100%);
+  padding: 18px 0 64px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f2a33;
+  min-height: 100vh;
+}
+
+.articlesWrap {
+  width: min(1280px, calc(100% - 56px));
+  margin: 0 auto;
+}
+
+.articlesBreadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0 16px;
+  font-size: 14px;
+  color: rgba(31, 42, 51, 0.55);
+  font-weight: 600;
+  flex-wrap: wrap;
+}
+
+.articlesCrumbLink {
+  color: rgba(31, 42, 51, 0.55);
+  text-decoration: none;
+}
+
+.articlesCrumbLink:hover {
+  color: #2f7cc5;
+}
+
+.articlesCrumbActive {
+  color: rgba(31, 42, 51, 0.7);
+}
+
+.articlesSep {
+  opacity: 0.6;
+}
+
+.articlesH1 {
+  margin: 0 0 22px;
+  font-size: clamp(42px, 5vw, 66px);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #253040;
+}
+
+.articlesMeta {
+  margin-bottom: 18px;
+  font-size: 15px;
+  color: rgba(31, 42, 51, 0.72);
+  font-weight: 600;
+}
+
+.articlesAuthorLink {
+  color: #244b6a;
+  text-decoration: none;
+}
+
+.articlesAuthorLink:hover {
+  color: #0b5ea8;
+}
+
+.articlesHeroImageBox {
+  margin-bottom: 24px;
+  padding: 18px;
+  overflow: hidden;
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(47, 124, 197, 0.06), rgba(47, 124, 197, 0.02)),
+    #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.articlesHeroImage {
+  width: 100%;
+  height: auto;
+  max-height: 760px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  border-radius: 20px;
+  background: #f4f7fb;
+}
+
+.articlesLead {
+  font-size: 17px;
+  line-height: 1.72;
+  color: rgba(31, 42, 51, 0.86);
+  font-weight: 600;
+  margin: 0 0 26px;
+}
+
+.articlesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.articlesCard {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  transition: box-shadow 180ms ease, transform 180ms ease;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+}
+
+.articlesCard:hover {
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+  transform: translateY(-5px);
+}
+
+.articlesCardMediaLink {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  background:
+    linear-gradient(135deg, #eef3f8 0%, #dde6f0 100%);
+  padding: 16px;
+  min-height: 280px;
+}
+
+.articlesCardImage {
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  border-radius: 18px;
+  background: #f6f8fb;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.articlesCardOverlay {
+  position: absolute;
+  inset: 16px;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(10, 18, 30, 0.2) 100%);
+  transition: opacity 180ms ease;
+}
+
+.articlesCard:hover .articlesCardOverlay {
+  opacity: 1;
+}
+
+.articlesCard:hover .articlesCardImage {
+  transform: scale(1.015);
+}
+
+.articlesCardOverlayPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #111827;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.articlesCardBody {
+  padding: 20px 20px 22px;
+}
+
+.articlesCardTitle {
+  margin: 0 0 10px;
+  font-size: 26px;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.articlesCardTitleLink {
+  color: #244b6a;
+  text-decoration: none;
+}
+
+.articlesCardTitleLink:hover {
+  color: #0b5ea8;
+}
+
+.articlesCardDesc {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(31, 42, 51, 0.72);
+
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.articlesContent {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 30px;
+}
+
+.articlesMain {
+  min-width: 0;
+}
+
+.articlesSection {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  padding: 24px 24px;
+  margin-bottom: 20px;
+}
+
+.articlesSectionTitle {
+  margin: 0 0 14px;
+  font-size: 28px;
+  line-height: 1.12;
+  font-weight: 800;
+  color: #2a333b;
+  letter-spacing: -0.02em;
+}
+
+.articlesHtml {
+  font-size: 16px;
+  line-height: 1.78;
+  color: rgba(31, 42, 51, 0.92);
+}
+
+.articlesHtml p {
+  margin: 0 0 14px;
+}
+
+.articlesHtml img,
+.articlesHtml iframe {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 18px auto;
+  border-radius: 16px;
+}
+
+.articlesHtml ul,
+.articlesHtml ol {
+  margin: 0 0 16px 22px;
+}
+
+.articlesAside {
+  min-width: 0;
+}
+
+.articlesRelatedBlock {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  padding: 20px 20px;
+  margin-bottom: 18px;
+}
+
+.articlesRelatedTitle {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #2a333b;
+}
+
+.articlesRelatedList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.articlesRelatedList li + li {
+  margin-top: 10px;
+}
+
+.articlesRelatedLink {
+  color: #244b6a;
+  text-decoration: none;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.articlesRelatedLink:hover {
+  color: #0b5ea8;
+}
+
+.articlesEmptyText {
+  margin: 0;
+  color: rgba(31, 42, 51, 0.65);
+  font-size: 15px;
+}
+
+@media (max-width: 1100px) {
+  .articlesGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .articlesContent {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .articlesWrap {
+    width: calc(100% - 24px);
+  }
+
+  .articlesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .articlesCardMediaLink {
+    min-height: 240px;
+    padding: 14px;
+  }
+
+  .articlesCardImage {
+    max-height: 280px;
+    border-radius: 14px;
+  }
+
+  .articlesHeroImageBox,
+  .articlesSection,
+  .articlesRelatedBlock {
+    border-radius: 18px;
+    padding: 16px;
+  }
+
+  .articlesHeroImage {
+    border-radius: 14px;
+  }
+}

@@ -1,0 +1,130 @@
+.pricesPage {
+  background: #f7fafc;
+  padding: 28px 0 64px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #0c2230;
+}
+
+.pricesContainer {
+  width: min(1200px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.pricesH1 {
+  margin: 0 0 22px;
+  font-size: 54px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0c2230;
+}
+
+.pricesSearchWrap {
+  position: relative;
+  background: #fff;
+  border: 1px solid rgba(12, 34, 48, 0.12);
+  box-shadow: 0 2px 10px rgba(12, 34, 48, 0.04);
+  margin: 0 0 18px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.pricesSearch {
+  width: 100%;
+  height: 44px;
+  border: none;
+  outline: none;
+  padding: 0 52px 0 14px;
+  font-size: 16px;
+  color: #0c2230;
+  background: transparent;
+}
+
+.pricesSearchIcon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 48px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-left: 1px solid rgba(12, 34, 48, 0.12);
+  color: rgba(12, 34, 48, 0.7);
+}
+
+.pricesTableWrap {
+  background: #fff;
+  border: 1px solid rgba(12, 34, 48, 0.12);
+  box-shadow: 0 2px 10px rgba(12, 34, 48, 0.04);
+}
+
+.pricesTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pricesTable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #eef3f7;
+  color: rgba(12, 34, 48, 0.85);
+  font-size: 16px;
+  font-weight: 800;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(12, 34, 48, 0.12);
+}
+
+.pricesThLeft {
+  text-align: left;
+}
+
+.pricesThRight {
+  text-align: right;
+  width: 180px;
+}
+
+.pricesRow td {
+  padding: 18px 16px;
+  border-bottom: 1px solid rgba(12, 34, 48, 0.08);
+  vertical-align: top;
+}
+
+.pricesTdName {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(12, 34, 48, 0.85);
+  line-height: 1.35;
+}
+
+.pricesTdPrice {
+  text-align: right;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0c2230;
+  white-space: nowrap;
+}
+
+.pricesRow:hover td {
+  background: #fbfdff;
+}
+
+.pricesEmpty {
+  padding: 18px 16px;
+  font-size: 16px;
+  color: rgba(12, 34, 48, 0.7);
+}
+
+@media (max-width: 900px) {
+  .pricesH1 { font-size: 40px; }
+  .pricesThRight { width: 140px; }
+}
+
+@media (max-width: 640px) {
+  .pricesContainer {
+    width: min(1200px, calc(100% - 32px));
+  }
+  .pricesH1 { font-size: 32px; }
+  .pricesTdName { font-size: 15px; }
+  .pricesTdPrice { font-size: 15px; }
+}

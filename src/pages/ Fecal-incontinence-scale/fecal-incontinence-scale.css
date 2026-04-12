@@ -1,0 +1,323 @@
+:root {
+  --fis-bg: #f5f7fa;
+  --fis-hero: #eef2f5;
+  --fis-card: #ffffff;
+  --fis-text: #2c3440;
+  --fis-muted: rgba(44, 52, 64, 0.74);
+  --fis-line: rgba(44, 52, 64, 0.1);
+  --fis-accent: #ff6a2f;
+  --fis-accent-dark: #f45d20;
+  --fis-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+  --fis-radius: 18px;
+}
+
+.fisPage {
+  min-height: 100vh;
+  background: var(--fis-bg);
+  color: var(--fis-text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.fisContainer {
+  width: min(1280px, calc(100% - 56px));
+  margin: 0 auto;
+}
+
+.fisHero {
+  background: var(--fis-hero);
+  border-bottom: 1px solid var(--fis-line);
+  padding: 28px 0 34px;
+}
+
+.fisBreadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: rgba(44, 52, 64, 0.58);
+  font-weight: 700;
+}
+
+.fisBreadcrumbLink {
+  color: rgba(44, 52, 64, 0.58);
+  text-decoration: none;
+}
+
+.fisBreadcrumbLink:hover {
+  color: var(--fis-text);
+}
+
+.fisBreadcrumbSep {
+  opacity: 0.55;
+}
+
+.fisBreadcrumbCurrent {
+  color: rgba(44, 52, 64, 0.78);
+}
+
+.fisTitle {
+  margin: 0;
+  font-size: clamp(42px, 4.7vw, 66px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  color: #2b3340;
+  max-width: 1100px;
+}
+
+.fisMain {
+  padding: 28px 0 72px;
+}
+
+.fisCard {
+  background: var(--fis-card);
+  border: 1px solid rgba(44, 52, 64, 0.06);
+  border-radius: var(--fis-radius);
+  box-shadow: var(--fis-shadow);
+  padding: 34px 36px 38px;
+}
+
+.fisIntro {
+  font-size: 18px;
+  line-height: 1.75;
+  color: rgba(44, 52, 64, 0.88);
+  margin-bottom: 24px;
+}
+
+.fisIntro p {
+  margin: 0 0 18px;
+}
+
+.fisIntro p:last-child {
+  margin-bottom: 0;
+}
+
+.fisSubtitle {
+  margin: 0 0 28px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(44, 52, 64, 0.84);
+}
+
+.fisAlert {
+  margin-bottom: 22px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(255, 106, 47, 0.08);
+  border: 1px solid rgba(255, 106, 47, 0.18);
+  color: #a34119;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.fisResult {
+  margin-bottom: 28px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: rgba(47, 124, 197, 0.08);
+  border: 1px solid rgba(47, 124, 197, 0.14);
+}
+
+.fisResultLabel {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #2f7cc5;
+  margin-bottom: 8px;
+}
+
+.fisResultText {
+  font-size: 17px;
+  line-height: 1.65;
+  color: #263342;
+  font-weight: 700;
+}
+
+.fisQuestion {
+  border: 0;
+  padding: 0;
+  margin: 0 0 34px;
+}
+
+.fisQuestion.isInvalid .fisQuestionTitle {
+  color: #a34119;
+}
+
+.fisQuestionTitle {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 0;
+  font-size: 22px;
+  line-height: 1.45;
+  font-weight: 500;
+  color: #343d49;
+}
+
+.fisQuestionNumber {
+  color: var(--fis-accent);
+  font-weight: 800;
+  min-width: 44px;
+}
+
+.fisOptions {
+  display: grid;
+  gap: 12px;
+}
+
+.fisOption {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  width: fit-content;
+  min-height: 32px;
+  color: #3a4350;
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.fisOptionInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fisOptionMark {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--fis-accent);
+  background: #fff;
+  transition: all 0.18s ease;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.fisOptionInput:checked + .fisOptionMark::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--fis-accent);
+}
+
+.fisOption:hover .fisOptionMark {
+  transform: scale(1.04);
+  border-color: var(--fis-accent-dark);
+}
+
+.fisOptionText {
+  display: block;
+}
+
+.fisSubmit {
+  margin-top: 10px;
+  min-width: 180px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--fis-accent);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1;
+  padding: 16px 24px;
+  cursor: pointer;
+  transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 10px 20px rgba(255, 106, 47, 0.22);
+}
+
+.fisSubmit:hover {
+  filter: brightness(0.98);
+  transform: translateY(-1px);
+}
+
+.fisSubmit:active {
+  transform: translateY(0);
+}
+
+.fisSubmit:focus-visible {
+  outline: 3px solid rgba(255, 106, 47, 0.24);
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .fisCard {
+    padding: 24px 22px 28px;
+  }
+
+  .fisTitle {
+    font-size: clamp(34px, 7vw, 52px);
+  }
+
+  .fisQuestionTitle {
+    font-size: 20px;
+  }
+
+  .fisOption {
+    font-size: 17px;
+  }
+
+  .fisIntro,
+  .fisSubtitle {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 640px) {
+  .fisContainer {
+    width: calc(100% - 24px);
+  }
+
+  .fisHero {
+    padding: 18px 0 24px;
+  }
+
+  .fisBreadcrumbs {
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+
+  .fisMain {
+    padding: 18px 0 40px;
+  }
+
+  .fisCard {
+    border-radius: 14px;
+    padding: 18px 16px 22px;
+  }
+
+  .fisIntro,
+  .fisSubtitle {
+    font-size: 16px;
+  }
+
+  .fisQuestion {
+    margin-bottom: 26px;
+  }
+
+  .fisQuestionTitle {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+
+  .fisQuestionNumber {
+    min-width: 38px;
+  }
+
+  .fisOption {
+    font-size: 16px;
+    align-items: flex-start;
+  }
+
+  .fisSubmit {
+    width: 100%;
+  }
+}

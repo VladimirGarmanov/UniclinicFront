@@ -1,0 +1,260 @@
+.dsg {
+  width: 100%;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(47, 124, 197, 0.05), transparent 24%),
+    linear-gradient(180deg, #f8fafc 0%, #f4f7fb 100%);
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f2a33;
+}
+
+.dsg * {
+  box-sizing: border-box;
+}
+
+.dsg__container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.dsg__hero {
+  background: transparent;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  padding: 22px 0 22px;
+}
+
+.dsg__breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: rgba(31, 42, 51, 0.56);
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
+.dsg__bcLink {
+  color: rgba(31, 42, 51, 0.56);
+  text-decoration: none;
+}
+
+.dsg__bcLink:hover {
+  color: #2f7cc5;
+}
+
+.dsg__bcSep {
+  opacity: 0.6;
+}
+
+.dsg__bcCurrent {
+  color: rgba(31, 42, 51, 0.76);
+}
+
+.dsg__title {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  font-size: clamp(42px, 5vw, 66px);
+  color: #253040;
+}
+
+.dsg__main {
+  padding: 34px 0 60px;
+}
+
+.dsg__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 70px;
+  row-gap: 34px;
+  align-items: start;
+}
+
+.dsgBlock {
+  min-height: 0;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  padding: 22px 24px;
+}
+
+.dsgBlock__letter {
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  color: #111827;
+  margin-bottom: 14px;
+}
+
+.dsgBlock__list {
+  list-style: disc;
+  padding-left: 22px;
+  margin: 0;
+}
+
+.dsgBlock__item {
+  margin: 10px 0;
+}
+
+.dsgLink {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #374151;
+  text-align: left;
+  text-decoration: none;
+}
+
+.dsgLink:hover {
+  color: #2f7cc5;
+}
+
+.dsgLink:focus-visible {
+  outline: 3px solid rgba(50, 66, 132, 0.35);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.dsgDetail {
+  padding: 26px 0 56px;
+}
+
+.dsgDetail__meta {
+  margin-bottom: 18px;
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.dsgDetail__authorLink {
+  color: #244b6a;
+  text-decoration: none;
+}
+
+.dsgDetail__authorLink:hover {
+  color: #0b5ea8;
+}
+
+.dsgDetail__media {
+  margin-bottom: 24px;
+  border-radius: 28px;
+  overflow: hidden;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(47, 124, 197, 0.06), rgba(47, 124, 197, 0.02)),
+    #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.dsgDetail__img {
+  width: 100%;
+  height: auto;
+  max-height: 760px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  border-radius: 20px;
+  background: #f4f7fb;
+}
+
+.dsgDetail__lead {
+  margin: 0 0 22px;
+  color: #374151;
+  font-size: 17px;
+  line-height: 1.72;
+  font-weight: 600;
+}
+
+.dsgDetail__section {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  padding: 24px 24px;
+  margin-bottom: 20px;
+}
+
+.dsgDetail__title {
+  margin: 0 0 14px;
+  font-size: 28px;
+  line-height: 1.12;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+.dsgDetail__html {
+  color: #374151;
+  font-size: 16px;
+  line-height: 1.78;
+}
+
+.dsgDetail__html p {
+  margin: 0 0 14px;
+}
+
+.dsgDetail__html img,
+.dsgDetail__html iframe {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 18px auto;
+  border-radius: 16px;
+}
+
+.dsgDetail__links {
+  margin: 0;
+  padding-left: 22px;
+  color: #374151;
+  line-height: 1.75;
+}
+
+.dsgDetail__links a {
+  color: #244b6a;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.dsgDetail__links a:hover {
+  color: #0b5ea8;
+}
+
+@media (max-width: 980px) {
+  .dsg__grid {
+    column-gap: 36px;
+  }
+}
+
+@media (max-width: 760px) {
+  .dsg__container {
+    padding: 0 12px;
+  }
+
+  .dsg__grid {
+    grid-template-columns: 1fr;
+    row-gap: 20px;
+  }
+
+  .dsgBlock,
+  .dsgDetail__section {
+    border-radius: 18px;
+    padding: 18px 16px;
+  }
+
+  .dsgDetail__media {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .dsgDetail__img {
+    border-radius: 14px;
+  }
+}

@@ -1,0 +1,247 @@
+.hh {
+  width: 100%;
+}
+
+.hhTop {
+  background: #f26a3d;
+  color: #fff;
+}
+
+.hhTopInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.hhTopLink {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.hhNav {
+  background: #111;
+  color: #fff;
+}
+
+.hhNavInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.hhMenu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hhItem {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 6px;
+  border-radius: 6px;
+  opacity: 0.95;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+.hhItem:hover {
+  opacity: 1;
+}
+
+.hhItem.isActive {
+  color: #f26a3d;
+}
+
+.hhRight {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hhPhone {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.hhIcons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.hhIcon,
+.hhIconBtn,
+.hhBurger {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.hhIconBtn,
+.hhBurger {
+  font-size: 14px;
+}
+
+.hhBurger {
+  display: none;
+  font-size: 18px;
+}
+
+.hhDrop {
+  position: relative;
+}
+
+.hhDropMenu {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  min-width: 220px;
+  background: #fff;
+  color: #111;
+  border-radius: 10px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+  padding: 8px;
+  z-index: 20;
+}
+
+.hhDropLink {
+  display: block;
+  padding: 10px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #111;
+  font-weight: 600;
+}
+
+.hhDropLink:hover {
+  background: #f3f5f7;
+}
+
+.hhMobileOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 34, 48, 0.42);
+  z-index: 12000;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hhMobileSheet {
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  background: #fff;
+  overflow-y: auto;
+}
+
+.hhMobileTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid rgba(12, 34, 48, 0.08);
+}
+
+.hhMobileTitle {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0c2230;
+}
+
+.hhMobileClose {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(12, 34, 48, 0.14);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.hhMobileBody {
+  padding: 10px 0 28px;
+}
+
+.hhMobileLink {
+  display: block;
+  width: 100%;
+  padding: 16px 18px;
+  color: #1a2b37;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font: inherit;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.hhMobileLink.isActive {
+  color: #f26a3d;
+}
+
+.hhMobileDropBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hhMobileDropdown {
+  background: #f6f8fb;
+  border-top: 1px solid rgba(12, 34, 48, 0.06);
+  border-bottom: 1px solid rgba(12, 34, 48, 0.06);
+}
+
+.hhMobileDropdownLink {
+  display: block;
+  padding: 14px 24px;
+  color: #243342;
+  text-decoration: none;
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+@media (max-width: 900px) {
+  .hhNavInner {
+    padding: 10px 12px;
+  }
+
+  .hhMenu {
+    display: none;
+  }
+
+  .hhRight {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .hhBurger {
+    display: grid;
+  }
+}

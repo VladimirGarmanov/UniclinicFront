@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+.appShell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.appMain {
+  flex: 1;
+}

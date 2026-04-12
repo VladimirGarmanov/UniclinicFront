@@ -1,0 +1,217 @@
+:root {
+  --ftr-bg: #0f2b3a;
+  --ftr-bb: #0c2230;
+  --ftr-text: #e9f1f6;
+  --ftr-muted: rgba(233, 241, 246, 0.78);
+  --ftr-line: rgba(233, 241, 246, 0.14);
+}
+
+.ftr {
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ftr-text);
+}
+
+/* Контейнер */
+.ftrContainer {
+  width: min(1200px, calc(100% - 64px));
+  margin: 0 auto;
+}
+
+/* Верх */
+.ftrTop {
+  background: var(--ftr-bg);
+  padding: 56px 0 26px;
+}
+
+.ftrGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 64px;
+  align-items: start;
+}
+
+/* Заголовки */
+.ftrTitle {
+  font-size: 20px;         /* меньше как в оригинале */
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin-bottom: 18px;
+}
+
+/* Ссылки */
+.ftrLink {
+  display: block;
+  margin: 0 0 14px;
+  color: var(--ftr-muted);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.ftrLink:hover {
+  color: var(--ftr-text);
+}
+
+/* Правая часть */
+.ftrRight {
+  justify-self: end;
+  width: 100%;
+  max-width: 520px;
+}
+
+.ftrRightHead {
+  display: grid;
+  grid-template-columns: 86px 1fr;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.ftrLogo {
+  width: 86px;
+  height: 86px;
+  object-fit: contain;
+  display: block;
+}
+
+.ftrRightTitle {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
+
+.ftrRightSub {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ftr-muted);
+  line-height: 1.25;
+}
+
+/* Контакты */
+.ftrPhone {
+  display: block;
+  margin-top: 6px;
+  font-size: 22px;   /* в оригинале крупно, но не гигант */
+  font-weight: 900;
+  color: var(--ftr-text);
+  text-decoration: none;
+}
+
+.ftrEmail {
+  display: block;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ftr-muted);
+  text-decoration: none;
+}
+
+.ftrAddr {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ftr-muted);
+}
+
+/* Соц-иконки — маленькие, без больших плашек */
+.ftrSocial {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.ftrSocBtn {
+  width: 42px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(233, 241, 246, 0.18);
+  background: white;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+}
+
+.ftrSocBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(233, 241, 246, 0.26);
+}
+
+.ftrSocIcon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+  opacity: 0.95;
+}
+
+/* Линия */
+.ftrLine {
+  margin-top: 34px;
+  height: 1px;
+  background: var(--ftr-line);
+}
+
+/* Низ */
+.ftrBottom {
+  background: var(--ftr-bb);
+  padding: 18px 0;
+}
+
+.ftrBottomRow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 18px;
+}
+
+.ftrBottomText {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(233, 241, 246, 0.68);
+}
+
+.ftrBottomLink {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(233, 241, 246, 0.68);
+  text-decoration: none;
+  justify-self: center;
+}
+
+.ftrBottomLink:hover {
+  color: var(--ftr-text);
+}
+
+.ftrBottomLinkRight {
+  justify-self: end;
+}
+
+/* Адаптив */
+@media (max-width: 1024px) {
+  .ftrGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 44px;
+  }
+  .ftrRight {
+    grid-column: 1 / -1;
+    justify-self: start;
+    max-width: none;
+  }
+  .ftrBottomRow {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .ftrBottomLink,
+  .ftrBottomLinkRight {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 640px) {
+  .ftrContainer {
+    width: min(1200px, calc(100% - 28px));
+  }
+}

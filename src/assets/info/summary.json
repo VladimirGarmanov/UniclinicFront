@@ -1,0 +1,49 @@
+{
+    "exported_at": "2026-03-23T23:29:17+03:00",
+    "document_root": "/var/www/new.uniclinic.pro/data/www/uniclinic.pro",
+    "export_dir": "/var/www/new.uniclinic.pro/data/www/uniclinic.pro/dump_export_all",
+    "results": [
+        {
+            "code": "doctors",
+            "iblock_id": 11,
+            "count": 18,
+            "file": "/var/www/new.uniclinic.pro/data/www/uniclinic.pro/dump_export_all/doctors_full.json",
+            "status": "ok"
+        },
+        {
+            "code": "diseases",
+            "iblock_id": 15,
+            "count": 41,
+            "file": "/var/www/new.uniclinic.pro/data/www/uniclinic.pro/dump_export_all/diseases_full.json",
+            "status": "ok"
+        },
+        {
+            "code": "clinicalcases",
+            "iblock_id": 13,
+            "count": 32,
+            "file": "/var/www/new.uniclinic.pro/data/www/uniclinic.pro/dump_export_all/clinicalcases_full.json",
+            "status": "ok"
+        },
+        {
+            "code": "articles",
+            "iblock_id": 17,
+            "count": 47,
+            "file": "/var/www/new.uniclinic.pro/data/www/uniclinic.pro/dump_export_all/articles_full.json",
+            "status": "ok"
+        },
+        {
+            "code": "services",
+            "iblock_id": 16,
+            "count": 47,
+            "file": "/var/www/new.uniclinic.pro/data/www/uniclinic.pro/dump_export_all/services_full.json",
+            "status": "ok"
+        },
+        {
+            "code": "technologies",
+            "iblock_id": 22,
+            "count": 13,
+            "file": "/var/www/new.uniclinic.pro/data/www/uniclinic.pro/dump_export_all/technologies_full.json",
+            "status": "ok"
+        }
+    ]
+}

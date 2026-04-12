@@ -1,0 +1,170 @@
+.adminPanelPage,
+.adminPanelLoginPage {
+  min-height: 100vh;
+  background: #eef2f5;
+  padding: 32px 0 56px;
+}
+
+.adminPanelWrap,
+.adminPanelLoginCard {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.adminPanelLoginCard,
+.adminPanelCard {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.05);
+  padding: 28px;
+}
+
+.adminPanelTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.adminPanelTitle {
+  margin: 0 0 8px;
+  font-size: 34px;
+  line-height: 1.08;
+  font-weight: 800;
+  color: #28343d;
+}
+
+.adminPanelText {
+  margin: 0;
+  color: #66727d;
+  line-height: 1.6;
+}
+
+.adminPanelList {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.adminPanelMeta,
+.adminPanelInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 16px;
+  color: #374151;
+  font-size: 15px;
+}
+
+.adminPanelQuestion {
+  margin-bottom: 18px;
+}
+
+.adminPanelQuestionText {
+  margin-top: 8px;
+  color: #374151;
+  line-height: 1.72;
+  white-space: pre-wrap;
+}
+
+.adminPanelField {
+  margin-bottom: 14px;
+}
+
+.adminPanelLabel {
+  display: block;
+  margin-bottom: 8px;
+  color: #28343d;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.adminPanelInput,
+.adminPanelTextarea {
+  width: 100%;
+  border: 1px solid #d7dee5;
+  border-radius: 12px;
+  background: #fff;
+  color: #243342;
+  font-size: 16px;
+  outline: none;
+}
+
+.adminPanelInput {
+  height: 52px;
+  padding: 0 16px;
+}
+
+.adminPanelTextarea {
+  min-height: 180px;
+  resize: vertical;
+  padding: 14px 16px;
+  font-family: inherit;
+}
+
+.adminPanelInput:focus,
+.adminPanelTextarea:focus {
+  border-color: #8fb2d2;
+}
+
+.adminPanelCheck {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: #374151;
+  font-size: 15px;
+}
+
+.adminPanelActions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.adminPanelButton {
+  min-height: 48px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 12px;
+  background: #3d77bb;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.adminPanelButton:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.adminPanelButtonGhost {
+  background: #dfe8f1;
+  color: #2b3a47;
+}
+
+.adminPanelMessage {
+  color: #157347;
+  font-weight: 700;
+}
+
+.adminPanelError {
+  color: #b42318;
+  font-weight: 700;
+}
+
+.adminPanelLoading {
+  padding: 20px 0;
+  color: #374151;
+  font-size: 16px;
+}
+
+@media (max-width: 800px) {
+  .adminPanelTop {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
