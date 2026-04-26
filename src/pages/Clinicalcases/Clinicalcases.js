@@ -7,11 +7,16 @@ import {
   AutoEntitySections,
   DetailTopBlock,
   getItemCode,
+  stripHtml,
 } from "../../utils/cms";
 
 const CLINICAL_CASES = Array.isArray(clinicalCasesData?.items)
   ? clinicalCasesData.items
   : [];
+
+function getPreviewPlainText(html = "") {
+  return stripHtml(html).trim();
+}
 
 export function ClinicalCaseDetail() {
   const { slug } = useParams();
@@ -77,7 +82,7 @@ export default function ClinicalCases() {
               item?.preview_picture?.src ||
               "";
             const title = item?.fields?.NAME || "";
-            const previewText = item?.fields?.PREVIEW_TEXT || "";
+            const previewText = getPreviewPlainText(item?.fields?.PREVIEW_TEXT || "");
 
             return (
               <NavLink
@@ -95,11 +100,9 @@ export default function ClinicalCases() {
 
                 <div className="ccBody">
                   <div className="ccCardTitle">{title}</div>
+
                   {previewText ? (
-                    <div
-                      className="ccCardText"
-                      dangerouslySetInnerHTML={{ __html: previewText }}
-                    />
+                    <div className="ccCardText">{previewText}</div>
                   ) : null}
                 </div>
               </NavLink>

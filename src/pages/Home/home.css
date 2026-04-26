@@ -1,559 +1,955 @@
-/* src/pages/Home/home.css */
-
 :root{
   --orange:#ff5a2a;
   --orange2:#ff6a2f;
   --text:#0c2230;
   --blue:#2f7cc5;
-  --muted: rgba(255,255,255,.85);
+  --container:1200px;
 
-  --container: 1200px;
-
-  --topH: 52px;
-  --navH: 58px;
-  --stickyH: calc(var(--topH) + var(--navH));
+  --topH:52px;
+  --navH:58px;
+  --stickyH:calc(var(--topH) + var(--navH));
 }
 
-*{ box-sizing:border-box; }
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
 .homePage{
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--text);
+  font-family:Arial, Helvetica, sans-serif;
+  color:var(--text);
   background:#fff;
 }
+
 .homeContainer{
-  width: min(var(--container), calc(100% - 48px));
-  margin: 0 auto;
+  width:min(var(--container), calc(100% - 48px));
+  margin:0 auto;
 }
 
-/* ===== HEADER (фиксируем только верх/меню) ===== */
+/* ===== HEADER ===== */
 .homeHdr{
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 10050;
-  pointer-events: none; /* чтобы клики были только по элементам */
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:10050;
+  pointer-events:none;
 }
-.homeHdrTop, .homeHdrNav{ pointer-events: auto; }
+
+.homeHdrTop,
+.homeHdrNav{
+  pointer-events:auto;
+}
 
 .homeHdrTop{
-  height: var(--topH);
-  background: var(--orange);
+  height:var(--topH);
+  background:var(--orange);
   display:flex;
   align-items:center;
 }
+
 .homeHdrTopInner{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap: 14px;
-  width: 100%;
+  gap:14px;
+  width:100%;
   color:#fff;
-  font-weight: 800;
-  font-size: 18px;
+  font-weight:800;
+  font-size:18px;
 }
+
+.homeHdrTopText{
+  line-height:1.2;
+}
+
 .homeHdrTopLink{
   color:#fff;
-  text-decoration: underline;
-  font-weight: 800;
+  text-decoration:underline;
+  font-weight:800;
 }
 
 .homeHdrNav{
-  height: var(--navH);
+  height:var(--navH);
   display:flex;
   align-items:center;
-
-  /* как на оригинале — полупрозрачный тёмный слой поверх hero */
-  background: rgba(0,0,0,.55);
-  backdrop-filter: blur(2px);
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(2px);
 }
+
 .homeHdrNavInner{
   display:flex;
   align-items:center;
-  justify-content: space-between;
-  gap: 18px;
+  justify-content:space-between;
+  gap:18px;
 }
 
-/* Меню */
 .homeHdrMenu{
   display:flex;
   align-items:center;
-  gap: 22px;
-  white-space: nowrap;
-  overflow: visible; /* чтобы "Контакты" не резало */
-  min-width: 0;
+  gap:22px;
+  white-space:nowrap;
+  min-width:0;
 }
+
 .homeHdrLink{
   color:#fff;
   text-decoration:none;
-  font-weight: 700;
-  font-size: 16px;
-  padding: 10px 0;
+  font-weight:700;
+  font-size:16px;
+  padding:10px 0;
   opacity:.95;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  font:inherit;
 }
-.homeHdrLink:hover{ color: var(--orange2); }
-.homeHdrLink.isActive{ color: var(--orange2); }
+
+.homeHdrLink:hover{
+  color:var(--orange2);
+}
+
+.homeHdrLink.isActive{
+  color:var(--orange2);
+}
+
+.homeHdrDrop{
+  position:relative;
+}
+
 .homeHdrLinkDrop{
   display:inline-flex;
   gap:6px;
   align-items:center;
 }
+
 .homeHdrCaret{
-  font-size: 12px;
-  opacity: .85;
+  font-size:12px;
+  opacity:.85;
 }
 
-/* Правая часть */
+.homeHdrDropMenu{
+  position:absolute;
+  top:calc(100% + 12px);
+  left:0;
+  min-width:220px;
+  background:#fff;
+  color:#111;
+  border-radius:12px;
+  box-shadow:0 18px 50px rgba(0,0,0,.18);
+  padding:8px;
+  z-index:20;
+}
+
+.homeHdrDropLink{
+  display:block;
+  padding:10px 12px;
+  border-radius:8px;
+  text-decoration:none;
+  color:#111;
+  font-weight:700;
+}
+
+.homeHdrDropLink:hover{
+  background:#f3f5f7;
+}
+
 .homeHdrRight{
   display:flex;
   align-items:center;
-  gap: 14px;
-  flex: 0 0 auto;
+  gap:14px;
+  flex:0 0 auto;
 }
+
 .homeHdrPhone{
   color:#fff;
   text-decoration:none;
-  font-weight: 800;
-  font-size: 18px;
-  line-height: 1.05;
-  white-space: nowrap;
+  font-weight:800;
+  font-size:18px;
+  line-height:1.05;
+  white-space:nowrap;
 }
+
 .homeHdrIcons{
   display:flex;
   align-items:center;
-  gap: 10px;
+  gap:10px;
 }
+
 .homeHdrIconBtn{
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.14);
-  border: 1px solid rgba(255,255,255,.18);
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.18);
   display:grid;
   place-items:center;
   padding:0;
   cursor:pointer;
   text-decoration:none;
+  flex:0 0 auto;
 }
+
 .homeHdrIconBtn:hover{
-  background: rgba(255,255,255,.20);
-  border-color: rgba(255,255,255,.26);
+  background:rgba(255,255,255,.20);
+  border-color:rgba(255,255,255,.26);
 }
+
 .homeHdrIconBtn img{
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
+  width:18px;
+  height:18px;
+  object-fit:contain;
   display:block;
-  filter: brightness(1.05);
+  filter:brightness(1.05);
 }
 
 /* ===== HERO ===== */
 .homeHero{
-  position: relative;
-  min-height: 740px;
-  /* отступ сверху под fixed header НЕ НУЖЕН (он поверх), но чтобы не перекрывал текст —
-     текст и инфо-блок ниже учитывают --stickyH */
+  position:relative;
+  min-height:760px;
   background-image:
-    linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.65)),
+    linear-gradient(180deg, rgba(0,0,0,.42), rgba(0,0,0,.68)),
     var(--hero-bg);
-  background-size: cover;
-  background-position: center;
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  overflow:hidden;
 }
 
-/* Инфо-строка (НЕ фикс) */
 .homeHeroInfo{
-  position: absolute;
-  left:0; right:0;
-  top: var(--stickyH);
-  padding-top: 18px;
+  position:absolute;
+  left:0;
+  right:0;
+  top:var(--stickyH);
+  padding-top:18px;
+  z-index:3;
 }
+
 .homeHeroInfoInner{
   display:grid;
-  grid-template-columns: 420px 1fr 220px;
+  grid-template-columns:420px 1fr 220px;
   align-items:center;
-  gap: 18px;
+  gap:18px;
   color:#fff;
 }
 
-/* Brand */
 .homeHeroBrand{
   display:flex;
   align-items:center;
-  gap: 14px;
+  gap:14px;
   text-decoration:none;
   color:#fff;
   min-width:0;
 }
+
 .homeHeroLogo{
-  width: 74px;
-  height: 74px;
-  object-fit: contain;
-}
-.homeHeroBrandTitle{
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: .02em;
-  line-height: 1.1;
-}
-.homeHeroBrandSub{
-  margin-top: 6px;
-  font-size: 14px;
-  font-weight: 700;
-  opacity: .9;
+  width:74px;
+  height:74px;
+  object-fit:contain;
+  display:block;
+  flex:0 0 auto;
 }
 
-/* Metro + good place */
+.homeHeroBrandTitle{
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:.02em;
+  line-height:1.1;
+}
+
+.homeHeroBrandSub{
+  margin-top:6px;
+  font-size:14px;
+  font-weight:700;
+  opacity:.9;
+}
+
 .homeHeroMeta{
-  position: relative;
   display:flex;
   align-items:center;
-  gap: 14px;
-  min-width: 0;
+  gap:14px;
+  min-width:0;
 }
+
 .homeHeroGoodPlace{
-  flex: 0 0 auto;
+  flex:0 0 auto;
 }
+
 .homeHeroGoodPlace img{
-  width: 64px;
-  height: 64px;
-  object-fit: contain;
+  width:64px;
+  height:64px;
+  object-fit:contain;
   display:block;
 }
+
 .homeHeroMetro{
   min-width:0;
 }
+
 .homeHeroMetroRow{
   display:flex;
   align-items:center;
-  gap: 10px;
-  font-size: 16px;
-  font-weight: 800;
-  white-space: nowrap;
+  gap:10px;
+  font-size:16px;
+  font-weight:800;
+  white-space:nowrap;
 }
-.homeHeroMetroGap{ width: 18px; }
+
+.homeHeroMetroGap{
+  width:18px;
+}
+
 .dot{
-  width: 8px; height: 8px;
-  border-radius: 999px;
+  width:8px;
+  height:8px;
+  border-radius:999px;
   display:inline-block;
 }
-.dotRed{ background:#e53935; }
-.dotYellow{ background:#fbc02d; }
+
+.dotRed{
+  background:#e53935;
+}
+
+.dotYellow{
+  background:#fbc02d;
+}
 
 .homeHeroAddr,
 .homeHeroHours{
-  margin-top: 6px;
-  font-size: 14px;
-  font-weight: 700;
-  opacity: .9;
+  margin-top:6px;
+  font-size:14px;
+  font-weight:700;
+  opacity:.9;
 }
 
-/* CTA */
 .homeHeroCta{
-  justify-self: end;
-  background: var(--orange);
+  justify-self:end;
+  width:max-content;
+  max-width:100%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--orange);
   color:#fff;
   text-decoration:none;
-  font-weight: 800;
-  font-size: 16px;
-  padding: 14px 22px;
-  border-radius: 6px;
-  white-space: nowrap;
+  font-weight:800;
+  font-size:16px;
+  line-height:1;
+  padding:14px 22px;
+  border-radius:999px;
+  white-space:nowrap;
+  transition:filter .2s ease, transform .2s ease;
 }
-.homeHeroCta:hover{ filter: brightness(.96); }
 
-/* Hero text block */
+.homeHeroCta:hover{
+  filter:brightness(.96);
+  transform:translateY(-1px);
+}
+
+.homeHeroMobileBurger{
+  display:none;
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.2);
+  padding:0;
+  cursor:pointer;
+  place-items:center;
+  gap:4px;
+  align-content:center;
+}
+
+.homeHeroMobileBurger span{
+  display:block;
+  width:16px;
+  height:2px;
+  background:#fff;
+  border-radius:999px;
+}
+
 .homeHeroText{
   position:absolute;
-  left:0; right:0;
-  bottom: 70px;
+  left:0;
+  right:0;
+  bottom:70px;
   color:#fff;
+  z-index:2;
 }
+
 .homeHeroTitle{
-  max-width: 980px;
-  font-weight: 900;
-  font-size: 54px;          /* меньше, чтобы влезало */
-  line-height: 1.06;
-  margin: 0;
-  text-shadow: 0 2px 22px rgba(0,0,0,.35);
+  max-width:980px;
+  font-weight:900;
+  font-size:54px;
+  line-height:1.06;
+  margin:0;
+  text-shadow:0 2px 22px rgba(0,0,0,.35);
 }
+
 .homeHeroLine{
-  height: 3px;
-  width: min(980px, 100%);
-  margin: 18px 0 18px 0;
-  background: var(--orange);
-  opacity: .95;
+  height:3px;
+  width:min(980px, 100%);
+  margin:18px 0;
+  background:var(--orange);
+  opacity:.95;
 }
+
 .homeHeroDesc{
-  max-width: 980px;
-  margin: 0;
-  font-size: 22px;
-  line-height: 1.35;
-  color: rgba(255,255,255,.9);
-  text-shadow: 0 2px 18px rgba(0,0,0,.35);
+  max-width:980px;
+  margin:0;
+  font-size:22px;
+  line-height:1.35;
+  color:rgba(255,255,255,.9);
+  text-shadow:0 2px 18px rgba(0,0,0,.35);
 }
+
 .homeHeroScroll{
-  margin-top: 34px;
-  font-size: 14px;
-  opacity: .85;
+  margin-top:34px;
+  font-size:14px;
+  opacity:.85;
   display:flex;
-  gap: 10px;
+  gap:10px;
   align-items:center;
 }
+
 .homeHeroChevron{
-  font-size: 18px;
-  transform: translateY(1px);
+  font-size:18px;
+  transform:translateY(1px);
 }
 
 /* ===== MAIN ===== */
 .homeMain{
   background:#fff;
+  position:relative;
+  z-index:2;
 }
 
-/* sections */
 .homeSection{
-  padding: 56px 0;
+  padding:56px 0;
 }
+
 .homeSectionAlt{
   background:#f5f7fb;
 }
 
 .homeH1{
-  font-size: 54px;
-  line-height: 1.05;
-  margin: 0 0 26px 0;
-  font-weight: 900;
-  letter-spacing: -.01em;
-}
-.homeH2{
-  font-size: 34px;
-  margin: 34px 0 18px 0;
-  font-weight: 900;
-}
-.homeCenterTitle{
-  text-align:center;
-  font-size: 42px;
-  font-weight: 900;
-  letter-spacing: .02em;
-  margin: 0 0 26px 0;
+  font-size:54px;
+  line-height:1.05;
+  margin:0 0 26px 0;
+  font-weight:900;
+  letter-spacing:-.01em;
 }
 
-/* Service cards */
+.homeH2{
+  font-size:34px;
+  margin:34px 0 18px 0;
+  font-weight:900;
+}
+
+.homeCenterTitle{
+  text-align:center;
+  font-size:42px;
+  font-weight:900;
+  letter-spacing:.02em;
+  margin:0 0 26px 0;
+}
+
 .homeServiceGrid{
   display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px 46px;
-  margin-top: 14px;
+  grid-template-columns:1fr 1fr;
+  gap:28px 46px;
+  margin-top:14px;
 }
+
 .homeServiceCard{
   display:flex;
-  gap: 16px;
+  gap:16px;
   text-decoration:none;
-  color: var(--text);
-  padding: 18px 18px;
-  border-radius: 10px;
+  color:var(--text);
+  padding:18px 18px;
+  border-radius:10px;
+  transition:background .2s ease;
 }
+
 .homeServiceCard:hover{
-  background: rgba(0,0,0,.02);
+  background:rgba(0,0,0,.02);
 }
+
 .homeServiceIcon{
-  flex: 0 0 auto;
-  width: 44px;
-  height: 44px;
+  flex:0 0 auto;
+  width:44px;
+  height:44px;
   display:grid;
   place-items:center;
 }
+
 .homeServiceIcon img{
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
+  width:40px;
+  height:40px;
+  object-fit:contain;
 }
+
 .homeServiceTitle{
-  color: var(--blue);
-  font-weight: 900;
-  font-size: 18px;
-  margin-bottom: 8px;
+  color:var(--blue);
+  font-weight:900;
+  font-size:18px;
+  margin-bottom:8px;
 }
+
 .homeServiceText{
-  font-size: 14px;
-  line-height: 1.55;
-  color: rgba(12,34,48,.86);
+  font-size:14px;
+  line-height:1.55;
+  color:rgba(12,34,48,.86);
 }
 
 .homeText{
-  margin-top: 18px;
-  color: rgba(12,34,48,.9);
-  font-size: 16px;
-  line-height: 1.8;
+  margin-top:18px;
+  color:rgba(12,34,48,.9);
+  font-size:16px;
+  line-height:1.8;
 }
-.homeText p{ margin: 16px 0; }
 
-/* Diseases */
+.homeText p{
+  margin:16px 0;
+}
+
 .homeDiseasesGrid{
   display:grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 34px;
-  margin-top: 10px;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:34px;
+  margin-top:10px;
 }
-.homeDiseaseTitle{
-  font-size: 20px;
-  font-weight: 900;
-  margin-bottom: 10px;
-}
-.homeList{
-  margin: 0;
-  padding-left: 18px;
-}
-.homeList li{ margin: 8px 0; }
-.homeList a{
-  color: var(--blue);
-  text-decoration: none;
-  font-weight: 700;
-}
-.homeList a:hover{ text-decoration: underline; }
 
-/* Doctors */
+.homeDiseaseTitle{
+  font-size:20px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.homeList{
+  margin:0;
+  padding-left:18px;
+}
+
+.homeList li{
+  margin:8px 0;
+}
+
+.homeList a{
+  color:var(--blue);
+  text-decoration:none;
+  font-weight:700;
+}
+
+.homeList a:hover{
+  text-decoration:underline;
+}
+
 .homeDoctorsGrid{
   display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 26px 26px;
+  grid-template-columns:1fr 1fr;
+  gap:26px;
 }
+
 .homeDoctorCard{
   background:#fff;
-  border-radius: 10px;
-  box-shadow: 0 8px 26px rgba(0,0,0,.08);
+  border-radius:10px;
+  box-shadow:0 8px 26px rgba(0,0,0,.08);
   overflow:hidden;
   display:grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns:260px 1fr;
   text-decoration:none;
-  color: var(--text);
+  color:var(--text);
 }
+
 .homeDoctorImgWrap{
   background:#e9edf3;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding: 10px;
-  height: 220px;
-}
-.homeDoctorImg{
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* НЕ ОБРЕЗАЕТ */
-  display:block;
-}
-.homeDoctorBody{
-  padding: 20px 22px;
-}
-.homeDoctorName{
-  font-size: 20px;
-  font-weight: 900;
-  margin-bottom: 8px;
-}
-.homeDoctorRole{
-  font-weight: 700;
-  opacity: .85;
-  margin-bottom: 8px;
-}
-.homeDoctorMeta{
-  font-weight: 700;
-  opacity: .85;
-  margin-top: 6px;
-}
-.homeDoctorDegree{
-  margin-top: 8px;
-  font-weight: 900;
-  color: #e53935;
+  padding:10px;
+  height:220px;
 }
 
-/* Cards 3 */
+.homeDoctorImg{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+.homeDoctorBody{
+  padding:20px 22px;
+}
+
+.homeDoctorName{
+  font-size:20px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.homeDoctorRole{
+  font-weight:700;
+  opacity:.85;
+  margin-bottom:8px;
+}
+
+.homeDoctorMeta{
+  font-weight:700;
+  opacity:.85;
+  margin-top:6px;
+}
+
+.homeDoctorDegree{
+  margin-top:8px;
+  font-weight:900;
+  color:#e53935;
+}
+
 .homeCards3{
   display:grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 22px;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:22px;
 }
+
 .homeMediaCard{
   background:#fff;
-  border-radius: 10px;
-  box-shadow: 0 8px 26px rgba(0,0,0,.08);
+  border-radius:10px;
+  box-shadow:0 8px 26px rgba(0,0,0,.08);
   overflow:hidden;
   text-decoration:none;
-  color: var(--text);
+  color:var(--text);
 }
+
 .homeMediaImgWrap{
-  height: 220px;
+  height:220px;
   background:#e9edf3;
 }
+
 .homeMediaImg{
   width:100%;
   height:100%;
-  object-fit: cover;
+  object-fit:cover;
   display:block;
-}
-.homeMediaBody{
-  padding: 16px 16px 18px 16px;
-}
-.homeMediaMeta{
-  font-size: 13px;
-  font-weight: 800;
-  opacity: .7;
-  margin-bottom: 8px;
-}
-.homeMediaTitle{
-  font-size: 18px;
-  font-weight: 900;
-  margin-bottom: 8px;
-}
-.homeMediaText{
-  font-size: 14px;
-  opacity: .85;
-  line-height: 1.45;
+  transition:transform .35s ease;
 }
 
-/* Buttons */
+.homeMediaCard:hover .homeMediaImg{
+  transform:scale(1.03);
+}
+
+.homeMediaBody{
+  padding:16px 16px 18px 16px;
+}
+
+.homeMediaMeta{
+  font-size:13px;
+  font-weight:800;
+  opacity:.7;
+  margin-bottom:8px;
+}
+
+.homeMediaTitle{
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.homeMediaText{
+  font-size:14px;
+  opacity:.85;
+  line-height:1.45;
+}
+
 .homeCenterBtnRow{
   display:flex;
   justify-content:center;
-  margin-top: 28px;
-}
-.homeOutlineBtn{
-  min-width: 380px;
-  text-align:center;
-  padding: 22px 26px;
-  border-radius: 0px;
-  border: 2px solid rgba(47,124,197,.65);
-  color: var(--blue);
-  text-decoration:none;
-  font-weight: 400;
-  font-size: 34px;
-  background: transparent;
-}
-.homeOutlineBtn:hover{
-  border-color: rgba(47,124,197,.9);
+  margin-top:28px;
 }
 
-/* ===== responsive ===== */
+.homeOutlineBtn{
+  min-width:380px;
+  text-align:center;
+  padding:22px 26px;
+  border-radius:0;
+  border:2px solid rgba(47,124,197,.65);
+  color:var(--blue);
+  text-decoration:none;
+  font-weight:400;
+  font-size:34px;
+  background:transparent;
+  transition:border-color .2s ease;
+}
+
+.homeOutlineBtn:hover{
+  border-color:rgba(47,124,197,.9);
+}
+
+/* ===== MOBILE MENU ===== */
+.homeHdrMobileOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(12,34,48,.42);
+  z-index:12000;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.homeHdrMobileSheet{
+  width:100%;
+  max-width:420px;
+  height:100%;
+  background:#fff;
+  overflow-y:auto;
+}
+
+.homeHdrMobileTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 18px 12px;
+  border-bottom:1px solid rgba(12,34,48,.08);
+}
+
+.homeHdrMobileTitle{
+  font-size:24px;
+  font-weight:800;
+  color:#0c2230;
+}
+
+.homeHdrMobileClose{
+  width:40px;
+  height:40px;
+  border:1px solid rgba(12,34,48,.14);
+  border-radius:999px;
+  background:#fff;
+  font-size:20px;
+  cursor:pointer;
+}
+
+.homeHdrMobileBody{
+  padding:10px 0 28px;
+}
+
+.homeHdrMobileLink{
+  display:block;
+  width:100%;
+  padding:16px 18px;
+  color:#1a2b37;
+  text-decoration:none;
+  background:transparent;
+  border:none;
+  text-align:left;
+  font:inherit;
+  font-size:20px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.homeHdrMobileLink.isActive{
+  color:#f26a3d;
+}
+
+.homeHdrMobileDropBtn{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.homeHdrMobileDropdown{
+  background:#f6f8fb;
+  border-top:1px solid rgba(12,34,48,.06);
+  border-bottom:1px solid rgba(12,34,48,.06);
+}
+
+.homeHdrMobileDropdownLink{
+  display:block;
+  padding:14px 24px;
+  color:#243342;
+  text-decoration:none;
+  font-size:17px;
+  line-height:1.35;
+}
+
+/* ===== RESPONSIVE ===== */
 @media (max-width: 1200px){
-  .homeHeroTitle{ font-size: 44px; }
-  .homeH1{ font-size: 44px; }
-  .homeCenterTitle{ font-size: 34px; }
-  .homeOutlineBtn{ min-width: 320px; font-size: 28px; }
+  .homeHeroTitle{ font-size:44px; }
+  .homeH1{ font-size:44px; }
+  .homeCenterTitle{ font-size:34px; }
+  .homeOutlineBtn{ min-width:320px; font-size:28px; }
 }
 
 @media (max-width: 980px){
-  .homeHdrMenu{ gap: 16px; overflow-x: auto; padding-bottom: 4px; }
-  .homeHeroInfoInner{ grid-template-columns: 1fr; gap: 14px; }
-  .homeHeroCta{ justify-self: start; }
-  .homeServiceGrid{ grid-template-columns: 1fr; }
-  .homeDiseasesGrid{ grid-template-columns: 1fr; }
-  .homeDoctorsGrid{ grid-template-columns: 1fr; }
-  .homeCards3{ grid-template-columns: 1fr; }
-  .homeDoctorCard{ grid-template-columns: 1fr; }
-  .homeDoctorImgWrap{ height: 260px; }
-  .homeMediaImgWrap{ height: 240px; }
+  :root{
+    --topH:0px;
+    --navH:0px;
+    --stickyH:0px;
+  }
+
+  .homeHdrTop,
+  .homeHdrNav{
+    display:none;
+  }
+
+  .homeHero{
+    min-height:700px;
+    background-attachment:scroll;
+    background-position:center center;
+  }
+
+  .homeHeroInfo{
+    top:16px;
+    padding-top:0;
+  }
+
+  .homeHeroInfoInner{
+    grid-template-columns:auto 1fr auto auto;
+    align-items:center;
+    gap:10px;
+  }
+
+  .homeHeroBrand{
+    gap:0;
+  }
+
+  .homeHeroBrandText,
+  .homeHeroMeta{
+    display:none;
+  }
+
+  .homeHeroLogo{
+    width:52px;
+    height:52px;
+  }
+
+  .homeHeroCta{
+    justify-self:start;
+    padding:11px 16px;
+    font-size:14px;
+    width:max-content;
+    min-width:unset;
+    max-width:max-content;
+  }
+
+  .homeHeroMobileBurger{
+    display:grid;
+  }
+
+  .homeHeroText{
+    bottom:48px;
+  }
+
+  .homeHeroTitle{
+    font-size:40px;
+    max-width:760px;
+  }
+
+  .homeHeroDesc{
+    font-size:18px;
+    max-width:760px;
+  }
+
+  .homeServiceGrid{ grid-template-columns:1fr; }
+  .homeDiseasesGrid{ grid-template-columns:1fr; }
+  .homeDoctorsGrid{ grid-template-columns:1fr; }
+  .homeCards3{ grid-template-columns:1fr; }
+  .homeDoctorCard{ grid-template-columns:1fr; }
+  .homeDoctorImgWrap{ height:260px; }
+  .homeMediaImgWrap{ height:240px; }
 }
 
 @media (max-width: 640px){
-  .homeHdrTopInner{ font-size: 15px; }
-  .homeHdrPhone{ display:none; }
-  .homeHeroTitle{ font-size: 34px; }
-  .homeHeroDesc{ font-size: 16px; }
-  .homeOutlineBtn{ min-width: 260px; font-size: 22px; padding: 16px 18px; }
+  .homeContainer{
+    width:min(var(--container), calc(100% - 28px));
+  }
+
+  .homeHero{
+    min-height:620px;
+  }
+
+  .homeHeroInfo{
+    top:12px;
+  }
+
+  .homeHeroInfoInner{
+    grid-template-columns:auto 1fr auto;
+    gap:10px;
+  }
+
+  .homeHeroLogo{
+    width:44px;
+    height:44px;
+  }
+
+  .homeHeroCta{
+    padding:10px 14px;
+    font-size:13px;
+  }
+
+  .homeHeroMobileBurger{
+    width:40px;
+    height:40px;
+  }
+
+  .homeHeroText{
+    bottom:42px;
+  }
+
+  .homeHeroTitle{
+    font-size:30px;
+    line-height:1.08;
+  }
+
+  .homeHeroDesc{
+    font-size:16px;
+  }
+
+  .homeHeroScroll{
+    margin-top:22px;
+    font-size:13px;
+  }
+
+  .homeH1{
+    font-size:34px;
+  }
+
+  .homeH2{
+    font-size:28px;
+  }
+
+  .homeCenterTitle{
+    font-size:28px;
+  }
+
+  .homeOutlineBtn{
+    min-width:100%;
+    font-size:22px;
+    padding:16px 18px;
+  }
+}
+
+@media (max-width: 480px){
+  .homeHero{
+    min-height:560px;
+  }
+
+  .homeHeroTitle{
+    font-size:26px;
+  }
+
+  .homeHeroDesc{
+    font-size:15px;
+  }
+
+  .homeHeroLine{
+    margin:14px 0;
+  }
+
+  .homeHeroScroll{
+    display:none;
+  }
 }

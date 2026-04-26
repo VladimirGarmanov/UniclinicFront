@@ -3,7 +3,13 @@ import { Link, useParams } from "react-router-dom";
 import "./team.css";
 
 import doctorsData from "../../assets/info/doctors_full.json";
-import { AutoEntitySections, DetailTopBlock, getItemCode, getItemName, getPrimaryImage } from "../../utils/cms";
+import {
+  AutoEntitySections,
+  DetailTopBlock,
+  getItemCode,
+  getItemName,
+  getPrimaryImage,
+} from "../../utils/cms";
 
 const DOCTORS = Array.isArray(doctorsData?.items) ? doctorsData.items : [];
 
@@ -20,9 +26,13 @@ export function DoctorDetail() {
       <section className="teamPage">
         <div className="teamWrap">
           <div className="teamBreadcrumbs">
-            <Link to="/" className="teamCrumbLink">Главная</Link>
+            <Link to="/" className="teamCrumbLink">
+              Главная
+            </Link>
             <span className="teamSep">/</span>
-            <Link to="/team" className="teamCrumbLink">Команда</Link>
+            <Link to="/team" className="teamCrumbLink">
+              Команда
+            </Link>
           </div>
           <h1 className="teamH1">Врач не найден</h1>
         </div>
@@ -45,7 +55,9 @@ export default function Team() {
     <section className="teamPage">
       <div className="teamWrap">
         <div className="teamBreadcrumbs">
-          <Link to="/" className="teamCrumbLink">Главная</Link>
+          <Link to="/" className="teamCrumbLink">
+            Главная
+          </Link>
           <span className="teamSep">/</span>
           <span className="teamCrumbActive">Команда</span>
         </div>
@@ -66,7 +78,9 @@ export default function Team() {
               <article className="teamCard" key={doctor?.fields?.ID || code}>
                 <div className="teamPhotoBox">
                   {photo ? (
-                    <img src={photo} alt={name} className="teamPhoto" />
+                    <div className="teamPhotoFrame">
+                      <img src={photo} alt={name} className="teamPhoto" />
+                    </div>
                   ) : null}
                 </div>
 
@@ -92,4 +106,3 @@ export default function Team() {
     </section>
   );
 }
-

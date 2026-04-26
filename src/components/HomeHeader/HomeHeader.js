@@ -14,58 +14,64 @@ const navItems = [
 ];
 
 const patientsDropdownItems = [
-  { type: "link", to: "/about", label: "О клинике" },
-  { type: "link", to: "/news", label: "Новости" },
-  { type: "link", to: "/articles", label: "Статьи" },
+  { to: "/about", label: "О клинике" },
+  { to: "/news", label: "Новости" },
+  { to: "/articles", label: "Статьи" },
 ];
 
 export default function HomeHeader() {
-  const stickyShellRef = useRef(null);
-  const patientsMenuRef = useRef(null);
-  const mobileMenuRef = useRef(null);
+  const shellRef = useRef(null);
+  const desktopDropRef = useRef(null);
+  const mobileSheetRef = useRef(null);
 
   const [isStuck, setIsStuck] = useState(false);
-  const [stickyH, setStickyH] = useState(0);
+  const [headerHeight, setHeaderHeight] = useState(0);
   const [isPatientsOpen, setIsPatientsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobilePatientsOpen, setIsMobilePatientsOpen] = useState(false);
 
   useEffect(() => {
-    const el = stickyShellRef.current;
-    if (!el) return;
-
-    const measure = () => setStickyH(el.offsetHeight);
-    measure();
-
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
+    const measure = () => {
+      if (shellRef.current) {
+        setHeaderHeight(shellRef.current.offsetHeight);
+      }
+    };
 
     const onScroll = () => {
       setIsStuck(window.scrollY > 0);
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    measure();
     onScroll();
 
+    const ro = new ResizeObserver(measure);
+    if (shellRef.current) {
+      ro.observe(shellRef.current);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", measure);
+
     return () => {
-      window.removeEventListener("scroll", onScroll);
       ro.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", measure);
     };
   }, []);
 
   useEffect(() => {
     const onPointerDown = (event) => {
       if (
-        patientsMenuRef.current &&
-        !patientsMenuRef.current.contains(event.target)
+        desktopDropRef.current &&
+        !desktopDropRef.current.contains(event.target)
       ) {
         setIsPatientsOpen(false);
       }
 
       if (
-        mobileMenuRef.current &&
         isMobileMenuOpen &&
-        !mobileMenuRef.current.contains(event.target) &&
+        mobileSheetRef.current &&
+        !mobileSheetRef.current.contains(event.target) &&
         !event.target.closest(".hhBurger")
       ) {
         setIsMobileMenuOpen(false);
@@ -97,31 +103,19 @@ export default function HomeHeader() {
     };
   }, [isMobileMenuOpen]);
 
-  function closeMenus() {
+  const closeAllMenus = () => {
     setIsPatientsOpen(false);
     setIsMobileMenuOpen(false);
     setIsMobilePatientsOpen(false);
-  }
-
-  function renderPatientsItem(item, mobile = false) {
-    return (
-      <Link
-        key={item.label}
-        to={item.to}
-        className={mobile ? "hhMobileDropdownLink" : "hhDropLink"}
-        onClick={closeMenus}
-      >
-        {item.label}
-      </Link>
-    );
-  }
+  };
 
   return (
     <header className="hh">
-      {isStuck ? <div style={{ height: stickyH }} /> : null}
+      {isStuck ? <div className="hhPlaceholder" style={{ height: headerHeight }} /> : null}
 
       <div
-        ref={stickyShellRef}
+        ref={shellRef}
+        className="hhShell"
         style={
           isStuck
             ? {
@@ -131,9 +125,7 @@ export default function HomeHeader() {
                 right: 0,
                 zIndex: 10050,
               }
-            : {
-                position: "static",
-              }
+            : undefined
         }
       >
         <div className="hhTop">
@@ -141,7 +133,7 @@ export default function HomeHeader() {
             <div className="hhTopText">
               Запишитесь на бесплатную онлайн-консультацию!
             </div>
-            <a className="hhTopLink" href="#consult">
+            <a className="hhTopLink" href="/services/onlayn-konsultirovanie/">
               Подробнее
             </a>
           </div>
@@ -149,35 +141,41 @@ export default function HomeHeader() {
 
         <div className="hhNav">
           <div className="hhNavInner">
-            <nav className="hhMenu">
+            <nav className="hhMenu" aria-label="Основная навигация">
               {navItems.map((item) => (
                 <NavLink
                   key={item.to}
                   to={item.to}
                   end={!!item.end}
                   className={({ isActive }) =>
-                    "hhItem" + (isActive ? " isActive" : "")
+                    `hhItem ${isActive ? "isActive" : ""}`
                   }
                 >
                   {item.label}
                 </NavLink>
               ))}
 
-              <div
-                ref={patientsMenuRef}
-                className={`hhDrop ${isPatientsOpen ? "isOpen" : ""}`}
-              >
+              <div ref={desktopDropRef} className="hhDrop">
                 <button
                   type="button"
                   className={`hhItem hhDropBtn ${isPatientsOpen ? "isActive" : ""}`}
                   onClick={() => setIsPatientsOpen((prev) => !prev)}
                 >
-                  Пациентам ▾
+                  Пациентам <span className="hhCaret">▾</span>
                 </button>
 
                 {isPatientsOpen && (
                   <div className="hhDropMenu">
-                    {patientsDropdownItems.map((item) => renderPatientsItem(item))}
+                    {patientsDropdownItems.map((item) => (
+                      <Link
+                        key={item.to}
+                        to={item.to}
+                        className="hhDropLink"
+                        onClick={closeAllMenus}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
                   </div>
                 )}
               </div>
@@ -189,18 +187,38 @@ export default function HomeHeader() {
               </a>
 
               <div className="hhIcons">
-                <a className="hhIcon" href="https://wa.me/" target="_blank" rel="noreferrer" aria-label="WhatsApp">
+                <a
+                  className="hhIcon"
+                  href="https://wa.me/79671367706"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="WhatsApp"
+                >
                   WA
                 </a>
-                <a className="hhIcon" href="https://vk.com/" target="_blank" rel="noreferrer" aria-label="VK">
+                <a
+                  className="hhIcon"
+                  href="https://vk.com/surgerymgy"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="VK"
+                >
                   VK
                 </a>
-                <a className="hhIcon" href="https://t.me/" target="_blank" rel="noreferrer" aria-label="Telegram">
+                <a
+                  className="hhIcon"
+                  href="https://t.me/surgerymgu_bot"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Telegram"
+                >
                   TG
                 </a>
-                <button className="hhIconBtn" type="button" aria-label="Search">
+
+                <button className="hhIconBtn" type="button" aria-label="Поиск">
                   🔍
                 </button>
+
                 <button
                   className="hhBurger"
                   type="button"
@@ -217,13 +235,14 @@ export default function HomeHeader() {
 
       {isMobileMenuOpen && (
         <div className="hhMobileOverlay">
-          <div className="hhMobileSheet" ref={mobileMenuRef}>
+          <div className="hhMobileSheet" ref={mobileSheetRef}>
             <div className="hhMobileTop">
               <div className="hhMobileTitle">Меню</div>
               <button
                 className="hhMobileClose"
                 type="button"
-                onClick={closeMenus}
+                aria-label="Закрыть меню"
+                onClick={closeAllMenus}
               >
                 ✕
               </button>
@@ -238,7 +257,7 @@ export default function HomeHeader() {
                   className={({ isActive }) =>
                     `hhMobileLink ${isActive ? "isActive" : ""}`
                   }
-                  onClick={closeMenus}
+                  onClick={closeAllMenus}
                 >
                   {item.label}
                 </NavLink>
@@ -252,14 +271,22 @@ export default function HomeHeader() {
                   }`}
                   onClick={() => setIsMobilePatientsOpen((prev) => !prev)}
                 >
-                  Пациентам ▾
+                  <span>Пациентам</span>
+                  <span>{isMobilePatientsOpen ? "−" : "+"}</span>
                 </button>
 
                 {isMobilePatientsOpen && (
                   <div className="hhMobileDropdown">
-                    {patientsDropdownItems.map((item) =>
-                      renderPatientsItem(item, true)
-                    )}
+                    {patientsDropdownItems.map((item) => (
+                      <Link
+                        key={item.to}
+                        to={item.to}
+                        className="hhMobileDropdownLink"
+                        onClick={closeAllMenus}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
                   </div>
                 )}
               </div>

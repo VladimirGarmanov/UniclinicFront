@@ -1,0 +1,417 @@
+:root {
+  --contacts-page-bg: #f4f7fb;
+  --contacts-surface: #ffffff;
+  --contacts-text: #253041;
+  --contacts-muted: rgba(37, 48, 65, 0.7);
+  --contacts-line: rgba(37, 48, 65, 0.08);
+  --contacts-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  --contacts-shadow-hover: 0 16px 34px rgba(15, 23, 42, 0.1);
+  --contacts-radius: 26px;
+  --contacts-radius-inner: 20px;
+  --contacts-accent: #2f7cc5;
+  --contacts-accent-dark: #2468a8;
+}
+
+.contactsPage {
+  min-height: 100vh;
+  padding: 18px 0 72px;
+  background: var(--contacts-page-bg);
+  color: var(--contacts-text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.contactsContainer {
+  width: min(1280px, calc(100% - 56px));
+  margin: 0 auto;
+}
+
+.contactsHead {
+  margin-bottom: 36px;
+}
+
+.contactsBreadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 6px 0 16px;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--contacts-muted);
+}
+
+.contactsBreadcrumbLink {
+  color: var(--contacts-muted);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.contactsBreadcrumbLink:hover {
+  color: var(--contacts-accent);
+}
+
+.contactsBreadcrumbSep {
+  opacity: 0.45;
+}
+
+.contactsBreadcrumbCurrent {
+  color: rgba(37, 48, 65, 0.82);
+}
+
+.contactsTitle {
+  margin: 0 0 14px;
+  font-size: clamp(42px, 5vw, 66px);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #253040;
+}
+
+.contactsLead {
+  max-width: 820px;
+  margin: 0;
+  color: var(--contacts-muted);
+  font-size: 18px;
+  line-height: 1.65;
+  font-weight: 500;
+}
+
+.contactsTopGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(340px, 0.85fr);
+  gap: 30px;
+  margin-bottom: 30px;
+  align-items: start;
+}
+
+.contactsMainCard,
+.contactsSideCard,
+.contactsMapCard,
+.contactsMiniCard {
+  background: var(--contacts-surface);
+  border: 1px solid #e8eef5;
+  border-radius: var(--contacts-radius);
+  box-shadow: var(--contacts-shadow);
+}
+
+.contactsMainCard {
+  padding: 30px;
+}
+
+.contactsSideCard {
+  padding: 30px;
+}
+
+.contactsMapCard {
+  padding: 24px;
+  margin-bottom: 30px;
+}
+
+.contactsMiniCard {
+  padding: 26px;
+}
+
+.contactsCardHeader,
+.contactsMapHeader {
+  margin-bottom: 24px;
+}
+
+.contactsCardTitle {
+  margin: 0 0 10px;
+  color: #283241;
+  font-size: 32px;
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.contactsCardText {
+  margin: 0;
+  color: var(--contacts-muted);
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 500;
+}
+
+.contactsInfoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.contactsInfoItem {
+  min-height: 122px;
+  padding: 20px;
+  border: 1px solid #e8eef5;
+  border-radius: 20px;
+  background: #f9fbfe;
+}
+
+.contactsInfoLabel {
+  margin-bottom: 10px;
+  color: rgba(37, 48, 65, 0.52);
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.contactsInfoValue,
+.contactsInfoLink {
+  color: #283241;
+  font-size: 18px;
+  line-height: 1.55;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contactsInfoLink:hover {
+  color: var(--contacts-accent);
+}
+
+.contactsActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.contactsBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 22px;
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.contactsBtn:hover {
+  transform: translateY(-2px);
+}
+
+.contactsBtnPrimary {
+  background: var(--contacts-accent);
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(47, 124, 197, 0.2);
+}
+
+.contactsBtnPrimary:hover {
+  background: var(--contacts-accent-dark);
+}
+
+.contactsBtnSecondary {
+  background: #ffffff;
+  color: #283241;
+  border: 1px solid #dbe5f0;
+}
+
+.contactsBtnSecondary:hover {
+  border-color: rgba(47, 124, 197, 0.28);
+  color: var(--contacts-accent);
+}
+
+.contactsRouteList {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.contactsRouteItem {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.contactsRouteStep {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #eef4fb;
+  color: var(--contacts-accent);
+  font-size: 20px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.contactsRouteTitle {
+  margin: 0 0 6px;
+  color: #283241;
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.contactsRouteText {
+  color: var(--contacts-muted);
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.contactsNote {
+  margin-top: 24px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: #f9fbfe;
+  border: 1px solid #e8eef5;
+  color: var(--contacts-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.contactsMapWrap {
+  width: 100%;
+  height: 520px;
+  overflow: hidden;
+  border-radius: var(--contacts-radius-inner);
+  border: 1px solid #e8eef5;
+  background: #eaf0f7;
+}
+
+.contactsBottomGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
+}
+
+.contactsMiniTitle {
+  margin: 0 0 12px;
+  color: #283241;
+  font-size: 24px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.contactsMiniText {
+  margin: 0;
+  color: var(--contacts-muted);
+  font-size: 16px;
+  line-height: 1.65;
+  font-weight: 500;
+}
+
+@media (max-width: 1180px) {
+  .contactsTopGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .contactsBottomGrid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .contactsCardTitle {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 760px) {
+  .contactsContainer {
+    width: calc(100% - 24px);
+  }
+
+  .contactsPage {
+    padding: 12px 0 48px;
+  }
+
+  .contactsHead {
+    margin-bottom: 24px;
+  }
+
+  .contactsBreadcrumbs {
+    gap: 8px;
+    padding-bottom: 12px;
+    font-size: 13px;
+  }
+
+  .contactsLead {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .contactsMainCard,
+  .contactsSideCard {
+    padding: 20px;
+  }
+
+  .contactsMapCard {
+    padding: 18px;
+  }
+
+  .contactsInfoGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .contactsInfoItem {
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .contactsCardTitle {
+    font-size: 24px;
+  }
+
+  .contactsCardText,
+  .contactsRouteText,
+  .contactsMiniText {
+    font-size: 15px;
+  }
+
+  .contactsInfoValue,
+  .contactsInfoLink,
+  .contactsRouteTitle {
+    font-size: 16px;
+  }
+
+  .contactsActions {
+    flex-direction: column;
+  }
+
+  .contactsBtn {
+    width: 100%;
+  }
+
+  .contactsMapWrap {
+    height: 380px;
+    border-radius: 16px;
+  }
+
+  .contactsRouteItem {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .contactsRouteStep {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    font-size: 18px;
+  }
+
+  .contactsMiniCard {
+    padding: 20px;
+  }
+
+  .contactsMiniTitle {
+    font-size: 20px;
+  }
+}

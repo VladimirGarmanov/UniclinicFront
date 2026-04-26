@@ -1,22 +1,32 @@
 :root {
   --tech-bg: #f4f7fb;
-  --tech-card: rgba(255, 255, 255, 0.92);
-  --tech-text: #1f2a37;
-  --tech-muted: rgba(31, 42, 55, 0.7);
+  --tech-card: rgba(255, 255, 255, 0.96);
+  --tech-text: #253040;
+  --tech-muted: rgba(37, 48, 64, 0.68);
   --tech-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
   --tech-shadow-hover: 0 18px 40px rgba(15, 23, 42, 0.12);
   --tech-border: rgba(15, 23, 42, 0.08);
   --tech-accent: #2f7cc5;
   --tech-radius: 24px;
+  --tech-radius-inner: 18px;
 }
 
 .techGridWrap {
+  min-height: 100vh;
+  padding: 18px 0 64px;
   background:
     radial-gradient(circle at top right, rgba(47, 124, 197, 0.06), transparent 24%),
     linear-gradient(180deg, #f8fafc 0%, var(--tech-bg) 100%);
-  padding: 18px 0 64px;
-  min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
+  color: var(--tech-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.techGridWrap *,
+.techGridWrap *::before,
+.techGridWrap *::after {
+  box-sizing: border-box;
 }
 
 .techContainer {
@@ -38,7 +48,7 @@
 }
 
 .techSubtitle {
-  margin-top: 12px;
+  margin: 12px 0 0;
   font-size: 17px;
   font-weight: 600;
   color: var(--tech-muted);
@@ -55,33 +65,34 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  height: 100%;
   background: var(--tech-card);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--tech-border);
   border-radius: var(--tech-radius);
   box-shadow: var(--tech-shadow);
   text-decoration: none;
   color: inherit;
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease,
-    border-color 0.22s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .techCard:hover {
-  transform: translateY(-6px);
+  transform: translateY(-5px);
   box-shadow: var(--tech-shadow-hover);
   border-color: rgba(47, 124, 197, 0.16);
+}
+
+.techCard:focus-visible {
+  outline: 3px solid rgba(47, 124, 197, 0.35);
+  outline-offset: 3px;
 }
 
 .techMedia {
   position: relative;
   width: 100%;
-  background:
-    linear-gradient(135deg, #eef3f8 0%, #dde6f0 100%);
-  padding: 18px;
   min-height: 290px;
+  background: linear-gradient(135deg, #eef3f8 0%, #dde6f0 100%);
+  padding: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,10 +106,10 @@
   object-fit: contain;
   object-position: center;
   display: block;
-  border-radius: 18px;
-  background: #f4f7fb;
+  border-radius: var(--tech-radius-inner);
+  background: #f6f8fb;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-  transition: transform 0.22s ease, filter 0.22s ease;
+  transition: transform 0.2s ease;
 }
 
 .techOverlay {
@@ -106,10 +117,10 @@
   inset: 18px;
   display: grid;
   place-items: center;
-  border-radius: 18px;
+  border-radius: var(--tech-radius-inner);
   background: linear-gradient(180deg, rgba(12, 24, 38, 0) 0%, rgba(12, 24, 38, 0.24) 100%);
   opacity: 0;
-  transition: opacity 0.22s ease;
+  transition: opacity 0.2s ease;
   pointer-events: none;
 }
 
@@ -134,19 +145,16 @@
 
 .techBody {
   padding: 22px 22px 24px;
+  background: #ffffff;
 }
 
 .techCardTitle {
+  margin: 0;
   font-size: 28px;
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.025em;
   color: var(--tech-text);
-}
-
-.techCard:focus-visible {
-  outline: 3px solid rgba(47, 124, 197, 0.35);
-  outline-offset: 3px;
 }
 
 .techBreadcrumbs {
@@ -155,14 +163,16 @@
   gap: 10px;
   padding: 6px 0 16px;
   font-size: 14px;
-  color: rgba(31, 42, 55, 0.58);
+  line-height: 1.4;
+  color: var(--tech-muted);
   font-weight: 600;
   flex-wrap: wrap;
 }
 
 .techBreadcrumbLink {
-  color: rgba(31, 42, 55, 0.58);
+  color: var(--tech-muted);
   text-decoration: none;
+  transition: color 0.18s ease;
 }
 
 .techBreadcrumbLink:hover {
@@ -170,7 +180,7 @@
 }
 
 .techBreadcrumbCurrent {
-  color: rgba(31, 42, 55, 0.8);
+  color: rgba(37, 48, 64, 0.82);
 }
 
 .techBreadcrumbSep {
@@ -178,12 +188,14 @@
 }
 
 .techAuthorLink {
-  color: var(--tech-accent);
+  color: #244b6a;
   text-decoration: none;
+  transition: color 0.18s ease;
 }
 
 .techAuthorLink:hover {
-  text-decoration: underline;
+  color: #0b5ea8;
+  text-decoration: none;
 }
 
 .techDetail {
@@ -192,11 +204,10 @@
 
 .techDetailMedia {
   margin-bottom: 24px;
-  padding: 20px;
-  border-radius: 28px;
-  background:
-    linear-gradient(135deg, rgba(47, 124, 197, 0.06), rgba(47, 124, 197, 0.02)),
-    #ffffff;
+  padding: 18px;
+  border-radius: var(--tech-radius);
+  background: #ffffff;
+  border: 1px solid var(--tech-border);
   box-shadow: var(--tech-shadow);
   overflow: hidden;
 }
@@ -208,16 +219,16 @@
   object-fit: contain;
   object-position: center;
   display: block;
-  border-radius: 20px;
-  background: #f5f8fc;
+  border-radius: var(--tech-radius-inner);
+  background: #f6f8fb;
 }
 
 .techDetailSection {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.86);
-  border-radius: 24px;
+  background: var(--tech-card);
+  border: 1px solid var(--tech-border);
+  border-radius: var(--tech-radius);
   box-shadow: var(--tech-shadow);
-  padding: 24px 24px 26px;
+  padding: 24px;
   margin-bottom: 20px;
 }
 
@@ -233,7 +244,7 @@
 .techDetailHtml {
   font-size: 16px;
   line-height: 1.78;
-  color: rgba(12, 34, 48, 0.9);
+  color: rgba(37, 48, 64, 0.92);
 }
 
 .techDetailHtml p {
@@ -261,8 +272,22 @@
 }
 
 @media (max-width: 720px) {
+  .techGridWrap {
+    padding: 12px 0 48px;
+  }
+
   .techContainer {
     width: calc(100% - 24px);
+  }
+
+  .techHead {
+    margin-bottom: 24px;
+  }
+
+  .techBreadcrumbs {
+    gap: 8px;
+    padding-bottom: 12px;
+    font-size: 13px;
   }
 
   .techGrid {
@@ -280,22 +305,27 @@
     border-radius: 14px;
   }
 
+  .techOverlay {
+    inset: 14px;
+    border-radius: 14px;
+  }
+
+  .techBody {
+    padding: 18px 18px 20px;
+  }
+
   .techCardTitle {
     font-size: 23px;
   }
 
-  .techDetailMedia {
-    padding: 12px;
+  .techDetailMedia,
+  .techDetailSection {
+    padding: 16px;
     border-radius: 18px;
   }
 
   .techDetailImg {
     border-radius: 14px;
-  }
-
-  .techDetailSection {
-    padding: 18px 16px;
-    border-radius: 18px;
   }
 
   .techDetailTitle {

@@ -1,6 +1,5 @@
-// src/pages/Home/Home.jsx
-import React, { useEffect, useMemo, useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 import "./home.css";
 
 /**
@@ -11,18 +10,16 @@ import logoWhite from "../../assets/home/logo-white.png";
 import goodPlace from "../../assets/home/good-place.png";
 
 /**
- * HEADER ICONS (assets/components)
- * Переименуй файлы/пути под себя, если у тебя иначе названо.
+ * HEADER ICONS
  */
 import iconWhatsappImg from "../../assets/home/whatsapp.svg";
-import iconVkImg from "../../assets/home/whatsapp.svg"; // если нет — убери кнопку VK ниже
+import iconVkImg from "../../assets/home/whatsapp.svg";
 import iconTelegramImg from "../../assets/home/telegram_white.svg";
 import iconEyeImg from "../../assets/home/eye.svg";
 import iconSearchImg from "../../assets/home/eye.svg";
 
 /**
- * SERVICE ICONS (SVG) — из assets/components
- * (скорее всего у тебя названия другие — поправь под реальные)
+ * SERVICE ICONS
  */
 import iconAmbulanceSvg from "../../assets/home/ambulance.svg";
 import iconHeartSvg from "../../assets/home/heart.svg";
@@ -39,7 +36,7 @@ import docAgapov from "../../assets/team/agapov.jpg";
 import docBabadzhanyan from "../../assets/team/babadzhanyan.jpg";
 
 /**
- * CLINICAL CASES (ИМЕНА — как в оригинале)
+ * CLINICAL CASES
  */
 import ccGoodEnding from "../../assets/home/nm927mmblu9v2p8cdlne7dg9g2nc4y3d.jpg";
 import ccBigTumor from "../../assets/home/zaqfd0q1dbycfs1qoohpklb25663bki5.jpg";
@@ -55,7 +52,7 @@ import ccBigColonTumor from "../../assets/home/sxwed8iachq46hg6mnufueej3q0bpdpb.
 import ccHardPath from "../../assets/home/hr8nacu54y5z6tub5qa3z9482r9cys7k.jpg";
 
 /**
- * ARTICLES (ИМЕНА — как в оригинале)
+ * ARTICLES
  */
 import artColonoscopy from "../../assets/home/acju4x0xicqgnkczmdlqc5b3rtuz4ahk.jpg";
 import artShameProctologist from "../../assets/home/jqwcdr70nxcextdvh1rqb5qmt4jnq79w.jpg";
@@ -71,7 +68,7 @@ import artMythsCRC from "../../assets/home/aj1pcxra2reqmn1o6m2vasdjwh4ii8ao.jpg"
 import artPolyps from "../../assets/home/qeqfuz6idk8cp2e3il0t9qij86wqgujj.jpg";
 
 /**
- * NEWS (ИМЕНА — как в оригинале)
+ * NEWS
  */
 import newsConference from "../../assets/home/5als3phsqzwyqtiprzykmguxn23sj8ew.jpg";
 import newsUzi from "../../assets/home/pdw6mxsei4fcok27xkzwqfjvfuzbwa6o.png";
@@ -88,6 +85,12 @@ import newsMakhachkala from "../../assets/home/blx791ae4pkuu3ybxo0kjt8ml38b5hwg.
 
 export default function Home() {
   const [isStuck, setIsStuck] = useState(false);
+  const [isPatientsOpen, setIsPatientsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobilePatientsOpen, setIsMobilePatientsOpen] = useState(false);
+
+  const patientsMenuRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setIsStuck(window.scrollY > 0);
@@ -95,6 +98,57 @@ export default function Home() {
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    const onPointerDown = (event) => {
+      if (
+        patientsMenuRef.current &&
+        !patientsMenuRef.current.contains(event.target)
+      ) {
+        setIsPatientsOpen(false);
+      }
+
+      if (
+        mobileMenuRef.current &&
+        isMobileMenuOpen &&
+        !mobileMenuRef.current.contains(event.target) &&
+        !event.target.closest(".homeHdrBurger") &&
+        !event.target.closest(".homeHeroMobileBurger")
+      ) {
+        setIsMobileMenuOpen(false);
+        setIsMobilePatientsOpen(false);
+      }
+    };
+
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsPatientsOpen(false);
+        setIsMobileMenuOpen(false);
+        setIsMobilePatientsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
+
+  const closeMenus = () => {
+    setIsPatientsOpen(false);
+    setIsMobileMenuOpen(false);
+    setIsMobilePatientsOpen(false);
+  };
 
   const navItems = useMemo(
     () => [
@@ -106,6 +160,15 @@ export default function Home() {
       { to: "/diseases", label: "Заболевания" },
       { to: "/reviews", label: "Отзывы" },
       { to: "/contacts", label: "Контакты" },
+    ],
+    []
+  );
+
+  const patientsDropdownItems = useMemo(
+    () => [
+      { to: "/about", label: "О клинике" },
+      { to: "/news", label: "Новости" },
+      { to: "/articles", label: "Статьи" },
     ],
     []
   );
@@ -295,9 +358,7 @@ export default function Home() {
 
   return (
     <div className="homePage">
-      {/* ===== HEADER (внутри Home) ===== */}
       <header className={`homeHdr ${isStuck ? "isStuck" : ""}`}>
-        {/* Оранжевая полоса */}
         <div className="homeHdrTop">
           <div className="homeContainer homeHdrTopInner">
             <div className="homeHdrTopText">
@@ -309,7 +370,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Меню поверх hero (прозрачное/тёмное) */}
         <div className="homeHdrNav">
           <div className="homeContainer homeHdrNavInner">
             <nav className="homeHdrMenu" aria-label="Навигация">
@@ -318,41 +378,91 @@ export default function Home() {
                   key={it.to}
                   to={it.to}
                   end={!!it.end}
-                  className={({ isActive }) => `homeHdrLink ${isActive ? "isActive" : ""}`}
+                  className={({ isActive }) =>
+                    `homeHdrLink ${isActive ? "isActive" : ""}`
+                  }
                 >
                   {it.label}
                 </NavLink>
               ))}
-              <a className="homeHdrLink homeHdrLinkDrop" href="/patsientam/">
-                Пациентам <span className="homeHdrCaret">▾</span>
-              </a>
+
+              <div ref={patientsMenuRef} className="homeHdrDrop">
+                <button
+                  type="button"
+                  className={`homeHdrLink homeHdrLinkDrop ${isPatientsOpen ? "isActive" : ""}`}
+                  onClick={() => setIsPatientsOpen((prev) => !prev)}
+                >
+                  Пациентам <span className="homeHdrCaret">▾</span>
+                </button>
+
+                {isPatientsOpen && (
+                  <div className="homeHdrDropMenu">
+                    {patientsDropdownItems.map((item) => (
+                      <Link
+                        key={item.to}
+                        to={item.to}
+                        className="homeHdrDropLink"
+                        onClick={closeMenus}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             </nav>
 
             <div className="homeHdrRight">
               <a className="homeHdrPhone" href="tel:+79671367706">
-                +7 (967)136 77<br />
+                +7 (967)136 77
+                <br />
                 06
               </a>
 
               <div className="homeHdrIcons">
-                <a className="homeHdrIconBtn" href="https://wa.me/79671367706" target="_blank" rel="noreferrer" aria-label="WhatsApp">
+                <a
+                  className="homeHdrIconBtn"
+                  href="https://wa.me/79671367706"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="WhatsApp"
+                >
                   <img src={iconWhatsappImg} alt="" />
                 </a>
 
-                {/* VK — если файла нет, убери импорт и этот блок */}
-                <a className="homeHdrIconBtn" href="http://vk.com/surgerymgy" target="_blank" rel="noreferrer" aria-label="VK">
+                <a
+                  className="homeHdrIconBtn"
+                  href="http://vk.com/surgerymgy"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="VK"
+                >
                   <img src={iconVkImg} alt="" />
                 </a>
 
-                <a className="homeHdrIconBtn" href="https://t.me/surgerymgy" target="_blank" rel="noreferrer" aria-label="Telegram">
+                <a
+                  className="homeHdrIconBtn"
+                  href="https://t.me/surgerymgu_bot"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Telegram"
+                >
                   <img src={iconTelegramImg} alt="" />
                 </a>
 
-                <button className="homeHdrIconBtn" type="button" aria-label="Версия для слабовидящих">
+                <button
+                  className="homeHdrIconBtn homeHdrExtraIcon"
+                  type="button"
+                  aria-label="Версия для слабовидящих"
+                >
                   <img src={iconEyeImg} alt="" />
                 </button>
 
-                <button className="homeHdrIconBtn" type="button" aria-label="Поиск">
+                <button
+                  className="homeHdrIconBtn homeHdrExtraIcon"
+                  type="button"
+                  aria-label="Поиск"
+                >
                   <img src={iconSearchImg} alt="" />
                 </button>
               </div>
@@ -361,14 +471,12 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ===== HERO ===== */}
       <section
         className="homeHero"
         style={{
-          ["--hero-bg"]: `url(${heroBg})`,
+          "--hero-bg": `url(${heroBg})`,
         }}
       >
-        {/* Инфо-строка (НЕ фиксируется) */}
         <div className="homeHeroInfo">
           <div className="homeContainer homeHeroInfoInner">
             <a className="homeHeroBrand" href="/">
@@ -397,13 +505,28 @@ export default function Home() {
               </div>
             </div>
 
-            <a className="homeHeroCta" href="https://t.me/surgerymgu_bot">
+            <a
+              className="homeHeroCta"
+              href="https://t.me/surgerymgu_bot"
+              target="_blank"
+              rel="noreferrer"
+            >
               Онлайн запись
             </a>
+
+            <button
+              className="homeHeroMobileBurger"
+              type="button"
+              aria-label="Открыть меню"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
           </div>
         </div>
 
-        {/* Текст на слайдере */}
         <div className="homeHeroText">
           <div className="homeContainer">
             <h1 className="homeHeroTitle">
@@ -422,9 +545,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== MAIN ===== */}
       <main className="homeMain">
-        {/* Intro + service cards */}
         <section className="homeSection">
           <div className="homeContainer">
             <h2 className="homeH1">
@@ -486,7 +607,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Doctors */}
         <section className="homeSection homeSectionAlt">
           <div className="homeContainer">
             <h3 className="homeCenterTitle">НАШИ СПЕЦИАЛИСТЫ</h3>
@@ -516,7 +636,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Clinical cases */}
         <section className="homeSection">
           <div className="homeContainer">
             <h3 className="homeCenterTitle">ИСТОРИИ ПАЦИЕНТОВ</h3>
@@ -543,7 +662,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Articles */}
         <section className="homeSection homeSectionAlt">
           <div className="homeContainer">
             <h3 className="homeCenterTitle">ПОСЛЕДНИЕ СТАТЬИ</h3>
@@ -570,7 +688,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* News */}
         <section className="homeSection">
           <div className="homeContainer">
             <h3 className="homeCenterTitle">НОВОСТИ КЛИНИКИ</h3>
@@ -598,7 +715,66 @@ export default function Home() {
         </section>
       </main>
 
-      {/* ФУТЕРА НЕТ (как ты просил) */}
+      {isMobileMenuOpen && (
+        <div className="homeHdrMobileOverlay">
+          <div className="homeHdrMobileSheet" ref={mobileMenuRef}>
+            <div className="homeHdrMobileTop">
+              <div className="homeHdrMobileTitle">Меню</div>
+              <button
+                className="homeHdrMobileClose"
+                type="button"
+                onClick={closeMenus}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="homeHdrMobileBody">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={!!item.end}
+                  className={({ isActive }) =>
+                    `homeHdrMobileLink ${isActive ? "isActive" : ""}`
+                  }
+                  onClick={closeMenus}
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+
+              <div className="homeHdrMobileDrop">
+                <button
+                  type="button"
+                  className={`homeHdrMobileLink homeHdrMobileDropBtn ${
+                    isMobilePatientsOpen ? "isActive" : ""
+                  }`}
+                  onClick={() => setIsMobilePatientsOpen((prev) => !prev)}
+                >
+                  <span>Пациентам</span>
+                  <span>{isMobilePatientsOpen ? "−" : "+"}</span>
+                </button>
+
+                {isMobilePatientsOpen && (
+                  <div className="homeHdrMobileDropdown">
+                    {patientsDropdownItems.map((item) => (
+                      <Link
+                        key={item.to}
+                        to={item.to}
+                        className="homeHdrMobileDropdownLink"
+                        onClick={closeMenus}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -11,12 +11,13 @@ import Technologies, { TechnologyDetail } from "./pages/Technologies/Technologie
 import Prices from "./pages/Prices/Prices";
 import Services, { ServiceDetail } from "./pages/Services/Services";
 import Diseases, { DiseaseDetail } from "./pages/Diseases/Diseases";
-import Reviews from "./pages/Reviews/Reviews";
+import Reviews, { ReviewDetail } from "./pages/Reviews/Reviews";
 import Contacts from "./pages/Contacts/Contacts";
 import NotFound from "./pages/NotFound/NotFound";
 import ClinicalCases, {ClinicalCaseDetail} from "./pages/Clinicalcases/Clinicalcases";
 import About from "./pages/About/About";
-import News from "./pages/News/News";
+import News, {NewsDetail} from "./pages/News/News";
+import Licences from "./pages/Licenses/Licenses";
 import Articles, { ArticleDetail } from "./pages/Articles/Articles";
 import FecalIncontinenceScalePage from "./pages/ Fecal-incontinence-scale/Fecal-incontinence-scale";
 import NeedProctologistConsultationPage from "./pages/Need-proctologist-consultation/Need-proctologist-consultation";
@@ -68,16 +69,20 @@ function App() {
         <Route path="/diseases" element={<Diseases />} />
         <Route path="/diseases/:slug" element={<DiseaseDetail />} />
 
+<Route path="/reviews" element={<Reviews />} />
+<Route path="/reviews/:slug" element={<ReviewDetail />} />
+
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/contacts" element={<Contacts />} />
 
         <Route path="/about" element={<About />} />
         <Route path="/news" element={<News />} />
+          <Route path="/news:slug" element={<NewsDetail />} />
           <Route path="/questions" element={<Questions />} />
         <Route path="/questions/:slug" element={<QuestionDetail />} />
         <Route path="/articles" element={<Articles />} />
         <Route path="/articles/:slug" element={<ArticleDetail />} />
-
+        <Route path="/licenses" element={<Licences />} />
         <Route path="/home" element={<Navigate to="/" replace />} />
           <Route path="/questions/admin" element={<AdminPanel />} />
         <Route path="*" element={<NotFound />} />
