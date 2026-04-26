@@ -167,7 +167,7 @@ export default function Home() {
   const patientsDropdownItems = useMemo(
     () => [
       {
-        to: "/services/onlayn-konsultirovanie/",
+        to: "https://t.me/surgerymgu_bot",
         label: "Онлайн консультация онколога, хирурга, колопроктолога",
       },
       { to: "/clinicalcases/", label: "Истории пациентов" },

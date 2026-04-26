@@ -23,42 +23,37 @@ const navItems = [
 const patientsDropdownItems = [
   {
     type: "link",
-    to: "/technologies",
-    label: "Лечение",
-  },
-  {
-    type: "external",
-    href: "https://t.me/your_bot_username",
+    to: "/services/onlayn-konsultirovanie/",
     label: "Онлайн консультация онколога, хирурга, колопроктолога",
   },
   {
     type: "link",
-    to: "/clinicalcases",
+    to: "/clinicalcases/",
     label: "Истории пациентов",
   },
   {
     type: "link",
-    to: "/questions",
+    to: "/faq/",
     label: "Вопрос-ответ",
   },
   {
     type: "link",
-    to: "/articles",
+    to: "/articles/",
     label: "Статьи",
   },
   {
     type: "link",
-    to: "/licenses",
+    to: "/licenses/",
     label: "Лицензии",
   },
   {
     type: "link",
-    to: "/fecal-incontinence-scale",
+    to: "/patients/shkala-dlya-otsenki-urovnya-analnogo-nederzhaniya-kala/",
     label: "Шкала для оценки уровня анального недержания (кала)",
   },
   {
     type: "link",
-    to: "/need-proctologist-consultation",
+    to: "/patients/nuzhna-li-vam-konsultatsiya-proktologa/",
     label: "Нужна ли вам консультация проктолога?",
   },
 ];
@@ -204,7 +199,7 @@ export default function Header() {
             <div className="hdrTopText">
               Запишитесь на бесплатную онлайн-консультацию!
             </div>
-            <a className="hdrTopLink" href="/about">
+            <a className="hdrTopLink" href="/services/onlayn-konsultirovanie/">
               Подробнее
             </a>
           </div>
@@ -272,7 +267,7 @@ export default function Header() {
 
                 <a
                   className="hdrIconBtn"
-                  href="https://t.me/"
+                  href="https://t.me/surgerymgu_bot"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Telegram"
@@ -344,7 +339,12 @@ export default function Header() {
             </div>
           </div>
 
-          <a className="hdrCta" href="/online">
+          <a
+            className="hdrCta"
+            href="https://t.me/surgerymgu_bot"
+            target="_blank"
+            rel="noreferrer"
+          >
             Онлайн запись
           </a>
         </div>
