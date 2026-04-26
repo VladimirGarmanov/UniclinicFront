@@ -14,9 +14,22 @@ const navItems = [
 ];
 
 const patientsDropdownItems = [
-  { to: "/about", label: "О клинике" },
-  { to: "/news", label: "Новости" },
-  { to: "/articles", label: "Статьи" },
+  {
+    to: "/services/onlayn-konsultirovanie/",
+    label: "Онлайн консультация онколога, хирурга, колопроктолога",
+  },
+  { to: "/clinicalcases/", label: "Истории пациентов" },
+  { to: "/faq/", label: "Вопрос-ответ" },
+  { to: "/articles/", label: "Статьи" },
+  { to: "/licenses/", label: "Лицензии" },
+  {
+    to: "/patients/shkala-dlya-otsenki-urovnya-analnogo-nederzhaniya-kala/",
+    label: "Шкала для оценки уровня анального недержания (кала)",
+  },
+  {
+    to: "/patients/nuzhna-li-vam-konsultatsiya-proktologa/",
+    label: "Нужна ли вам консультация проктолога?",
+  },
 ];
 
 export default function HomeHeader() {

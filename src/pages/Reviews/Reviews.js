@@ -4,7 +4,7 @@ import "./reviews.css";
 
 import reviewsData from "../../assets/info/reviews.json";
 
-const API_BASE = "http://0.0.0.0:8000";
+const API_BASE = "http://109.69.19.73:8000";
 
 const RAW_REVIEWS = Array.isArray(reviewsData?.items) ? reviewsData.items : [];
 
