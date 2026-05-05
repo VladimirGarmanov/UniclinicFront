@@ -199,7 +199,7 @@ export default function Header() {
             <div className="hdrTopText">
               Запишитесь на бесплатную онлайн-консультацию!
             </div>
-            <a className="hdrTopLink" href="/services/onlayn-konsultirovanie/">
+            <a className="hdrTopLink" href="https://t.me/surgerymgu_bot">
               Подробнее
             </a>
           </div>
