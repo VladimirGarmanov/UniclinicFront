@@ -40,7 +40,7 @@ export default function Footer() {
 
               <Link className="ftrLink" to="/personal-data">Обработка персональных данных</Link>
               <Link className="ftrLink" to="/privacy">Политика конфиденциальности</Link>
-              <Link className="ftrLink" to="/legal">Правовая информация</Link>
+              <Link className="ftrLink" to="/licenses">Правовая информация</Link>
             </div>
 
             {/* Правая часть */}

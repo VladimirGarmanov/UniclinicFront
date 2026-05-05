@@ -112,25 +112,29 @@
 
 .ccMedia {
   width: 100%;
-  min-height: 290px;
   padding: 18px;
   background: linear-gradient(135deg, #eef3f8 0%, #dde6f0 100%);
   flex-shrink: 0;
 }
 
-.ccImg,
+.ccImgFrame,
 .ccImgFallback {
   display: block;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
   border-radius: var(--cc-radius-inner);
+  background: #f6f8fb;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
 }
 
 .ccImg {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center center;
   background: #f6f8fb;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
 }
 
 .ccImgFallback {
@@ -179,15 +183,75 @@
   margin: 0;
 }
 
+.ccDetail {
+  padding: 0 0 56px;
+}
+
+.ccDetailHero {
+  display: grid;
+  grid-template-columns: minmax(280px, 430px) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+  margin-bottom: 28px;
+}
+
+.ccDetailMedia {
+  padding: 18px;
+  border-radius: var(--cc-radius);
+  overflow: hidden;
+  background: linear-gradient(135deg, #eef3f8 0%, #dde6f0 100%);
+  border: 1px solid var(--cc-border);
+  box-shadow: var(--cc-shadow);
+}
+
+.ccDetailImg {
+  width: 100%;
+  height: auto;
+  max-height: 620px;
+  object-fit: contain;
+  object-position: center top;
+  display: block;
+  border-radius: var(--cc-radius-inner);
+  background: #f6f8fb;
+}
+
+.ccDetailText {
+  background: var(--cc-surface);
+  border: 1px solid var(--cc-border);
+  border-radius: var(--cc-radius);
+  box-shadow: var(--cc-shadow);
+  padding: 24px;
+}
+
+.ccDetailTitle {
+  margin: 0 0 16px;
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--cc-text);
+}
+
+.ccDetailPreview {
+  margin: 0;
+  color: rgba(37, 48, 64, 0.86);
+  font-size: 17px;
+  line-height: 1.72;
+  font-weight: 600;
+}
+
 .ccWrap h1 + div img,
 .ccWrap section img {
   max-width: 100%;
-  height: auto;
 }
 
 @media (max-width: 1100px) {
   .ccGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ccDetailHero {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -216,8 +280,12 @@
   }
 
   .ccMedia {
-    min-height: 240px;
     padding: 14px;
+  }
+
+  .ccImgFrame,
+  .ccImgFallback {
+    border-radius: 14px;
   }
 
   .ccBody {
@@ -232,5 +300,27 @@
   .ccCardText {
     font-size: 15px;
     line-height: 1.55;
+  }
+
+  .ccDetail {
+    padding-bottom: 44px;
+  }
+
+  .ccDetailHero {
+    gap: 20px;
+  }
+
+  .ccDetailMedia,
+  .ccDetailText {
+    border-radius: 18px;
+    padding: 16px;
+  }
+
+  .ccDetailImg {
+    border-radius: 14px;
+  }
+
+  .ccDetailTitle {
+    font-size: 24px;
   }
 }

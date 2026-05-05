@@ -141,6 +141,7 @@ function fieldIsRenderable(fieldKey) {
 
 export function getRenderableFields(item) {
   const fields = item?.fields || {};
+
   return Object.entries(fields)
     .filter(([key, value]) => fieldIsRenderable(key) && isMeaningfulScalar(value))
     .map(([key, value]) => ({
@@ -198,19 +199,22 @@ function extractAllPropertyValues(prop) {
 }
 
 function allValuesAreStrings(values) {
-  return values.length > 0 && values.every((v) => typeof v === "string" || typeof v === "number");
+  return (
+    values.length > 0 &&
+    values.every((value) => typeof value === "string" || typeof value === "number")
+  );
 }
 
 function allValuesAreFiles(values) {
-  return values.length > 0 && values.every((v) => v?.src);
+  return values.length > 0 && values.every((value) => value?.src);
 }
 
 function allValuesAreElements(values) {
-  return values.length > 0 && values.every((v) => v?.ID && v?.NAME && v?.IBLOCK_ID);
+  return values.length > 0 && values.every((value) => value?.ID && value?.NAME && value?.IBLOCK_ID);
 }
 
 function allValuesAreSections(values) {
-  return values.length > 0 && values.every((v) => v?.ID && v?.NAME && !v?.IBLOCK_ID === false);
+  return values.length > 0 && values.every((value) => value?.ID && value?.NAME && !value?.IBLOCK_ID === false);
 }
 
 export function renderScalarValue(value) {
@@ -241,6 +245,7 @@ export function renderFileCard(file, keyPrefix = "file") {
         href={src}
         target="_blank"
         rel="noreferrer"
+        aria-label={fileName}
         style={{
           display: "block",
           textDecoration: "none",
@@ -260,11 +265,9 @@ export function renderFileCard(file, keyPrefix = "file") {
             width: "100%",
             height: 220,
             objectFit: "cover",
+            objectPosition: "center center",
           }}
         />
-        <div style={{ padding: "10px 12px", fontSize: 14, color: "#374151" }}>
-          {fileName}
-        </div>
       </a>
     );
   }
@@ -299,7 +302,14 @@ export function renderLinkedElement(element, idx = 0) {
   if (url) {
     return (
       <li key={`${element?.ID || name}-${idx}`}>
-        <Link to={url} style={{ color: "#244b6a", textDecoration: "none", fontWeight: 600 }}>
+        <Link
+          to={url}
+          style={{
+            color: "#244b6a",
+            textDecoration: "none",
+            fontWeight: 600,
+          }}
+        >
           {name}
         </Link>
       </li>
@@ -336,6 +346,7 @@ function renderStandardSection(title, content) {
       >
         {title}
       </h2>
+
       {content}
     </section>
   );
@@ -384,7 +395,11 @@ export function renderPropertyBlock(propKey, prop) {
         ) : null}
 
         <div
-          style={{ color: "#374151", fontSize: 16, lineHeight: 1.72 }}
+          style={{
+            color: "#374151",
+            fontSize: 16,
+            lineHeight: 1.72,
+          }}
           dangerouslySetInnerHTML={{ __html: String(part.html) }}
         />
       </section>
@@ -421,9 +436,18 @@ export function renderPropertyBlock(propKey, prop) {
   if (allValuesAreSections(values)) {
     return renderStandardSection(
       label,
-      <ul style={{ margin: 0, paddingLeft: 22, lineHeight: 1.8, color: "#374151" }}>
+      <ul
+        style={{
+          margin: 0,
+          paddingLeft: 22,
+          lineHeight: 1.8,
+          color: "#374151",
+        }}
+      >
         {values.map((section, index) => (
-          <li key={`${section?.ID || section?.NAME}-${index}`}>{section?.NAME}</li>
+          <li key={`${section?.ID || section?.NAME}-${index}`}>
+            {section?.NAME}
+          </li>
         ))}
       </ul>
     );
@@ -431,12 +455,12 @@ export function renderPropertyBlock(propKey, prop) {
 
   if (allValuesAreStrings(values)) {
     const filtered = values
-      .map((v) => String(v).trim())
+      .map((value) => String(value).trim())
       .filter(Boolean);
 
     if (!filtered.length) return null;
 
-    const allHtml = filtered.every((v) => hasHtml(v));
+    const allHtml = filtered.every((value) => hasHtml(value));
 
     if (allHtml) {
       return renderStandardSection(
@@ -445,7 +469,12 @@ export function renderPropertyBlock(propKey, prop) {
           {filtered.map((html, index) => (
             <div
               key={`${propKey}-html-${index}`}
-              style={{ color: "#374151", fontSize: 16, lineHeight: 1.72, marginBottom: 14 }}
+              style={{
+                color: "#374151",
+                fontSize: 16,
+                lineHeight: 1.72,
+                marginBottom: 14,
+              }}
               dangerouslySetInnerHTML={{ __html: html }}
             />
           ))}
@@ -456,13 +485,28 @@ export function renderPropertyBlock(propKey, prop) {
     if (filtered.length === 1 && !hasHtml(filtered[0])) {
       return renderStandardSection(
         label,
-        <p style={{ margin: 0, color: "#374151", lineHeight: 1.8 }}>{filtered[0]}</p>
+        <p
+          style={{
+            margin: 0,
+            color: "#374151",
+            lineHeight: 1.8,
+          }}
+        >
+          {filtered[0]}
+        </p>
       );
     }
 
     return renderStandardSection(
       label,
-      <ul style={{ margin: 0, paddingLeft: 22, lineHeight: 1.8, color: "#374151" }}>
+      <ul
+        style={{
+          margin: 0,
+          paddingLeft: 22,
+          lineHeight: 1.8,
+          color: "#374151",
+        }}
+      >
         {filtered.map((value, index) => {
           if (hasHtml(value)) {
             return (
@@ -474,6 +518,7 @@ export function renderPropertyBlock(propKey, prop) {
 
           if (typeof value === "string" && value.includes("http")) {
             const parts = value.split(/(https?:\/\/[^\s]+)/g);
+
             return (
               <li key={`${propKey}-plain-${index}`}>
                 {parts.map((part, partIndex) => {
@@ -490,7 +535,12 @@ export function renderPropertyBlock(propKey, prop) {
                       </a>
                     );
                   }
-                  return <React.Fragment key={`${index}-${partIndex}`}>{part}</React.Fragment>;
+
+                  return (
+                    <React.Fragment key={`${index}-${partIndex}`}>
+                      {part}
+                    </React.Fragment>
+                  );
                 })}
               </li>
             );
@@ -542,7 +592,13 @@ export function AutoEntitySections({ item }) {
             {field.label}
           </h2>
 
-          <div style={{ color: "#374151", fontSize: 16, lineHeight: 1.72 }}>
+          <div
+            style={{
+              color: "#374151",
+              fontSize: 16,
+              lineHeight: 1.72,
+            }}
+          >
             {renderScalarValue(field.value)}
           </div>
         </section>
@@ -606,6 +662,7 @@ export function DetailTopBlock({ item, backLabel, backTo }) {
               width: "100%",
               maxHeight: 560,
               objectFit: "cover",
+              objectPosition: "center center",
             }}
           />
         </div>
@@ -637,7 +694,11 @@ export function DetailTopBlock({ item, backLabel, backTo }) {
           }}
         >
           <div
-            style={{ color: "#374151", fontSize: 16, lineHeight: 1.72 }}
+            style={{
+              color: "#374151",
+              fontSize: 16,
+              lineHeight: 1.72,
+            }}
             dangerouslySetInnerHTML={{ __html: detailHtml }}
           />
         </section>

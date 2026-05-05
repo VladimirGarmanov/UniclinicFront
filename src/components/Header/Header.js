@@ -33,7 +33,7 @@ const patientsDropdownItems = [
   },
   {
     type: "link",
-    to: "/faq/",
+    to: "/questions/",
     label: "Вопрос-ответ",
   },
   {
@@ -48,12 +48,12 @@ const patientsDropdownItems = [
   },
   {
     type: "link",
-    to: "/patients/shkala-dlya-otsenki-urovnya-analnogo-nederzhaniya-kala/",
+    to: "/fecal-incontinence-scale/",
     label: "Шкала для оценки уровня анального недержания (кала)",
   },
   {
     type: "link",
-    to: "/patients/nuzhna-li-vam-konsultatsiya-proktologa/",
+    to: "/need-proctologist-consultation",
     label: "Нужна ли вам консультация проктолога?",
   },
 ];

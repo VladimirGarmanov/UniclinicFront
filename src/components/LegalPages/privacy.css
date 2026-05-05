@@ -1,0 +1,242 @@
+:root {
+  --privacy-page-bg: #f4f7fb;
+  --privacy-surface: rgba(255, 255, 255, 0.96);
+  --privacy-text: #253040;
+  --privacy-muted: rgba(37, 48, 64, 0.68);
+  --privacy-accent: #2f7cc5;
+  --privacy-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  --privacy-border: rgba(15, 23, 42, 0.08);
+  --privacy-radius: 24px;
+}
+
+.privacyWrap {
+  min-height: 100vh;
+  padding: 18px 0 64px;
+  background:
+    radial-gradient(circle at top right, rgba(47, 124, 197, 0.06), transparent 24%),
+    linear-gradient(180deg, #f8fafc 0%, var(--privacy-page-bg) 100%);
+  color: var(--privacy-text);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.privacyWrap *,
+.privacyWrap *::before,
+.privacyWrap *::after {
+  box-sizing: border-box;
+}
+
+.privacyContainer {
+  width: min(1120px, calc(100% - 56px));
+  margin: 0 auto;
+}
+
+.privacyHead {
+  margin-bottom: 28px;
+}
+
+.privacyBreadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 6px 0 16px;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--privacy-muted);
+}
+
+.privacyBreadcrumbLink {
+  color: var(--privacy-muted);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.privacyBreadcrumbLink:hover {
+  color: var(--privacy-accent);
+}
+
+.privacyBreadcrumbSep {
+  opacity: 0.55;
+}
+
+.privacyBreadcrumbCurrent {
+  color: rgba(37, 48, 64, 0.82);
+}
+
+.privacyTitle {
+  max-width: 980px;
+  margin: 0;
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--privacy-text);
+}
+
+.privacyMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.privacyMetaItem {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(47, 124, 197, 0.08);
+  color: rgba(37, 48, 64, 0.72);
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.privacyCard {
+  background: var(--privacy-surface);
+  border: 1px solid var(--privacy-border);
+  border-radius: var(--privacy-radius);
+  box-shadow: var(--privacy-shadow);
+  padding: clamp(22px, 4vw, 42px);
+  overflow: hidden;
+}
+
+.privacyContent {
+  color: rgba(37, 48, 64, 0.88);
+  font-size: 17px;
+  line-height: 1.78;
+  font-weight: 500;
+}
+
+.privacyContent > *:first-child {
+  margin-top: 0;
+}
+
+.privacyContent > *:last-child {
+  margin-bottom: 0;
+}
+
+.privacyContent h1,
+.privacyContent h2,
+.privacyContent h3,
+.privacyContent h4 {
+  color: var(--privacy-text);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.privacyContent h1 {
+  margin: 0 0 22px;
+  font-size: clamp(32px, 4vw, 46px);
+  line-height: 1.05;
+}
+
+.privacyContent h2 {
+  margin: 34px 0 14px;
+  font-size: clamp(25px, 3vw, 34px);
+  line-height: 1.12;
+}
+
+.privacyContent h3 {
+  margin: 26px 0 12px;
+  font-size: 23px;
+  line-height: 1.18;
+}
+
+.privacyContent p {
+  margin: 0 0 18px;
+}
+
+.privacyContent ul,
+.privacyContent ol {
+  margin: 0 0 20px;
+  padding-left: 24px;
+}
+
+.privacyContent li {
+  margin: 0 0 10px;
+  padding-left: 4px;
+}
+
+.privacyContent a {
+  color: var(--privacy-accent);
+  text-decoration: none;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.privacyContent a:hover {
+  text-decoration: underline;
+}
+
+.privacyContent br {
+  display: block;
+  content: "";
+  margin-top: 8px;
+}
+
+.privacyContent strong,
+.privacyContent b {
+  color: var(--privacy-text);
+  font-weight: 800;
+}
+
+.privacyContent table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.privacyContent th,
+.privacyContent td {
+  padding: 12px 14px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  text-align: left;
+  vertical-align: top;
+}
+
+.privacyContent th {
+  background: rgba(47, 124, 197, 0.08);
+  color: var(--privacy-text);
+  font-weight: 800;
+}
+
+@media (max-width: 720px) {
+  .privacyContainer {
+    width: calc(100% - 24px);
+  }
+
+  .privacyWrap {
+    padding: 12px 0 48px;
+  }
+
+  .privacyBreadcrumbs {
+    gap: 8px;
+    padding-bottom: 12px;
+    font-size: 13px;
+  }
+
+  .privacyTitle {
+    font-size: clamp(34px, 12vw, 48px);
+  }
+
+  .privacyCard {
+    border-radius: 20px;
+    padding: 20px 18px;
+  }
+
+  .privacyContent {
+    font-size: 16px;
+    line-height: 1.72;
+  }
+
+  .privacyContent h2 {
+    margin-top: 28px;
+  }
+}

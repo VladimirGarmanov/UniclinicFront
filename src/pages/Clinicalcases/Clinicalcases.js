@@ -5,7 +5,6 @@ import "./clinicalcases.css";
 import clinicalCasesData from "../../assets/info/clinicalcases_full.json";
 import {
   AutoEntitySections,
-  DetailTopBlock,
   getItemCode,
   stripHtml,
 } from "../../utils/cms";
@@ -16,6 +15,14 @@ const CLINICAL_CASES = Array.isArray(clinicalCasesData?.items)
 
 function getPreviewPlainText(html = "") {
   return stripHtml(html).trim();
+}
+
+function getCaseImage(item) {
+  return item?.detail_picture?.src || item?.preview_picture?.src || "";
+}
+
+function getCaseTitle(item) {
+  return item?.fields?.NAME || "";
 }
 
 export function ClinicalCaseDetail() {
@@ -44,15 +51,41 @@ export function ClinicalCaseDetail() {
     );
   }
 
+  const image = getCaseImage(item);
+  const title = getCaseTitle(item);
+  const previewText = getPreviewPlainText(item?.fields?.PREVIEW_TEXT || "");
+
   return (
     <section className="ccWrap">
       <div className="ccContainer">
-        <DetailTopBlock
-          item={item}
-          backLabel="Истории пациентов"
-          backTo="/clinicalcases"
-        />
-        <AutoEntitySections item={item} />
+        <div className="ccDetail">
+          <div className="ccBreadcrumbs">
+            <Link to="/" className="ccBreadcrumbLink">
+              Главная
+            </Link>
+            <span className="ccBreadcrumbSep">/</span>
+            <Link to="/clinicalcases" className="ccBreadcrumbLink">
+              Истории пациентов
+            </Link>
+            <span className="ccBreadcrumbSep">/</span>
+            <span className="ccBreadcrumbCurrent">{title}</span>
+          </div>
+
+          <div className="ccDetailHero">
+            {image ? (
+              <div className="ccDetailMedia">
+                <img src={image} alt={title} className="ccDetailImg" />
+              </div>
+            ) : null}
+
+            <div className="ccDetailText">
+              <h1 className="ccDetailTitle">{title}</h1>
+              {previewText ? <p className="ccDetailPreview">{previewText}</p> : null}
+            </div>
+          </div>
+
+          <AutoEntitySections item={item} />
+        </div>
       </div>
     </section>
   );
@@ -77,11 +110,8 @@ export default function ClinicalCases() {
         <div className="ccGrid" role="list">
           {CLINICAL_CASES.map((item) => {
             const code = getItemCode(item);
-            const image =
-              item?.detail_picture?.src ||
-              item?.preview_picture?.src ||
-              "";
-            const title = item?.fields?.NAME || "";
+            const image = getCaseImage(item);
+            const title = getCaseTitle(item);
             const previewText = getPreviewPlainText(item?.fields?.PREVIEW_TEXT || "");
 
             return (
@@ -92,7 +122,9 @@ export default function ClinicalCases() {
               >
                 <div className="ccMedia">
                   {image ? (
-                    <img src={image} alt={title} className="ccImg" />
+                    <span className="ccImgFrame">
+                      <img src={image} alt={title} className="ccImg" />
+                    </span>
                   ) : (
                     <div className="ccImgFallback" />
                   )}

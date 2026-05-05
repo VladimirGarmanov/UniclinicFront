@@ -23,6 +23,8 @@ import FecalIncontinenceScalePage from "./pages/ Fecal-incontinence-scale/Fecal-
 import NeedProctologistConsultationPage from "./pages/Need-proctologist-consultation/Need-proctologist-consultation";
 import Questions, {QuestionDetail} from "./pages/Questions/Questions";
 import AdminPanel from "./pages/AdminPanel/AdminPanel";
+import PersonalData from "./components/LegalPages/PersonalData";
+import Privacy from "./components/LegalPages/Privacy";
 function DefaultLayout() {
   return (
     <div className="appShell">
@@ -53,8 +55,8 @@ function App() {
 
       <Route element={<DefaultLayout />}>
         <Route path="/team" element={<Team />} />
-          <Route path="/clinicalcases" element={<ClinicalCases />} />
-          <Route path="/clinicalcases/:slug" element={<ClinicalCaseDetail />} />
+        <Route path="/clinicalcases" element={<ClinicalCases />} />
+        <Route path="/clinicalcases/:slug" element={<ClinicalCaseDetail />} />
         <Route path="/doctors/:slug" element={<DoctorDetail />} />
         <Route path="/fecal-incontinence-scale" element={<FecalIncontinenceScalePage />} />
         <Route path="/need-proctologist-consultation" element={<NeedProctologistConsultationPage />} />
@@ -69,22 +71,25 @@ function App() {
         <Route path="/diseases" element={<Diseases />} />
         <Route path="/diseases/:slug" element={<DiseaseDetail />} />
 
-<Route path="/reviews" element={<Reviews />} />
-<Route path="/reviews/:slug" element={<ReviewDetail />} />
+        <Route path="/reviews" element={<Reviews />} />
+        <Route path="/reviews/:slug" element={<ReviewDetail />} />
 
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/contacts" element={<Contacts />} />
 
         <Route path="/about" element={<About />} />
         <Route path="/news" element={<News />} />
-          <Route path="/news:slug" element={<NewsDetail />} />
-          <Route path="/questions" element={<Questions />} />
+        <Route path="/news:slug" element={<NewsDetail />} />
+        <Route path="/questions" element={<Questions />} />
         <Route path="/questions/:slug" element={<QuestionDetail />} />
         <Route path="/articles" element={<Articles />} />
         <Route path="/articles/:slug" element={<ArticleDetail />} />
         <Route path="/licenses" element={<Licences />} />
+        <Route path="/personal-data" element={<PersonalData />} />
+
+        <Route path="/privacy" element={<Privacy />} />
         <Route path="/home" element={<Navigate to="/" replace />} />
-          <Route path="/questions/admin" element={<AdminPanel />} />
+        <Route path="/questions/admin" element={<AdminPanel />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

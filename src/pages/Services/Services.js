@@ -3,7 +3,13 @@ import { Link, useParams } from "react-router-dom";
 import "./services.css";
 
 import servicesData from "../../assets/info/services_full.json";
-import { AutoEntitySections, DetailTopBlock, getItemCode, getItemName, getPreviewText, getPrimaryImage } from "../../utils/cms";
+import {
+  AutoEntitySections,
+  getItemCode,
+  getItemName,
+  getPreviewText,
+  getPrimaryImage,
+} from "../../utils/cms";
 
 const SERVICES = Array.isArray(servicesData?.items) ? servicesData.items : [];
 
@@ -28,11 +34,37 @@ export function ServiceDetail() {
     );
   }
 
+  const image = getPrimaryImage(item);
+  const name = getItemName(item);
+  const previewText = getPreviewText(item);
+
   return (
     <section className="svc">
       <div className="svc__container">
-        <div style={{ padding: "24px 0 56px" }}>
-          <DetailTopBlock item={item} backLabel="Услуги" backTo="/services" />
+        <div className="svcDetail">
+          <div className="svc__breadcrumbs">
+            <Link to="/" className="svc__bcLink">Главная</Link>
+            <span className="svc__bcSep">/</span>
+            <Link to="/services" className="svc__bcLink">Услуги</Link>
+            <span className="svc__bcSep">/</span>
+            <span className="svc__bcCurrent">{name}</span>
+          </div>
+
+          <div className="svcDetailHero">
+            {image ? (
+              <div className="svcDetailHero__media">
+                <img src={image} alt={name} className="svcDetailHero__img" />
+              </div>
+            ) : null}
+
+            <div className="svcDetailHero__text">
+              <h1 className="svcDetailHero__title">{name}</h1>
+              {previewText ? (
+                <p className="svcDetailHero__lead">{previewText}</p>
+              ) : null}
+            </div>
+          </div>
+
           <AutoEntitySections item={item} />
         </div>
       </div>
@@ -65,7 +97,9 @@ export default function Services() {
                 <article className="svcCard" key={item?.fields?.ID || code}>
                   {image ? (
                     <Link to={`/services/${code}`} className="svcCard__mediaBtn">
-                      <img src={image} alt={name} className="svcCard__img" />
+                      <span className="svcCard__imgWrap">
+                        <img src={image} alt={name} className="svcCard__img" />
+                      </span>
                       <span className="svcCard__overlay">
                         <span className="svcCard__overlayPill">Подробнее</span>
                       </span>

@@ -5,7 +5,6 @@ import "./team.css";
 import doctorsData from "../../assets/info/doctors_full.json";
 import {
   AutoEntitySections,
-  DetailTopBlock,
   getItemCode,
   getItemName,
   getPrimaryImage,
@@ -40,11 +39,73 @@ export function DoctorDetail() {
     );
   }
 
+  const photo = getPrimaryImage(item);
+  const roles = getPropSingle(item, "PROF");
+  const experience = getPropSingle(item, "STAZH");
+  const degree = getPropSingle(item, "STEPEN");
+  const position = getPropSingle(item, "DOLZHNOST");
+  const name = getItemName(item);
+
   return (
     <section className="teamPage">
       <div className="teamWrap">
-        <DetailTopBlock item={item} backLabel="Команда" backTo="/team" />
-        <AutoEntitySections item={item} />
+        <div className="doctorDetail">
+          <div className="teamBreadcrumbs">
+            <Link to="/" className="teamCrumbLink">
+              Главная
+            </Link>
+            <span className="teamSep">/</span>
+            <Link to="/team" className="teamCrumbLink">
+              Команда
+            </Link>
+            <span className="teamSep">/</span>
+            <span className="teamCrumbActive">{name}</span>
+          </div>
+
+          <div className="doctorDetailHero">
+            {photo ? (
+              <div className="doctorDetailPhotoBox">
+                <img src={photo} alt={name} className="doctorDetailPhoto" />
+              </div>
+            ) : null}
+
+            <div className="doctorDetailInfo">
+              <h1 className="doctorDetailName">{name}</h1>
+
+              <div className="doctorDetailMeta">
+                {roles ? (
+                  <p className="doctorDetailMetaItem">
+                    <span className="doctorDetailMetaLabel">Специализация</span>
+                    {roles}
+                  </p>
+                ) : null}
+
+                {degree ? (
+                  <p className="doctorDetailMetaItem">
+                    <span className="doctorDetailMetaLabel">Учёная степень</span>
+                    {degree}
+                  </p>
+                ) : null}
+
+                {position ? (
+                  <p className="doctorDetailMetaItem">
+                    <span className="doctorDetailMetaLabel">Должность</span>
+                    {position}
+                  </p>
+                ) : null}
+
+                {experience ? (
+                  <p className="doctorDetailMetaItem">
+                    <span className="doctorDetailMetaLabel">Стаж</span>
+                    {experience}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          </div>
+
+          <AutoEntitySections item={item} />
+        </div>
       </div>
     </section>
   );

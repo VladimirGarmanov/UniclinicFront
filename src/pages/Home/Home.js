@@ -175,11 +175,11 @@ export default function Home() {
       { to: "/articles/", label: "Статьи" },
       { to: "/licenses/", label: "Лицензии" },
       {
-        to: "/patients/shkala-dlya-otsenki-urovnya-analnogo-nederzhaniya-kala/",
+        to: "/fecal-incontinence-scale/",
         label: "Шкала для оценки уровня анального недержания (кала)",
       },
       {
-        to: "/patients/nuzhna-li-vam-konsultatsiya-proktologa/",
+        to: "/need-proctologist-consultation",
         label: "Нужна ли вам консультация проктолога?",
       },
     ],

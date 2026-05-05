@@ -1,0 +1,242 @@
+:root {
+  --personal-data-page-bg: #f4f7fb;
+  --personal-data-surface: rgba(255, 255, 255, 0.96);
+  --personal-data-text: #253040;
+  --personal-data-muted: rgba(37, 48, 64, 0.68);
+  --personal-data-accent: #2f7cc5;
+  --personal-data-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  --personal-data-border: rgba(15, 23, 42, 0.08);
+  --personal-data-radius: 24px;
+}
+
+.personalDataWrap {
+  min-height: 100vh;
+  padding: 18px 0 64px;
+  background:
+    radial-gradient(circle at top right, rgba(47, 124, 197, 0.06), transparent 24%),
+    linear-gradient(180deg, #f8fafc 0%, var(--personal-data-page-bg) 100%);
+  color: var(--personal-data-text);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.personalDataWrap *,
+.personalDataWrap *::before,
+.personalDataWrap *::after {
+  box-sizing: border-box;
+}
+
+.personalDataContainer {
+  width: min(1120px, calc(100% - 56px));
+  margin: 0 auto;
+}
+
+.personalDataHead {
+  margin-bottom: 28px;
+}
+
+.personalDataBreadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 6px 0 16px;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--personal-data-muted);
+}
+
+.personalDataBreadcrumbLink {
+  color: var(--personal-data-muted);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.personalDataBreadcrumbLink:hover {
+  color: var(--personal-data-accent);
+}
+
+.personalDataBreadcrumbSep {
+  opacity: 0.55;
+}
+
+.personalDataBreadcrumbCurrent {
+  color: rgba(37, 48, 64, 0.82);
+}
+
+.personalDataTitle {
+  max-width: 980px;
+  margin: 0;
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--personal-data-text);
+}
+
+.personalDataMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.personalDataMetaItem {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(47, 124, 197, 0.08);
+  color: rgba(37, 48, 64, 0.72);
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.personalDataCard {
+  background: var(--personal-data-surface);
+  border: 1px solid var(--personal-data-border);
+  border-radius: var(--personal-data-radius);
+  box-shadow: var(--personal-data-shadow);
+  padding: clamp(22px, 4vw, 42px);
+  overflow: hidden;
+}
+
+.personalDataContent {
+  color: rgba(37, 48, 64, 0.88);
+  font-size: 17px;
+  line-height: 1.78;
+  font-weight: 500;
+}
+
+.personalDataContent > *:first-child {
+  margin-top: 0;
+}
+
+.personalDataContent > *:last-child {
+  margin-bottom: 0;
+}
+
+.personalDataContent h1,
+.personalDataContent h2,
+.personalDataContent h3,
+.personalDataContent h4 {
+  color: var(--personal-data-text);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.personalDataContent h1 {
+  margin: 0 0 22px;
+  font-size: clamp(32px, 4vw, 46px);
+  line-height: 1.05;
+}
+
+.personalDataContent h2 {
+  margin: 34px 0 14px;
+  font-size: clamp(25px, 3vw, 34px);
+  line-height: 1.12;
+}
+
+.personalDataContent h3 {
+  margin: 26px 0 12px;
+  font-size: 23px;
+  line-height: 1.18;
+}
+
+.personalDataContent p {
+  margin: 0 0 18px;
+}
+
+.personalDataContent ul,
+.personalDataContent ol {
+  margin: 0 0 20px;
+  padding-left: 24px;
+}
+
+.personalDataContent li {
+  margin: 0 0 10px;
+  padding-left: 4px;
+}
+
+.personalDataContent a {
+  color: var(--personal-data-accent);
+  text-decoration: none;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.personalDataContent a:hover {
+  text-decoration: underline;
+}
+
+.personalDataContent br {
+  display: block;
+  content: "";
+  margin-top: 8px;
+}
+
+.personalDataContent strong,
+.personalDataContent b {
+  color: var(--personal-data-text);
+  font-weight: 800;
+}
+
+.personalDataContent table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.personalDataContent th,
+.personalDataContent td {
+  padding: 12px 14px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  text-align: left;
+  vertical-align: top;
+}
+
+.personalDataContent th {
+  background: rgba(47, 124, 197, 0.08);
+  color: var(--personal-data-text);
+  font-weight: 800;
+}
+
+@media (max-width: 720px) {
+  .personalDataContainer {
+    width: calc(100% - 24px);
+  }
+
+  .personalDataWrap {
+    padding: 12px 0 48px;
+  }
+
+  .personalDataBreadcrumbs {
+    gap: 8px;
+    padding-bottom: 12px;
+    font-size: 13px;
+  }
+
+  .personalDataTitle {
+    font-size: clamp(34px, 12vw, 48px);
+  }
+
+  .personalDataCard {
+    border-radius: 20px;
+    padding: 20px 18px;
+  }
+
+  .personalDataContent {
+    font-size: 16px;
+    line-height: 1.72;
+  }
+
+  .personalDataContent h2 {
+    margin-top: 28px;
+  }
+}
