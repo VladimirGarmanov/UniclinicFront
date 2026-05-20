@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./admin-panel.css";
 
-const API_BASE = "https://uniclinic.ru:8000";
+const API_BASE = "";
 
 function LoginForm({ onLoggedIn }) {
   const [password, setPassword] = useState("");
