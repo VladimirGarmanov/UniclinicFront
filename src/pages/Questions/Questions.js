@@ -9,7 +9,7 @@ import {
 } from "../../utils/questions";
 import "./questions.css";
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = "https://uniclinic.ru:8000";
 
 const LEGACY_QUESTIONS = Array.isArray(legacyQuestionsData?.items)
   ? legacyQuestionsData.items.map(normalizeLegacyQuestion)
