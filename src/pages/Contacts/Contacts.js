@@ -41,18 +41,18 @@ export default function ContactsPage() {
 
               <div className="contactsInfoItem">
                 <div className="contactsInfoLabel">Телефон</div>
-                <a href="tel:+74950000000" className="contactsInfoLink">
-                  +7 (495) 000-00-00
+                <a href="tel:+79671367706" className="contactsInfoLink">
+                  +7 (967) 136-77-06
                 </a>
               </div>
 
               <div className="contactsInfoItem">
                 <div className="contactsInfoLabel">Электронная почта</div>
                 <a
-                  href="mailto:info@example.ru"
+                  href="mailto:surgery.mgu@gmail.com"
                   className="contactsInfoLink"
                 >
-                  info@example.ru
+                  surgery.mgu@gmail.com
                 </a>
               </div>
 
@@ -100,7 +100,7 @@ export default function ContactsPage() {
                     От метро «Ломоносовский проспект»
                   </div>
                   <div className="contactsRouteText">
-                    Ближайшая станция метро. От неё до клиники примерно 10–12
+                    Ближайшая станция метро - "Университет". От неё до клиники примерно 10–12
                     минут пешком.
                   </div>
                 </div>
@@ -111,7 +111,7 @@ export default function ContactsPage() {
                 <div className="contactsRouteContent">
                   <div className="contactsRouteTitle">Наземный транспорт</div>
                   <div className="contactsRouteText">
-                    Ближайшая остановка — «Медцентр МГУ». От остановки до входа
+                    Ближайшая остановка — «Менделеевская улица». От остановки до входа
                     около 2–3 минут пешком.
                   </div>
                 </div>
@@ -154,31 +154,8 @@ export default function ContactsPage() {
           </div>
         </div>
 
-        <div className="contactsBottomGrid">
-          <div className="contactsMiniCard">
-            <h3 className="contactsMiniTitle">Для записи</h3>
-            <p className="contactsMiniText">
-              Укажите здесь основной телефон контакт-центра, номер для записи и
-              отдельный номер для срочных вопросов.
-            </p>
-          </div>
 
-          <div className="contactsMiniCard">
-            <h3 className="contactsMiniTitle">Для пациентов</h3>
-            <p className="contactsMiniText">
-              Здесь можно разместить информацию о документах для приёма,
-              госпитализации, ДМС или платных услугах.
-            </p>
-          </div>
 
-          <div className="contactsMiniCard">
-            <h3 className="contactsMiniTitle">Обратная связь</h3>
-            <p className="contactsMiniText">
-              Здесь можно добавить форму обратной связи, WhatsApp, Telegram или
-              отдельную почту для обращений пациентов.
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   );
