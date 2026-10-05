@@ -240,6 +240,35 @@
   font-weight: 600;
 }
 
+.ccDetailContent {
+  margin-bottom: 28px;
+  padding: 24px;
+  background: var(--cc-surface);
+  border: 1px solid var(--cc-border);
+  border-radius: var(--cc-radius);
+  box-shadow: var(--cc-shadow);
+  font-size: 17px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.ccDetailContentPlain {
+  white-space: pre-wrap;
+}
+
+.ccDetailContent > :first-child {
+  margin-top: 0;
+}
+
+.ccDetailContent > :last-child {
+  margin-bottom: 0;
+}
+
+.ccDetailContent img {
+  max-width: 100%;
+  height: auto;
+}
+
 .ccWrap h1 + div img,
 .ccWrap section img {
   max-width: 100%;
@@ -311,7 +340,8 @@
   }
 
   .ccDetailMedia,
-  .ccDetailText {
+  .ccDetailText,
+  .ccDetailContent {
     border-radius: 18px;
     padding: 16px;
   }

@@ -158,7 +158,9 @@ await fs.writeFile(path.join(out, 'routes.json'), JSON.stringify({ routes: manif
 // nginx resolves only enumerated pages: an unknown slug never falls back to index.html.
 const quoteNginx = value => '"' + value.replaceAll('\\', '\\\\').replaceAll('"', '\\"').replaceAll('$', '\\$') + '"';
 const canonicalEntries = Object.entries(redirects).flatMap(([old, current]) => [old, old + '/'].map(url => `  ${quoteNginx(url)} ${quoteNginx(current)};`));
-const nginxMaps = `map $uri $clinic_canonical_path {\n  default $uri;\n${canonicalEntries.join('\n')}\n  ~^(.+)/$ $1;\n}\nmap $uri $clinic_ssg_file {\n  default /__missing_page__.html;\n${Object.entries(manifest).filter(([, item]) => item.status === 200).map(([url, item]) => `  ${quoteNginx(url)} ${quoteNginx('/' + item.file)};`).join('\n')}\n}\n`;
+// error_page changes $uri to /404.html. Recompute canonical after that internal
+// redirect instead of redirecting back to the cached, missing request path.
+const nginxMaps = `map $uri $clinic_canonical_path {\n  volatile;\n  default $uri;\n${canonicalEntries.join('\n')}\n  ~^(.+)/$ $1;\n}\nmap $uri $clinic_ssg_file {\n  default /__missing_page__.html;\n${Object.entries(manifest).filter(([, item]) => item.status === 200).map(([url, item]) => `  ${quoteNginx(url)} ${quoteNginx('/' + item.file)};`).join('\n')}\n}\n`;
 await fs.writeFile(path.join(out, 'nginx-maps.conf'), nginxMaps);
 report.brokenLinks = [...broken].map(([url, count]) => ({ url, count }));
 await fs.writeFile(path.join(out, 'build-report.json'), JSON.stringify(report, null, 2));

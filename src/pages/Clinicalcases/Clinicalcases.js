@@ -4,6 +4,7 @@ import { Link, NavLink, useParams } from "../../utils/router";
 import "./clinicalcases.css";
 
 import clinicalCasesData from "../../assets/info/clinicalcases_full.json";
+import { sanitize } from "../../utils/sanitize";
 import {
   AutoEntitySections,
   getItemCode,
@@ -55,6 +56,8 @@ export function ClinicalCaseDetail() {
   const image = getCaseImage(item);
   const title = getCaseTitle(item);
   const previewText = getPreviewPlainText(item?.fields?.PREVIEW_TEXT || "");
+  const detailText = item?.fields?.DETAIL_TEXT || "";
+  const detailIsHtml = item?.fields?.DETAIL_TEXT_TYPE === "html";
 
   return (
     <section className="ccWrap">
@@ -84,6 +87,19 @@ export function ClinicalCaseDetail() {
               {previewText ? <p className="ccDetailPreview">{previewText}</p> : null}
             </div>
           </div>
+
+          {detailText.trim() ? (
+            detailIsHtml ? (
+              <div
+                className="ccDetailContent"
+                dangerouslySetInnerHTML={{ __html: sanitize(detailText) }}
+              />
+            ) : (
+              <div className="ccDetailContent ccDetailContentPlain">
+                {detailText}
+              </div>
+            )
+          ) : null}
 
           <AutoEntitySections item={item} />
         </div>
