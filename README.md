@@ -77,7 +77,7 @@ implied by a local build. Mobile CWV must be measured after a real staging/produ
 
 ## Prepared deployment
 
-Target: **https://uniclinic.pro**, SSH **root@194.156.116.81**, **Ubuntu 24.04**.
+Target: **https://uniclinic.pro**, SSH **root@194.156.116.81**, **Ubuntu 24.04 или 26.04**.
 See [the Russian installation guide](deploy/README.md) for GitHub push, clone, database
 selection and `python3 deploy/server.py deploy`. The installer builds both repositories,
 configures nginx/HTTPS/systemd, and provides `update`, `rollback`, `backup` and `status`.

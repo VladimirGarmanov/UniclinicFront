@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Explicit, local-on-server deployment for uniclinic.pro on Ubuntu 24.04.
+"""Explicit, local-on-server deployment for uniclinic.pro on Ubuntu 24.04/26.04.
 
 This tool never SSHes, pushes Git, rewrites history, deletes releases, or resets a DB.
 Run --help on any platform. Mutating commands require root on the target Ubuntu host.
@@ -61,8 +61,10 @@ def require_host():
     if platform.system() != 'Linux' or os.geteuid() != 0:
         raise RuntimeError('Run this command as root on the Ubuntu server, not on your Mac.')
     release = dict(line.split('=', 1) for line in Path('/etc/os-release').read_text().splitlines() if '=' in line)
-    if release.get('ID', '').strip('"') != 'ubuntu' or release.get('VERSION_ID', '').strip('"') != '24.04':
-        raise RuntimeError('Supported target: Ubuntu 24.04. No changes made; adapt the installer for a different OS.')
+    if release.get('ID', '').strip('"') != 'ubuntu' or release.get('VERSION_ID', '').strip('"') not in {'24.04', '26.04'}:
+        raise RuntimeError('Supported targets: Ubuntu 24.04 or 26.04. No changes made; adapt the installer for a different OS.')
+    if sys.version_info < (3, 12):
+        raise RuntimeError('The installer requires Python 3.12 or newer.')
 
 
 def atomic_text(file, text, mode=0o644):
