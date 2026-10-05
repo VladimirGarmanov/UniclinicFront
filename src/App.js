@@ -1,5 +1,5 @@
-import React from "react";
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import React, { Suspense } from "react";
+import { Routes, Route, Navigate, Outlet } from "./utils/router";
 import "./App.css";
 
 import Footer from "./components/Footer/Footer";
@@ -15,22 +15,26 @@ import Reviews, { ReviewDetail } from "./pages/Reviews/Reviews";
 import Contacts from "./pages/Contacts/Contacts";
 import NotFound from "./pages/NotFound/NotFound";
 import ClinicalCases, {ClinicalCaseDetail} from "./pages/Clinicalcases/Clinicalcases";
-import About from "./pages/About/About";
+
 import News, {NewsDetail} from "./pages/News/News";
 import Licences from "./pages/Licenses/Licenses";
 import Articles, { ArticleDetail } from "./pages/Articles/Articles";
-import FecalIncontinenceScalePage from "./pages/ Fecal-incontinence-scale/Fecal-incontinence-scale";
+import FecalIncontinenceScalePage from "./pages/Fecal-incontinence-scale/Fecal-incontinence-scale";
 import NeedProctologistConsultationPage from "./pages/Need-proctologist-consultation/Need-proctologist-consultation";
 import Questions, {QuestionDetail} from "./pages/Questions/Questions";
 import AdminPanel from "./pages/AdminPanel/AdminPanel";
+import Sitemap from "./pages/Sitemap";
+import Search from "./pages/Search";
+import Treatment from "./pages/Treatment";
 import PersonalData from "./components/LegalPages/PersonalData";
 import Privacy from "./components/LegalPages/Privacy";
 function DefaultLayout() {
   return (
     <div className="appShell">
+      <a className="skipLink" href="#main-content">Перейти к содержимому</a>
       <div className="appMain">
         <Header />
-        <Outlet />
+        <main id="main-content"><Outlet /></main>
       </div>
       <Footer />
     </div>
@@ -40,6 +44,7 @@ function DefaultLayout() {
 function HomeLayout() {
   return (
     <div className="homeShell">
+      <a className="skipLink" href="#main-content">Перейти к содержимому</a>
       <Outlet />
       <Footer />
     </div>
@@ -48,12 +53,15 @@ function HomeLayout() {
 
 function App() {
   return (
-    <Routes>
+    <Suspense fallback={<p role="status">Загрузка…</p>}><Routes>
       <Route element={<HomeLayout />}>
         <Route path="/" element={<Home />} />
       </Route>
 
       <Route element={<DefaultLayout />}>
+        <Route path="/sitemap" element={<Sitemap />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/services/prices/:slug" element={<Treatment />} />
         <Route path="/team" element={<Team />} />
         <Route path="/clinicalcases" element={<ClinicalCases />} />
         <Route path="/clinicalcases/:slug" element={<ClinicalCaseDetail />} />
@@ -74,12 +82,11 @@ function App() {
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/reviews/:slug" element={<ReviewDetail />} />
 
-        <Route path="/reviews" element={<Reviews />} />
         <Route path="/contacts" element={<Contacts />} />
 
-        <Route path="/about" element={<About />} />
+
         <Route path="/news" element={<News />} />
-        <Route path="/news:slug" element={<NewsDetail />} />
+        <Route path="/news/:slug" element={<NewsDetail />} />
         <Route path="/questions" element={<Questions />} />
         <Route path="/questions/:slug" element={<QuestionDetail />} />
         <Route path="/articles" element={<Articles />} />
@@ -92,7 +99,7 @@ function App() {
         <Route path="/questions/admin" element={<AdminPanel />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-    </Routes>
+    </Routes></Suspense>
   );
 }
 

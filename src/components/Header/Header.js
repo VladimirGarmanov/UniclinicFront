@@ -1,5 +1,7 @@
+import Image from "../Shared/Image";
+import { clinic, toggleAccessibility } from "../../config/site";
 import React, { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "../../utils/router";
 import "./header.css";
 
 import logoImg from "../../assets/components/header_logo.png";
@@ -159,7 +161,7 @@ export default function Header() {
     }
 
     return (
-      <NavLink
+      <NavLink reloadDocument
         key={item.label}
         to={item.to}
         className={({ isActive }) =>
@@ -209,7 +211,7 @@ export default function Header() {
           <div className="hdrContainer hdrMidInner">
             <nav className="hdrMenu" aria-label="Навигация">
               {navItems.map((item) => (
-                <NavLink
+                <NavLink reloadDocument
                   key={item.to}
                   to={item.to}
                   end={!!item.end}
@@ -248,10 +250,8 @@ export default function Header() {
             </nav>
 
             <div className="hdrMidRight">
-              <a className="hdrPhone" href="tel:+79671367706">
-                +7 (967)136 77
-                <br />
-                06
+              <a className="hdrPhone" href={clinic.phoneHref}>
+                {clinic.phone}
               </a>
 
               <div className="hdrIcons">
@@ -262,7 +262,7 @@ export default function Header() {
                   rel="noreferrer"
                   aria-label="WhatsApp"
                 >
-                  <img className="hdrIconImg" src={iconWhatsappImg} alt="" />
+                  <Image className="hdrIconImg" src={iconWhatsappImg} alt="" />
                 </a>
 
                 <a
@@ -272,19 +272,19 @@ export default function Header() {
                   rel="noreferrer"
                   aria-label="Telegram"
                 >
-                  <img className="hdrIconImg" src={iconTelegramImg} alt="" />
+                  <Image className="hdrIconImg" src={iconTelegramImg} alt="" />
                 </a>
 
                 <button
                   className="hdrIconBtn"
                   type="button"
-                  aria-label="Версия для слабовидящих"
+                  aria-label="Версия для слабовидящих" onClick={toggleAccessibility}
                 >
-                  <img className="hdrIconImg" src={iconEyeImg} alt="" />
+                  <Image className="hdrIconImg" src={iconEyeImg} alt="" />
                 </button>
 
-                <button className="hdrIconBtn" type="button" aria-label="Поиск">
-                  <img className="hdrIconImg" src={iconSearchImg} alt="" />
+                <button className="hdrIconBtn" type="button" aria-label="Поиск" onClick={() => { window.location.href = "/search"; }}>
+                  <Image className="hdrIconImg" src={iconSearchImg} alt="" />
                 </button>
 
                 <button
@@ -304,7 +304,7 @@ export default function Header() {
       <div className="hdrBot">
         <div className="hdrContainer hdrBotInner">
           <div className="hdrBrand">
-            <img className="hdrLogo" src={logoImg} alt="Логотип" />
+            <Image loading="eager" className="hdrLogo" src={logoImg} alt="Логотип" />
 
             <div className="hdrTitleBlock">
               <div className="hdrTitle">
@@ -317,7 +317,7 @@ export default function Header() {
           </div>
 
           <div className="hdrInfo">
-            <img className="hdrYandexImg" src={yandexBadgeImg} alt="Яндекс" />
+            <Image className="hdrYandexImg" src={yandexBadgeImg} alt="Яндекс" />
 
             <div className="hdrMetro">
               <div className="hdrMetroRow">
@@ -333,9 +333,9 @@ export default function Header() {
               </div>
 
               <div className="hdrAddr">
-                Москва, Ломоносовский пр-кт 27, 10
+                {clinic.address}
               </div>
-              <div className="hdrHours">Пн-Пт: 8:00 – 17:00</div>
+              <div className="hdrHours">{clinic.hours}</div>
             </div>
           </div>
 
@@ -367,7 +367,7 @@ export default function Header() {
 
             <div className="hdrMobileBody">
               {navItems.map((item) => (
-                <NavLink
+                <NavLink reloadDocument
                   key={item.to}
                   to={item.to}
                   end={!!item.end}

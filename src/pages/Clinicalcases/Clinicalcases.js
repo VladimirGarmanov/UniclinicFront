@@ -1,5 +1,6 @@
+import Image from "../../components/Shared/Image";
 import React from "react";
-import { Link, NavLink, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "../../utils/router";
 import "./clinicalcases.css";
 
 import clinicalCasesData from "../../assets/info/clinicalcases_full.json";
@@ -35,11 +36,11 @@ export function ClinicalCaseDetail() {
         <div className="ccContainer">
           <div className="ccHead">
             <div className="ccBreadcrumbs">
-              <Link to="/" className="ccBreadcrumbLink">
+              <Link reloadDocument to="/" className="ccBreadcrumbLink">
                 Главная
               </Link>
               <span className="ccBreadcrumbSep">/</span>
-              <Link to="/clinicalcases" className="ccBreadcrumbLink">
+              <Link reloadDocument to="/clinicalcases" className="ccBreadcrumbLink">
                 Истории пациентов
               </Link>
             </div>
@@ -60,11 +61,11 @@ export function ClinicalCaseDetail() {
       <div className="ccContainer">
         <div className="ccDetail">
           <div className="ccBreadcrumbs">
-            <Link to="/" className="ccBreadcrumbLink">
+            <Link reloadDocument to="/" className="ccBreadcrumbLink">
               Главная
             </Link>
             <span className="ccBreadcrumbSep">/</span>
-            <Link to="/clinicalcases" className="ccBreadcrumbLink">
+            <Link reloadDocument to="/clinicalcases" className="ccBreadcrumbLink">
               Истории пациентов
             </Link>
             <span className="ccBreadcrumbSep">/</span>
@@ -74,7 +75,7 @@ export function ClinicalCaseDetail() {
           <div className="ccDetailHero">
             {image ? (
               <div className="ccDetailMedia">
-                <img src={image} alt={title} className="ccDetailImg" />
+                <Image src={image} alt={title} className="ccDetailImg" />
               </div>
             ) : null}
 
@@ -97,7 +98,7 @@ export default function ClinicalCases() {
       <div className="ccContainer">
         <div className="ccHead">
           <div className="ccBreadcrumbs">
-            <Link to="/" className="ccBreadcrumbLink">
+            <Link reloadDocument to="/" className="ccBreadcrumbLink">
               Главная
             </Link>
             <span className="ccBreadcrumbSep">/</span>
@@ -115,7 +116,7 @@ export default function ClinicalCases() {
             const previewText = getPreviewPlainText(item?.fields?.PREVIEW_TEXT || "");
 
             return (
-              <NavLink
+              <NavLink reloadDocument
                 key={item?.fields?.ID || code}
                 to={`/clinicalcases/${code}`}
                 className="ccCard"
@@ -123,7 +124,7 @@ export default function ClinicalCases() {
                 <div className="ccMedia">
                   {image ? (
                     <span className="ccImgFrame">
-                      <img src={image} alt={title} className="ccImg" />
+                      <Image src={image} alt={title} className="ccImg" />
                     </span>
                   ) : (
                     <div className="ccImgFallback" />

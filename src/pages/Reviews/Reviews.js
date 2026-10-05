@@ -1,10 +1,12 @@
-import React, { useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { track } from "../../utils/analytics";
+import Consent, { CONSENT_VERSION } from "../../components/Shared/Consent";
+import React, { useEffect, useMemo, useState } from "react";
+import { Link, useParams } from "../../utils/router";
 import "./reviews.css";
 
 import reviewsData from "../../assets/info/reviews.json";
 
-const API_BASE = "http://109.69.19.73:8000";
+const API_BASE = "";
 
 const RAW_REVIEWS = Array.isArray(reviewsData?.items) ? reviewsData.items : [];
 
@@ -243,6 +245,7 @@ function ReviewForm() {
 
   async function submitReview(event) {
     event.preventDefault();
+    const consent = new FormData(event.currentTarget).get("consent") === "on";
 
     setStatus({
       loading: true,
@@ -258,6 +261,7 @@ function ReviewForm() {
         },
         credentials: "include",
         body: JSON.stringify({
+          consent, consent_version: CONSENT_VERSION,
           reviewer_name: form.reviewer_name.trim(),
           email: form.email.trim(),
           phone: form.phone.trim() || null,
@@ -278,9 +282,10 @@ function ReviewForm() {
           throw new Error("Проверьте правильность заполнения полей.");
         }
 
-        throw new Error(detail || "Не удалось отправить отзыв.");
+        throw new Error("Не удалось отправить отзыв. Проверьте поля и повторите попытку.");
       }
 
+      track("form_submit_success", "review");
       setForm({
         reviewer_name: "",
         email: "",
@@ -298,6 +303,7 @@ function ReviewForm() {
         success: "Спасибо. Отзыв отправлен и появится на сайте после проверки.",
       });
     } catch (error) {
+      track("form_submit_error", "review");
       setStatus({
         loading: false,
         error: error?.message || "Не удалось отправить отзыв.",
@@ -315,7 +321,7 @@ function ReviewForm() {
         </p>
       </div>
 
-      <form className="reviewsForm" onSubmit={submitReview}>
+      <form data-form="review" className="reviewsForm" onSubmit={submitReview}>
         <div className="reviewsFormGrid">
           <label className="reviewsField">
             <span>Автор отзыва *</span>
@@ -419,6 +425,7 @@ function ReviewForm() {
           </div>
         ) : null}
 
+        <Consent />
         <button className="reviewsSubmit" type="submit" disabled={status.loading}>
           {status.loading ? "Отправка..." : "Отправить отзыв"}
         </button>
@@ -436,9 +443,9 @@ export function ReviewDetail() {
       <section className="reviewsPage">
         <div className="reviewsWrap">
           <div className="reviewsBreadcrumbs">
-            <Link to="/" className="reviewsCrumbLink">Главная</Link>
+            <Link reloadDocument to="/" className="reviewsCrumbLink">Главная</Link>
             <span className="reviewsSep">/</span>
-            <Link to="/reviews" className="reviewsCrumbLink">Отзывы</Link>
+            <Link reloadDocument to="/reviews" className="reviewsCrumbLink">Отзывы</Link>
           </div>
 
           <h1 className="reviewsH1">Отзыв не найден</h1>
@@ -460,9 +467,9 @@ export function ReviewDetail() {
     <section className="reviewsPage">
       <div className="reviewsWrap">
         <div className="reviewsBreadcrumbs">
-          <Link to="/" className="reviewsCrumbLink">Главная</Link>
+          <Link reloadDocument to="/" className="reviewsCrumbLink">Главная</Link>
           <span className="reviewsSep">/</span>
-          <Link to="/reviews" className="reviewsCrumbLink">Отзывы</Link>
+          <Link reloadDocument to="/reviews" className="reviewsCrumbLink">Отзывы</Link>
           <span className="reviewsSep">/</span>
           <span className="reviewsCrumbActive">Отзыв</span>
         </div>
@@ -540,13 +547,19 @@ export function ReviewDetail() {
 }
 
 export default function Reviews() {
+  const [publicReviews, setPublicReviews] = useState([]);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch('/api/reviews', { signal: controller.signal }).then(response => response.ok ? response.json() : { items: [] }).then(data => setPublicReviews(data.items || [])).catch(() => {});
+    return () => controller.abort();
+  }, []);
   const visibleReviews = useMemo(() => getVisibleReviews(), []);
 
   return (
     <section className="reviewsPage">
       <div className="reviewsWrap">
         <div className="reviewsBreadcrumbs">
-          <Link to="/" className="reviewsCrumbLink">Главная</Link>
+          <Link reloadDocument to="/" className="reviewsCrumbLink">Главная</Link>
           <span className="reviewsSep">/</span>
           <span className="reviewsCrumbActive">Отзывы</span>
         </div>
@@ -565,6 +578,7 @@ export default function Reviews() {
         </div>
 
         <div className="reviewsGrid">
+          {publicReviews.map(item => <article className="reviewsCard" key={`db-${item.id}`}><div className="reviewsCardBody"><p>{item.reviewer_name || 'Пациент'} · {item.date_active_from}</p><Stars value={item.mark} /><h3 className="reviewsCardTitle">{item.name}</h3><p>{item.review_text}</p></div></article>)}
           {visibleReviews.map((item) => {
             const slug = getReviewSlug(item);
             const title = getReviewTitle(item);
@@ -576,14 +590,14 @@ export default function Reviews() {
                   <ReviewMeta item={item} />
 
                   <h3 className="reviewsCardTitle">
-                    <Link to={`/reviews/${slug}`} className="reviewsCardTitleLink">
+                    <Link reloadDocument to={`/reviews/${slug}`} className="reviewsCardTitleLink">
                       {title}
                     </Link>
                   </h3>
 
                   {text ? <p className="reviewsCardDesc">{text}</p> : null}
 
-                  <Link to={`/reviews/${slug}`} className="reviewsMoreLink">
+                  <Link reloadDocument to={`/reviews/${slug}`} className="reviewsMoreLink">
                     Подробнее
                   </Link>
                 </div>

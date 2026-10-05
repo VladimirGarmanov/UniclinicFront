@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "../../utils/router";
 import "./diseases.css";
 
 import diseasesData from "../../assets/info/diseases_full.json";
@@ -46,9 +46,9 @@ export function DiseaseDetail() {
         <div className="dsg__container">
           <div className="dsg__hero">
             <div className="dsg__breadcrumbs">
-              <Link to="/" className="dsg__bcLink">Главная</Link>
+              <Link reloadDocument to="/" className="dsg__bcLink">Главная</Link>
               <span className="dsg__bcSep">/</span>
-              <Link to="/diseases" className="dsg__bcLink">Заболевания</Link>
+              <Link reloadDocument to="/diseases" className="dsg__bcLink">Заболевания</Link>
             </div>
             <h1 className="dsg__title">Заболевание не найдено</h1>
           </div>
@@ -77,14 +77,14 @@ export default function Diseases() {
       <div className="dsg__container">
         <div className="dsg__hero">
           <div className="dsg__breadcrumbs">
-            <Link to="/" className="dsg__bcLink">Главная</Link>
+            <Link reloadDocument to="/" className="dsg__bcLink">Главная</Link>
             <span className="dsg__bcSep">/</span>
             <span className="dsg__bcCurrent">Заболевания</span>
           </div>
           <h1 className="dsg__title">Заболевания</h1>
         </div>
 
-        <main className="dsg__main">
+        <section className="dsg__main">
           <div className="dsg__grid">
             {groups.map((group) => (
               <section className="dsgBlock" key={group.letter}>
@@ -92,7 +92,7 @@ export default function Diseases() {
                 <ul className="dsgBlock__list">
                   {group.items.map((item) => (
                     <li className="dsgBlock__item" key={item?.fields?.ID || getItemCode(item)}>
-                      <Link to={`/diseases/${getItemCode(item)}`} className="dsgLink">
+                      <Link reloadDocument to={`/diseases/${getItemCode(item)}`} className="dsgLink">
                         {getItemName(item)}
                       </Link>
                     </li>
@@ -101,7 +101,7 @@ export default function Diseases() {
               </section>
             ))}
           </div>
-        </main>
+        </section>
       </div>
     </section>
   );

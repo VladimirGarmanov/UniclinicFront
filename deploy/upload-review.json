@@ -1,0 +1,15 @@
+{
+  "executableFiles": {
+    ".php": 204
+  },
+  "obfuscationMarkers": [
+    {
+      "file": "upload/resize_cache/iblock/030/200_200_1/200_200_1/cache.php",
+      "sha256": "ec787798a5649215da51cf235b79d5bb1b9e9d9d6f7b4ea986179c61e144ba5e"
+    },
+    {
+      "file": "upload/resize_cache/iblock/8d2/1600_1200_1/1600_1200_1/cache.php",
+      "sha256": "38f848c30431c7734dbe1421e30face2fa7667b8edde0d7ac6a996bfb426adb1"
+    }
+  ]
+}

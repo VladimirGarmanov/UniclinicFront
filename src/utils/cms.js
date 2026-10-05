@@ -1,5 +1,7 @@
+import Image from "../components/Shared/Image";
+import { sanitize } from "./sanitize";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "./router";
 
 export const ENTITY_BASE_BY_IBLOCK = {
   11: "/doctors",
@@ -221,7 +223,7 @@ export function renderScalarValue(value) {
   if (!isMeaningfulScalar(value)) return null;
 
   if (typeof value === "string" && hasHtml(value)) {
-    return <div dangerouslySetInnerHTML={{ __html: value }} />;
+    return <div dangerouslySetInnerHTML={{ __html: sanitize(value) }} />;
   }
 
   return (
@@ -257,7 +259,7 @@ export function renderFileCard(file, keyPrefix = "file") {
           boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
         }}
       >
-        <img
+        <Image
           src={src}
           alt={fileName}
           style={{
@@ -302,7 +304,7 @@ export function renderLinkedElement(element, idx = 0) {
   if (url) {
     return (
       <li key={`${element?.ID || name}-${idx}`}>
-        <Link
+        <Link reloadDocument
           to={url}
           style={{
             color: "#244b6a",
@@ -400,7 +402,7 @@ export function renderPropertyBlock(propKey, prop) {
             fontSize: 16,
             lineHeight: 1.72,
           }}
-          dangerouslySetInnerHTML={{ __html: String(part.html) }}
+          dangerouslySetInnerHTML={{ __html: sanitize(String(part.html)) }}
         />
       </section>
     ));
@@ -475,7 +477,7 @@ export function renderPropertyBlock(propKey, prop) {
                 lineHeight: 1.72,
                 marginBottom: 14,
               }}
-              dangerouslySetInnerHTML={{ __html: html }}
+              dangerouslySetInnerHTML={{ __html: sanitize(html) }}
             />
           ))}
         </div>
@@ -511,7 +513,7 @@ export function renderPropertyBlock(propKey, prop) {
           if (hasHtml(value)) {
             return (
               <li key={`${propKey}-plain-${index}`}>
-                <span dangerouslySetInnerHTML={{ __html: value }} />
+                <span dangerouslySetInnerHTML={{ __html: sanitize(value) }} />
               </li>
             );
           }
@@ -621,11 +623,11 @@ export function DetailTopBlock({ item, backLabel, backTo }) {
   return (
     <>
       <div style={{ marginBottom: 12, fontSize: 14, color: "#6b7280" }}>
-        <Link to="/" style={{ color: "#6b7280", textDecoration: "none" }}>
+        <Link reloadDocument to="/" style={{ color: "#6b7280", textDecoration: "none" }}>
           Главная
         </Link>
         {" / "}
-        <Link to={backTo} style={{ color: "#6b7280", textDecoration: "none" }}>
+        <Link reloadDocument to={backTo} style={{ color: "#6b7280", textDecoration: "none" }}>
           {backLabel}
         </Link>
         {" / "}
@@ -654,7 +656,7 @@ export function DetailTopBlock({ item, backLabel, backTo }) {
             background: "#eef2f5",
           }}
         >
-          <img
+          <Image
             src={image}
             alt={title}
             style={{
@@ -699,7 +701,7 @@ export function DetailTopBlock({ item, backLabel, backTo }) {
               fontSize: 16,
               lineHeight: 1.72,
             }}
-            dangerouslySetInnerHTML={{ __html: detailHtml }}
+            dangerouslySetInnerHTML={{ __html: sanitize(detailHtml) }}
           />
         </section>
       ) : null}

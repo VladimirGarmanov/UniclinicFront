@@ -1,5 +1,6 @@
+import { sanitize } from "../../utils/sanitize";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "../../utils/router";
 import "./privacy.css";
 
 import politicsData from "../../assets/info/politics_full.json";
@@ -41,7 +42,7 @@ export default function Privacy() {
       <div className="privacyContainer">
         <div className="privacyHead">
           <div className="privacyBreadcrumbs">
-            <Link to="/" className="privacyBreadcrumbLink">
+            <Link reloadDocument to="/" className="privacyBreadcrumbLink">
               Главная
             </Link>
             <span className="privacyBreadcrumbSep">/</span>
@@ -66,7 +67,7 @@ export default function Privacy() {
         <article className="privacyCard">
           <div
             className="privacyContent"
-            dangerouslySetInnerHTML={{ __html: html }}
+            dangerouslySetInnerHTML={{ __html: sanitize(html) }}
           />
         </article>
       </div>

@@ -11,3 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.skipLink {position:absolute;left:12px;top:-100px;z-index:9999;background:white;padding:12px;color:#164d6d}.skipLink:focus{top:12px} :focus-visible{outline:3px solid #146da0 !important;outline-offset:3px}.consentField{display:flex;gap:12px;align-items:flex-start;margin:18px 0;font-size:15px;line-height:1.5}.consentField input{width:20px;height:20px;flex-shrink:0}.utilityPage{max-width:1100px;margin:40px auto;padding:24px;line-height:1.7}.accessible{font-size:125%}.accessible body{filter:grayscale(1)}.accessible p,.accessible a,.accessible label{font-size:1.15em !important}.askGrid{align-items:center}.askGrid label{grid-column:1/-1}.askGrid input{grid-column:1/-1}
+
+img {max-width:100%;height:auto}

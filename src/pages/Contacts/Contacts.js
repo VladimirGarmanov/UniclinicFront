@@ -1,5 +1,6 @@
+import { clinic } from "../../config/site";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "../../utils/router";
 import "./contacts.css";
 
 export default function ContactsPage() {
@@ -8,7 +9,7 @@ export default function ContactsPage() {
       <div className="contactsContainer">
         <div className="contactsHead">
           <div className="contactsBreadcrumbs">
-            <Link to="/" className="contactsBreadcrumbLink">
+            <Link reloadDocument to="/" className="contactsBreadcrumbLink">
               Главная
             </Link>
             <span className="contactsBreadcrumbSep">/</span>
@@ -35,35 +36,31 @@ export default function ContactsPage() {
               <div className="contactsInfoItem">
                 <div className="contactsInfoLabel">Адрес</div>
                 <div className="contactsInfoValue">
-                  Москва, Ломоносовский проспект, 27к10
+                  {clinic.address}
                 </div>
               </div>
 
               <div className="contactsInfoItem">
                 <div className="contactsInfoLabel">Телефон</div>
-                <a href="tel:+79671367706" className="contactsInfoLink">
-                  +7 (967) 136-77-06
+                <a href={clinic.phoneHref} className="contactsInfoLink">
+                  {clinic.phone}
                 </a>
               </div>
 
               <div className="contactsInfoItem">
                 <div className="contactsInfoLabel">Электронная почта</div>
                 <a
-                  href="mailto:surgery.mgu@gmail.com"
+                  href={`mailto:${clinic.email}`}
                   className="contactsInfoLink"
                 >
-                  surgery.mgu@gmail.com
+                  {clinic.email}
                 </a>
               </div>
 
               <div className="contactsInfoItem">
                 <div className="contactsInfoLabel">Часы работы</div>
                 <div className="contactsInfoValue">
-                  Пн–Пт: 08:00–20:00
-                  <br />
-                  Сб: 09:00–15:00
-                  <br />
-                  Вс: выходной
+                  {clinic.hours}
                 </div>
               </div>
             </div>
@@ -143,7 +140,7 @@ export default function ContactsPage() {
           </div>
 
           <div className="contactsMapWrap">
-            <iframe
+            <iframe loading="lazy" referrerPolicy="strict-origin-when-cross-origin"
               title="Карта МНОЦ МГУ"
               src="https://yandex.ru/map-widget/v1/?ll=37.530498%2C55.702234&mode=search&oid=1329676122&ol=biz&z=17"
               width="100%"

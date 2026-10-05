@@ -1,5 +1,6 @@
+import { clinic, toggleAccessibility } from "../../config/site";
 import React, { useEffect, useRef, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink } from "../../utils/router";
 import "./homeheader.css";
 
 const navItems = [
@@ -156,7 +157,7 @@ export default function HomeHeader() {
           <div className="hhNavInner">
             <nav className="hhMenu" aria-label="Основная навигация">
               {navItems.map((item) => (
-                <NavLink
+                <NavLink reloadDocument
                   key={item.to}
                   to={item.to}
                   end={!!item.end}
@@ -180,7 +181,7 @@ export default function HomeHeader() {
                 {isPatientsOpen && (
                   <div className="hhDropMenu">
                     {patientsDropdownItems.map((item) => (
-                      <Link
+                      <Link reloadDocument
                         key={item.to}
                         to={item.to}
                         className="hhDropLink"
@@ -195,8 +196,8 @@ export default function HomeHeader() {
             </nav>
 
             <div className="hhRight">
-              <a className="hhPhone" href="tel:+79671367706">
-                +7 (967)136 77 06
+              <a className="hhPhone" href={clinic.phoneHref}>
+                {clinic.phone}
               </a>
 
               <div className="hhIcons">
@@ -228,7 +229,7 @@ export default function HomeHeader() {
                   TG
                 </a>
 
-                <button className="hhIconBtn" type="button" aria-label="Поиск">
+                <button className="hhIconBtn" type="button" aria-label="Поиск" onClick={() => { window.location.href = "/search"; }}>
                   🔍
                 </button>
 
@@ -263,7 +264,7 @@ export default function HomeHeader() {
 
             <div className="hhMobileBody">
               {navItems.map((item) => (
-                <NavLink
+                <NavLink reloadDocument
                   key={item.to}
                   to={item.to}
                   end={!!item.end}
@@ -291,7 +292,7 @@ export default function HomeHeader() {
                 {isMobilePatientsOpen && (
                   <div className="hhMobileDropdown">
                     {patientsDropdownItems.map((item) => (
-                      <Link
+                      <Link reloadDocument
                         key={item.to}
                         to={item.to}
                         className="hhMobileDropdownLink"

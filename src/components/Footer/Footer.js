@@ -1,5 +1,7 @@
+import { clinic } from "../../config/site";
+import Image from "../Shared/Image";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "../../utils/router";
 import "./footer.css";
 
 // КАРТИНКИ — ТОЛЬКО ИМПОРТЫ. ПУТИ МЕНЯЕШЬ ПОД СЕБЯ.
@@ -20,33 +22,31 @@ export default function Footer() {
             <div className="ftrCol">
               <div className="ftrTitle">ИНФОРМАЦИЯ</div>
 
-              <Link className="ftrLink" to="/team">Наша команда</Link>
-              <Link className="ftrLink" to="/diseases">Заболевания</Link>
-              <Link className="ftrLink" to="/reviews">Отзывы</Link>
-              <Link className="ftrLink" to="/faq">Вопросы</Link>
-              <Link className="ftrLink" to="/prices">Цены</Link>
-              <Link className="ftrLink" to="/video">Видео</Link>
-              <Link className="ftrLink" to="/stories">Истории пациентов</Link>
+              <Link reloadDocument className="ftrLink" to="/team">Наша команда</Link>
+              <Link reloadDocument className="ftrLink" to="/diseases">Заболевания</Link>
+              <Link reloadDocument className="ftrLink" to="/reviews">Отзывы</Link>
+              <Link reloadDocument className="ftrLink" to="/questions">Вопросы</Link>
+              <Link reloadDocument className="ftrLink" to="/prices">Цены</Link>
+              <Link reloadDocument className="ftrLink" to="/clinicalcases">Истории пациентов</Link>
             </div>
 
             {/* Колонка 2 */}
             <div className="ftrCol">
               <div className="ftrTitle">КЛИНИКА</div>
 
-              <Link className="ftrLink" to="/about">О клинике</Link>
-              <Link className="ftrLink" to="/news">Новости клиники</Link>
-              <Link className="ftrLink" to="/articles">Статьи</Link>
-              <Link className="ftrLink" to="/contacts">Контакты</Link>
+              <Link reloadDocument className="ftrLink" to="/news">Новости клиники</Link>
+              <Link reloadDocument className="ftrLink" to="/articles">Статьи</Link>
+              <Link reloadDocument className="ftrLink" to="/contacts">Контакты</Link>
 
-              <Link className="ftrLink" to="/personal-data">Обработка персональных данных</Link>
-              <Link className="ftrLink" to="/privacy">Политика конфиденциальности</Link>
-              <Link className="ftrLink" to="/licenses">Правовая информация</Link>
+              <Link reloadDocument className="ftrLink" to="/personal-data">Обработка персональных данных</Link>
+              <Link reloadDocument className="ftrLink" to="/privacy">Политика конфиденциальности</Link>
+              <Link reloadDocument className="ftrLink" to="/licenses">Правовая информация</Link>
             </div>
 
             {/* Правая часть */}
             <div className="ftrRight">
               <div className="ftrRightHead">
-                <img className="ftrLogo" src={footerLogoImg} alt="Логотип" />
+                <Image loading="eager" className="ftrLogo" src={footerLogoImg} alt="Логотип" />
 
                 <div className="ftrRightText">
                   <div className="ftrRightTitle">ОТДЕЛЕНИЕ ХИРУРГИИ</div>
@@ -54,19 +54,13 @@ export default function Footer() {
                 </div>
               </div>
 
-              <a className="ftrPhone" href="tel:+79671367706">+7 (967)136 77 06</a>
-              <a className="ftrEmail" href="mailto:info@uniclinic.pro">info@uniclinic.pro</a>
-              <div className="ftrAddr">Москва, Ломоносовский пр-кт 27, 10</div>
+              <a className="ftrPhone" href={clinic.phoneHref}>{clinic.phone}</a>
+              <a className="ftrEmail" href={`mailto:${clinic.email}`}>{clinic.email}</a>
+              <div className="ftrAddr">{clinic.address}</div>
 
               <div className="ftrSocial">
-                <a className="ftrSocBtn" href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube">
-                  <img className="ftrSocIcon" src={iconYoutubeImg} alt="" />
-                </a>
-                <a className="ftrSocBtn" href="https://t.me" target="_blank" rel="noreferrer" aria-label="Telegram">
-                  <img className="ftrSocIcon" src={iconTelegramImg} alt="" />
-                </a>
                 <a className="ftrSocBtn" href="https://wa.me/79671367706" target="_blank" rel="noreferrer" aria-label="WhatsApp">
-                  <img className="ftrSocIcon" src={iconWhatsappImg} alt="" />
+                  <Image className="ftrSocIcon" src={iconWhatsappImg} alt="" />
                 </a>
               </div>
             </div>
@@ -82,7 +76,7 @@ export default function Footer() {
             © {year} Отделение хирургии университетской клиники МГУ им. М.В. Ломоносова
           </div>
 
-          <Link className="ftrBottomLink" to="/sitemap">Карта сайта</Link>
+          <Link reloadDocument className="ftrBottomLink" to="/sitemap">Карта сайта</Link>
 
           <a className="ftrBottomLink ftrBottomLinkRight" href="https://webformula.pro" target="_blank" rel="noreferrer">
             Программирование сайта - webformula.pro

@@ -1,5 +1,6 @@
+import { sanitize } from "../../utils/sanitize";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "../../utils/router";
 import "./personaldata.css";
 
 import agreementData from "../../assets/info/agreement_full.json";
@@ -41,7 +42,7 @@ export default function PersonalData() {
       <div className="personalDataContainer">
         <div className="personalDataHead">
           <div className="personalDataBreadcrumbs">
-            <Link to="/" className="personalDataBreadcrumbLink">
+            <Link reloadDocument to="/" className="personalDataBreadcrumbLink">
               Главная
             </Link>
             <span className="personalDataBreadcrumbSep">/</span>
@@ -66,7 +67,7 @@ export default function PersonalData() {
         <article className="personalDataCard">
           <div
             className="personalDataContent"
-            dangerouslySetInnerHTML={{ __html: html }}
+            dangerouslySetInnerHTML={{ __html: sanitize(html) }}
           />
         </article>
       </div>

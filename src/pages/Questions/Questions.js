@@ -1,5 +1,8 @@
+import { track } from "../../utils/analytics";
+import Consent, { CONSENT_VERSION } from "../../components/Shared/Consent";
+import { sanitize } from "../../utils/sanitize";
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "../../utils/router";
 import legacyQuestionsData from "../../assets/info/questions.json";
 import {
   normalizeLegacyQuestion,
@@ -37,8 +40,8 @@ function QuestionForm() {
   setDone("");
 
   try {
-    const payload = { ...form };
-    console.log("POST /api/questions payload:", payload);
+    const payload = { ...form, consent: new FormData(e.currentTarget).get("consent") === "on", consent_version: CONSENT_VERSION };
+
 
     const res = await fetch(`${API_BASE}/api/questions`, {
       method: "POST",
@@ -49,8 +52,8 @@ function QuestionForm() {
     });
 
     const rawText = await res.text();
-    console.log("POST /api/questions status:", res.status);
-    console.log("POST /api/questions raw response:", rawText);
+
+
 
     let data = {};
     try {
@@ -60,14 +63,12 @@ function QuestionForm() {
     }
 
     if (!res.ok) {
-      const detail =
-        Array.isArray(data?.detail)
-          ? data.detail.map((x) => `${x.loc?.join(".")}: ${x.msg}`).join(" | ")
-          : data?.detail || data?.error || data?.raw || "Ошибка отправки";
+      const detail = "Не удалось отправить вопрос. Проверьте поля и повторите попытку.";
 
       throw new Error(detail);
     }
 
+    track("form_submit_success", "question");
     setDone("Вопрос отправлен. После ответа он появится на сайте.");
     setForm({
       patient_name: "",
@@ -76,7 +77,7 @@ function QuestionForm() {
       question_text: "",
     });
   } catch (err) {
-    console.error("POST /api/questions failed:", err);
+
     setError(err.message || "Ошибка отправки");
   } finally {
     setLoading(false);
@@ -93,50 +94,55 @@ function QuestionForm() {
         </p>
       </div>
 
-      <form className="askForm" onSubmit={onSubmit}>
+      <form data-form="question" className="askForm" onSubmit={onSubmit}>
         <div className="askGrid">
-          <input
+          <label htmlFor="question-patient_name">Ваше имя</label>
+<input
             className="askInput"
             type="text"
             placeholder="Ваше имя"
-            value={form.patient_name}
+            id="question-patient_name" autoComplete="name" value={form.patient_name}
             onChange={(e) => updateField("patient_name", e.target.value)}
             required
           />
-          <input
+          <label htmlFor="question-email">Email</label>
+<input
             className="askInput"
             type="email"
             placeholder="Email"
-            value={form.email}
+            id="question-email" autoComplete="email" value={form.email}
             onChange={(e) => updateField("email", e.target.value)}
             required
           />
         </div>
 
-        <input
+        <label htmlFor="question-phone">Телефон</label>
+<input
           className="askInput"
-          type="text"
+          type="tel" inputMode="tel"
           placeholder="Телефон"
-          value={form.phone}
+          id="question-phone" autoComplete="tel" value={form.phone}
           onChange={(e) => updateField("phone", e.target.value)}
         />
 
-        <textarea
+        <label htmlFor="question-question_text">Ваш вопрос</label>
+<textarea
           className="askTextarea"
           placeholder="Ваш вопрос"
-          value={form.question_text}
+          id="question-question_text" autoComplete="off" value={form.question_text}
           onChange={(e) => updateField("question_text", e.target.value)}
-          required
+          minLength={5} maxLength={10000} required
         />
 
+        <Consent />
         <div className="askActions">
           <button className="askButton" type="submit" disabled={loading}>
             {loading ? "Отправка..." : "Отправить вопрос"}
           </button>
         </div>
 
-        {done ? <div className="askSuccess">{done}</div> : null}
-        {error ? <div className="askError">{error}</div> : null}
+        {done ? <div role="status" className="askSuccess">{done}</div> : null}
+        {error ? <div role="alert" className="askError">{error}</div> : null}
       </form>
     </section>
   );
@@ -144,7 +150,7 @@ function QuestionForm() {
 
 function QuestionCard({ item }) {
   return (
-    <article className="qaCard">
+    <article className="qaCard" id={`question-${item.code}`}>
       <div className="qaCardTop">
         <div className="qaAuthorBlock">
           <div className="qaAvatar" />
@@ -154,14 +160,14 @@ function QuestionCard({ item }) {
       </div>
 
       <h3 className="qaTitle">
-        <Link to={`/questions/${item.code}`} className="qaTitleLink">
+        <Link reloadDocument to={item.source === "db" ? `/questions#question-${item.code}` : `/questions/${item.code}`} className="qaTitleLink">
           {item.title}
         </Link>
       </h3>
 
       <div className="qaQuestionText">
         {item.previewText}{" "}
-        <Link to={`/questions/${item.code}`} className="qaReadMore">
+        <Link reloadDocument to={item.source === "db" ? `/questions#question-${item.code}` : `/questions/${item.code}`} className="qaReadMore">
           Читать подробнее
         </Link>
       </div>
@@ -172,7 +178,7 @@ function QuestionCard({ item }) {
           {item.detailTextType === "html" || hasHtml(item.detailText) ? (
             <div
               className="qaAnswerText"
-              dangerouslySetInnerHTML={{ __html: item.detailText }}
+              dangerouslySetInnerHTML={{ __html: sanitize(item.detailText) }}
             />
           ) : (
             <div className="qaAnswerText">{item.detailText}</div>
@@ -229,13 +235,14 @@ export function QuestionDetail() {
     <section className="questionsPage">
       <div className="questionsWrap">
         <div className="questionsBreadcrumbs">
-          <Link to="/" className="questionsBreadcrumbLink">Главная</Link>
+          <Link reloadDocument to="/" className="questionsBreadcrumbLink">Главная</Link>
           <span className="questionsBreadcrumbSep">/</span>
-          <Link to="/questions" className="questionsBreadcrumbLink">Вопросы и ответы</Link>
+          <Link reloadDocument to="/questions" className="questionsBreadcrumbLink">Вопросы и ответы</Link>
           <span className="questionsBreadcrumbSep">/</span>
           <span className="questionsBreadcrumbCurrent">{item.title}</span>
         </div>
 
+        <h1 className="questionsPageTitle">{item.title}</h1>
         <QuestionCard item={item} />
       </div>
     </section>
@@ -277,7 +284,7 @@ export default function Questions() {
         <div className="questionsHeader">
           <div>
             <div className="questionsBreadcrumbs">
-              <Link to="/" className="questionsBreadcrumbLink">Главная</Link>
+              <Link reloadDocument to="/" className="questionsBreadcrumbLink">Главная</Link>
               <span className="questionsBreadcrumbSep">/</span>
               <span className="questionsBreadcrumbCurrent">Вопросы и ответы</span>
             </div>

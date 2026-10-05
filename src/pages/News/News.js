@@ -1,5 +1,7 @@
+import Image from "../../components/Shared/Image";
+import { sanitize } from "../../utils/sanitize";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "../../utils/router";
 import "./news.css";
 
 import newsData from "../../assets/info/news_full.json";
@@ -115,7 +117,7 @@ function renderHtmlOrText(value) {
   if (!value) return null;
 
   if (hasHtml(value)) {
-    return <div dangerouslySetInnerHTML={{ __html: value }} />;
+    return <div dangerouslySetInnerHTML={{ __html: sanitize(value) }} />;
   }
 
   return <p>{value}</p>;
@@ -130,10 +132,10 @@ function NewsCard({ item }) {
 
   return (
     <article className="newsCard">
-      <Link to={`/news/${code}`} className="newsCardLink" aria-label={title}>
+      <Link reloadDocument to={`/news/${code}`} className="newsCardLink" aria-label={title}>
         <div className="newsImageBox">
           {image ? (
-            <img src={image} alt={title} className="newsImage" />
+            <Image src={image} alt={title} className="newsImage" />
           ) : (
             <div className="newsImagePlaceholder" />
           )}
@@ -159,11 +161,11 @@ export function NewsDetail() {
         <div className="newsHero">
           <div className="newsWrap">
             <div className="newsBreadcrumbs">
-              <Link to="/" className="newsCrumbLink">
+              <Link reloadDocument to="/" className="newsCrumbLink">
                 Главная
               </Link>
               <span className="newsSep">/</span>
-              <Link to="/news" className="newsCrumbLink">
+              <Link reloadDocument to="/news" className="newsCrumbLink">
                 Новости
               </Link>
             </div>
@@ -185,11 +187,11 @@ export function NewsDetail() {
     <section className="newsPage">
       <div className="newsWrap newsDetailWrap">
         <div className="newsBreadcrumbs newsBreadcrumbsDetail">
-          <Link to="/" className="newsCrumbLink">
+          <Link reloadDocument to="/" className="newsCrumbLink">
             Главная
           </Link>
           <span className="newsSep">/</span>
-          <Link to="/news" className="newsCrumbLink">
+          <Link reloadDocument to="/news" className="newsCrumbLink">
             Новости
           </Link>
           <span className="newsSep">/</span>
@@ -202,7 +204,7 @@ export function NewsDetail() {
 
         {image ? (
           <div className="newsDetailImageWrap">
-            <img src={image} alt={title} className="newsDetailImage" />
+            <Image src={image} alt={title} className="newsDetailImage" />
           </div>
         ) : null}
 
@@ -226,7 +228,7 @@ export function NewsDetail() {
                   rel="noreferrer"
                   className="newsGalleryItem"
                 >
-                  <img
+                  <Image
                     src={photo.src}
                     alt={photo?.original_name || `${title} ${index + 1}`}
                     className="newsGalleryImage"
@@ -249,7 +251,7 @@ export default function News() {
       <div className="newsHero">
         <div className="newsWrap">
           <div className="newsBreadcrumbs">
-            <Link to="/" className="newsCrumbLink">
+            <Link reloadDocument to="/" className="newsCrumbLink">
               Главная
             </Link>
             <span className="newsSep">/</span>

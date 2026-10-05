@@ -1,5 +1,7 @@
+import Image from "../../components/Shared/Image";
+import { clinic, toggleAccessibility } from "../../config/site";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink } from "../../utils/router";
 import "./home.css";
 
 /**
@@ -387,7 +389,7 @@ export default function Home() {
           <div className="homeContainer homeHdrNavInner">
             <nav className="homeHdrMenu" aria-label="Навигация">
               {navItems.map((it) => (
-                <NavLink
+                <NavLink reloadDocument
                   key={it.to}
                   to={it.to}
                   end={!!it.end}
@@ -411,7 +413,7 @@ export default function Home() {
                 {isPatientsOpen && (
                   <div className="homeHdrDropMenu">
                     {patientsDropdownItems.map((item) => (
-                      <Link
+                      <Link reloadDocument
                         key={item.to}
                         to={item.to}
                         className="homeHdrDropLink"
@@ -426,10 +428,8 @@ export default function Home() {
             </nav>
 
             <div className="homeHdrRight">
-              <a className="homeHdrPhone" href="tel:+79671367706">
-                +7 (967)136 77
-                <br />
-                06
+              <a className="homeHdrPhone" href={clinic.phoneHref}>
+                {clinic.phone}
               </a>
 
               <div className="homeHdrIcons">
@@ -440,17 +440,17 @@ export default function Home() {
                   rel="noreferrer"
                   aria-label="WhatsApp"
                 >
-                  <img src={iconWhatsappImg} alt="" />
+                  <Image src={iconWhatsappImg} alt="" />
                 </a>
 
                 <a
                   className="homeHdrIconBtn"
-                  href="http://vk.com/surgerymgy"
+                  href="https://vk.com/surgerymgy"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="VK"
                 >
-                  <img src={iconVkImg} alt="" />
+                  <Image src={iconVkImg} alt="" />
                 </a>
 
                 <a
@@ -460,23 +460,23 @@ export default function Home() {
                   rel="noreferrer"
                   aria-label="Telegram"
                 >
-                  <img src={iconTelegramImg} alt="" />
+                  <Image src={iconTelegramImg} alt="" />
                 </a>
 
                 <button
                   className="homeHdrIconBtn homeHdrExtraIcon"
                   type="button"
-                  aria-label="Версия для слабовидящих"
+                  aria-label="Версия для слабовидящих" onClick={toggleAccessibility}
                 >
-                  <img src={iconEyeImg} alt="" />
+                  <Image src={iconEyeImg} alt="" />
                 </button>
 
                 <button
                   className="homeHdrIconBtn homeHdrExtraIcon"
                   type="button"
-                  aria-label="Поиск"
+                  aria-label="Поиск" onClick={() => { window.location.href = "/search"; }}
                 >
-                  <img src={iconSearchImg} alt="" />
+                  <Image src={iconSearchImg} alt="" />
                 </button>
               </div>
             </div>
@@ -493,7 +493,7 @@ export default function Home() {
         <div className="homeHeroInfo">
           <div className="homeContainer homeHeroInfoInner">
             <a className="homeHeroBrand" href="/">
-              <img className="homeHeroLogo" src={logoWhite} alt="Uniclinic" />
+              <Image loading="eager" className="homeHeroLogo" src={logoWhite} alt="Uniclinic" />
               <div className="homeHeroBrandText">
                 <div className="homeHeroBrandTitle">ОТДЕЛЕНИЕ ХИРУРГИИ</div>
                 <div className="homeHeroBrandSub">МНОЦ МГУ имени М. В. Ломоносова</div>
@@ -502,7 +502,7 @@ export default function Home() {
 
             <div className="homeHeroMeta">
               <a className="homeHeroGoodPlace" href="/news/khoroshee-mesto/">
-                <img src={goodPlace} alt="Хорошее место" />
+                <Image src={goodPlace} alt="Хорошее место" />
               </a>
 
               <div className="homeHeroMetro">
@@ -513,8 +513,8 @@ export default function Home() {
                   <span className="dot dotYellow" />
                   <span>Метро «Ломоносовский пр-кт»</span>
                 </div>
-                <div className="homeHeroAddr">Москва, Ломоносовский пр-кт 27, 10</div>
-                <div className="homeHeroHours">Пн–Пт: 8:00 – 17:00</div>
+                <div className="homeHeroAddr">{clinic.address}</div>
+                <div className="homeHeroHours">{clinic.hours}</div>
               </div>
             </div>
 
@@ -558,7 +558,7 @@ export default function Home() {
         </div>
       </section>
 
-      <main className="homeMain">
+      <main id="main-content" className="homeMain">
         <section className="homeSection">
           <div className="homeContainer">
             <h2 className="homeH1">
@@ -569,7 +569,7 @@ export default function Home() {
               {serviceCards.map((s) => (
                 <a key={s.href} href={s.href} className="homeServiceCard">
                   <div className="homeServiceIcon">
-                    <img src={s.icon} alt="" />
+                    <Image src={s.icon} alt="" />
                   </div>
                   <div className="homeServiceBody">
                     <div className="homeServiceTitle">{s.title}</div>
@@ -628,7 +628,7 @@ export default function Home() {
               {doctors.map((d) => (
                 <a key={d.href} href={d.href} className="homeDoctorCard">
                   <div className="homeDoctorImgWrap">
-                    <img src={d.img} alt={d.name} className="homeDoctorImg" />
+                    <Image src={d.img} alt={d.name} className="homeDoctorImg" />
                   </div>
                   <div className="homeDoctorBody">
                     <div className="homeDoctorName">{d.name}</div>
@@ -657,7 +657,7 @@ export default function Home() {
               {clinicalCases.map((c) => (
                 <a key={c.href} href={c.href} className="homeMediaCard">
                   <div className="homeMediaImgWrap">
-                    <img src={c.img} alt={c.title} className="homeMediaImg" />
+                    <Image src={c.img} alt={c.title} className="homeMediaImg" />
                   </div>
                   <div className="homeMediaBody">
                     <div className="homeMediaTitle">{c.title}</div>
@@ -683,7 +683,7 @@ export default function Home() {
               {articles.map((a) => (
                 <a key={a.href} href={a.href} className="homeMediaCard">
                   <div className="homeMediaImgWrap">
-                    <img src={a.img} alt={a.title} className="homeMediaImg" />
+                    <Image src={a.img} alt={a.title} className="homeMediaImg" />
                   </div>
                   <div className="homeMediaBody">
                     <div className="homeMediaMeta">{a.date}</div>
@@ -709,7 +709,7 @@ export default function Home() {
               {news.map((n) => (
                 <a key={n.href} href={n.href} className="homeMediaCard">
                   <div className="homeMediaImgWrap">
-                    <img src={n.img} alt={n.title} className="homeMediaImg" />
+                    <Image src={n.img} alt={n.title} className="homeMediaImg" />
                   </div>
                   <div className="homeMediaBody">
                     <div className="homeMediaMeta">{n.date}</div>
@@ -744,7 +744,7 @@ export default function Home() {
 
             <div className="homeHdrMobileBody">
               {navItems.map((item) => (
-                <NavLink
+                <NavLink reloadDocument
                   key={item.to}
                   to={item.to}
                   end={!!item.end}
@@ -772,7 +772,7 @@ export default function Home() {
                 {isMobilePatientsOpen && (
                   <div className="homeHdrMobileDropdown">
                     {patientsDropdownItems.map((item) => (
-                      <Link
+                      <Link reloadDocument
                         key={item.to}
                         to={item.to}
                         className="homeHdrMobileDropdownLink"

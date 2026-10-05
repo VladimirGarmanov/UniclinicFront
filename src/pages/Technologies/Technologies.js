@@ -1,5 +1,6 @@
+import Image from "../../components/Shared/Image";
 import React from "react";
-import { Link, NavLink, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "../../utils/router";
 import "./technologies.css";
 
 import technologiesData from "../../assets/info/technologies_full.json";
@@ -17,9 +18,9 @@ export function TechnologyDetail() {
         <div className="techContainer">
           <div className="techHead">
             <div className="techBreadcrumbs">
-              <Link to="/" className="techBreadcrumbLink">Главная</Link>
+              <Link reloadDocument to="/" className="techBreadcrumbLink">Главная</Link>
               <span className="techBreadcrumbSep">/</span>
-              <Link to="/technologies" className="techBreadcrumbLink">Технологии</Link>
+              <Link reloadDocument to="/technologies" className="techBreadcrumbLink">Технологии</Link>
             </div>
             <h1 className="techTitle">Технология не найдена</h1>
           </div>
@@ -44,7 +45,7 @@ export default function Technologies() {
       <div className="techContainer">
         <div className="techHead">
           <div className="techBreadcrumbs">
-            <Link to="/" className="techBreadcrumbLink">Главная</Link>
+            <Link reloadDocument to="/" className="techBreadcrumbLink">Главная</Link>
             <span className="techBreadcrumbSep">/</span>
             <span className="techBreadcrumbCurrent">Технологии</span>
           </div>
@@ -58,10 +59,10 @@ export default function Technologies() {
             const image = getPrimaryImage(item);
 
             return (
-              <NavLink key={item?.fields?.ID || code} to={`/technologies/${code}`} className="techCard">
+              <NavLink reloadDocument key={item?.fields?.ID || code} to={`/technologies/${code}`} className="techCard">
                 <div className="techMedia">
                   {image ? (
-                    <img src={image} alt={name} className="techImg" />
+                    <Image src={image} alt={name} className="techImg" />
                   ) : null}
 
                   <div className="techOverlay">

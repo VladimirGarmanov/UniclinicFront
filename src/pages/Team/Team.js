@@ -1,5 +1,6 @@
+import Image from "../../components/Shared/Image";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "../../utils/router";
 import "./team.css";
 
 import doctorsData from "../../assets/info/doctors_full.json";
@@ -25,11 +26,11 @@ export function DoctorDetail() {
       <section className="teamPage">
         <div className="teamWrap">
           <div className="teamBreadcrumbs">
-            <Link to="/" className="teamCrumbLink">
+            <Link reloadDocument to="/" className="teamCrumbLink">
               Главная
             </Link>
             <span className="teamSep">/</span>
-            <Link to="/team" className="teamCrumbLink">
+            <Link reloadDocument to="/team" className="teamCrumbLink">
               Команда
             </Link>
           </div>
@@ -51,11 +52,11 @@ export function DoctorDetail() {
       <div className="teamWrap">
         <div className="doctorDetail">
           <div className="teamBreadcrumbs">
-            <Link to="/" className="teamCrumbLink">
+            <Link reloadDocument to="/" className="teamCrumbLink">
               Главная
             </Link>
             <span className="teamSep">/</span>
-            <Link to="/team" className="teamCrumbLink">
+            <Link reloadDocument to="/team" className="teamCrumbLink">
               Команда
             </Link>
             <span className="teamSep">/</span>
@@ -65,7 +66,7 @@ export function DoctorDetail() {
           <div className="doctorDetailHero">
             {photo ? (
               <div className="doctorDetailPhotoBox">
-                <img src={photo} alt={name} className="doctorDetailPhoto" />
+                <Image src={photo} alt={name} className="doctorDetailPhoto" />
               </div>
             ) : null}
 
@@ -116,7 +117,7 @@ export default function Team() {
     <section className="teamPage">
       <div className="teamWrap">
         <div className="teamBreadcrumbs">
-          <Link to="/" className="teamCrumbLink">
+          <Link reloadDocument to="/" className="teamCrumbLink">
             Главная
           </Link>
           <span className="teamSep">/</span>
@@ -140,13 +141,13 @@ export default function Team() {
                 <div className="teamPhotoBox">
                   {photo ? (
                     <div className="teamPhotoFrame">
-                      <img src={photo} alt={name} className="teamPhoto" />
+                      <Image src={photo} alt={name} className="teamPhoto" />
                     </div>
                   ) : null}
                 </div>
 
                 <div className="teamText">
-                  <Link to={`/doctors/${code}`} className="teamNameLink">
+                  <Link reloadDocument to={`/doctors/${code}`} className="teamNameLink">
                     {name}
                   </Link>
 

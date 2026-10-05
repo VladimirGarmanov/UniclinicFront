@@ -1,5 +1,6 @@
+import Image from "../../components/Shared/Image";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "../../utils/router";
 import "./articles.css";
 
 import articlesData from "../../assets/info/articles_full.json";
@@ -16,9 +17,9 @@ export function ArticleDetail() {
       <section className="articlesPage">
         <div className="articlesWrap">
           <div className="articlesBreadcrumbs">
-            <Link to="/" className="articlesCrumbLink">Главная</Link>
+            <Link reloadDocument to="/" className="articlesCrumbLink">Главная</Link>
             <span className="articlesSep">/</span>
-            <Link to="/articles" className="articlesCrumbLink">Статьи</Link>
+            <Link reloadDocument to="/articles" className="articlesCrumbLink">Статьи</Link>
           </div>
           <h1 className="articlesH1">Статья не найдена</h1>
         </div>
@@ -41,7 +42,7 @@ export default function Articles() {
     <section className="articlesPage">
       <div className="articlesWrap">
         <div className="articlesBreadcrumbs">
-          <Link to="/" className="articlesCrumbLink">Главная</Link>
+          <Link reloadDocument to="/" className="articlesCrumbLink">Главная</Link>
           <span className="articlesSep">/</span>
           <span className="articlesCrumbActive">Статьи</span>
         </div>
@@ -58,8 +59,8 @@ export default function Articles() {
             return (
               <article className="articlesCard" key={item?.fields?.ID || code}>
                 {image ? (
-                  <Link to={`/articles/${code}`} className="articlesCardMediaLink">
-                    <img src={image} alt={name} className="articlesCardImage" />
+                  <Link reloadDocument to={`/articles/${code}`} className="articlesCardMediaLink">
+                    <Image src={image} alt={name} className="articlesCardImage" />
                     <span className="articlesCardOverlay">
                       <span className="articlesCardOverlayPill">Подробнее</span>
                     </span>
@@ -68,7 +69,7 @@ export default function Articles() {
 
                 <div className="articlesCardBody">
                   <h3 className="articlesCardTitle">
-                    <Link to={`/articles/${code}`} className="articlesCardTitleLink">
+                    <Link reloadDocument to={`/articles/${code}`} className="articlesCardTitleLink">
                       {name}
                     </Link>
                   </h3>

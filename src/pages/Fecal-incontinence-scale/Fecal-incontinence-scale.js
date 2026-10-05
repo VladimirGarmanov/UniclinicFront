@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "../../utils/router";
 import "./fecal-incontinence-scale.css";
 
 const QUESTIONS = [
@@ -121,7 +121,7 @@ export default function FecalIncontinenceScalePage() {
       <div className="fisHero">
         <div className="fisContainer">
           <div className="fisBreadcrumbs">
-            <Link to="/" className="fisBreadcrumbLink">
+            <Link reloadDocument to="/" className="fisBreadcrumbLink">
               Главная
             </Link>
             <span className="fisBreadcrumbSep">/</span>

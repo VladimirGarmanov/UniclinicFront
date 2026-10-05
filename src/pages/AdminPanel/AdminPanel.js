@@ -1,3 +1,4 @@
+import ReviewModeration from "./ReviewModeration";
 import React, { useEffect, useState } from "react";
 import "./admin-panel.css";
 
@@ -65,6 +66,8 @@ function LoginForm({ onLoggedIn }) {
 
 function QuestionCard({ item, onSaved }) {
   const [title, setTitle] = useState(item.title || "Вопрос пациента");
+  const [publicQuestion, setPublicQuestion] = useState(item.public_question_text || "");
+  const [publicationApproved, setPublicationApproved] = useState(false);
   const [answerText, setAnswerText] = useState(item.answer_text || "");
   const [answerHtml, setAnswerHtml] = useState(Boolean(item.answer_html));
   const [isPublished, setIsPublished] = useState(Boolean(item.is_published));
@@ -84,6 +87,8 @@ function QuestionCard({ item, onSaved }) {
         },
         body: JSON.stringify({
           title,
+          public_question_text: publicQuestion,
+          publication_approved: publicationApproved,
           answer_text: answerText,
           answer_html: answerHtml,
           is_published: isPublished,
@@ -146,6 +151,8 @@ function QuestionCard({ item, onSaved }) {
         />
       </div>
 
+      <div className="adminPanelField"><label className="adminPanelLabel">Обезличенный текст для публикации</label><textarea className="adminPanelTextarea" value={publicQuestion} onChange={e => setPublicQuestion(e.target.value)} /></div>
+      <label className="adminPanelCheck"><input type="checkbox" checked={publicationApproved} onChange={e => setPublicationApproved(e.target.checked)} /><span>Проверены заголовок, публичный вопрос и ответ: публикация допустима, персональных данных нет.</span></label>
       <label className="adminPanelCheck">
         <input
           type="checkbox"
@@ -227,6 +234,8 @@ export default function AdminPanel() {
   async function handleLogout() {
     await fetch(`${API_BASE}/api/admin/logout`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{}",
       credentials: "include",
     });
 
@@ -282,6 +291,7 @@ export default function AdminPanel() {
         {loading ? <div className="adminPanelLoading">Загрузка вопросов...</div> : null}
         {error ? <div className="adminPanelError">{error}</div> : null}
 
+        <ReviewModeration />
         <div className="adminPanelList">
           {questions.map((item) => (
             <QuestionCard

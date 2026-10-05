@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "../../utils/router";
 import "./need-proctologist-consultation.css";
 
 const QUESTIONS = [
@@ -119,7 +119,7 @@ export default function NeedProctologistConsultationPage() {
       <div className="npcHero">
         <div className="npcContainer">
           <div className="npcBreadcrumbs">
-            <Link to="/" className="npcBreadcrumbLink">
+            <Link reloadDocument to="/" className="npcBreadcrumbLink">
               Главная
             </Link>
             <span className="npcBreadcrumbSep">/</span>

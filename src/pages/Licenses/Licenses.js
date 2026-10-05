@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import Image from "../../components/Shared/Image";
+import React, { useEffect, useMemo, useState, useRef } from "react";
+import { Link } from "../../utils/router";
 import "./licenses.css";
 
 import licencesData from "../../assets/info/licences_full.json";
@@ -32,6 +33,7 @@ function getLicenceFull(item) {
 }
 
 function LicenceSlider({ items, startIndex, onClose }) {
+  const dialogRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(startIndex);
 
   const currentItem = items[currentIndex];
@@ -47,10 +49,18 @@ function LicenceSlider({ items, startIndex, onClose }) {
   };
 
   useEffect(() => {
+    const previousFocus = document.activeElement;
+    dialogRef.current?.querySelector("button")?.focus();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     const handleKeyDown = (event) => {
+      if (event.key === "Tab") {
+        const buttons = [...dialogRef.current.querySelectorAll('button, a[href], [tabindex="0"]')];
+        const first = buttons[0], last = buttons.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      }
       if (event.key === "Escape") onClose();
       if (event.key === "ArrowLeft") goPrev();
       if (event.key === "ArrowRight") goNext();
@@ -60,6 +70,7 @@ function LicenceSlider({ items, startIndex, onClose }) {
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose]);
@@ -67,7 +78,7 @@ function LicenceSlider({ items, startIndex, onClose }) {
   if (!currentItem) return null;
 
   return (
-    <div className="licModal" role="dialog" aria-modal="true" aria-label={currentTitle}>
+    <div ref={dialogRef} className="licModal" role="dialog" aria-modal="true" aria-label={currentTitle}>
       <div className="licModalBackdrop" onClick={onClose} />
 
       <div className="licModalContent">
@@ -101,7 +112,7 @@ function LicenceSlider({ items, startIndex, onClose }) {
 
           <div className="licModalImageWrap">
             {currentImage ? (
-              <img src={currentImage} alt={currentTitle} className="licModalImage" />
+              <Image src={currentImage} alt={currentTitle} className="licModalImage" />
             ) : null}
           </div>
         </div>
@@ -139,7 +150,7 @@ export default function Licences() {
       <div className="licHero">
         <div className="licWrap">
           <div className="licBreadcrumbs">
-            <Link to="/" className="licCrumbLink">
+            <Link reloadDocument to="/" className="licCrumbLink">
               Главная
             </Link>
             <span className="licSep">/</span>
@@ -167,7 +178,7 @@ export default function Licences() {
                 >
                   <div className="licImageBox">
                     {preview ? (
-                      <img src={preview} alt={title} className="licImage" />
+                      <Image src={preview} alt={title} className="licImage" />
                     ) : (
                       <div className="licImagePlaceholder" />
                     )}

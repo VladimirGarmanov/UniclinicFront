@@ -1,5 +1,6 @@
+import Image from "../../components/Shared/Image";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "../../utils/router";
 import "./services.css";
 
 import servicesData from "../../assets/info/services_full.json";
@@ -76,11 +77,11 @@ export function ServiceDetail() {
         <div className="svc__container">
           <div className="svc__hero">
             <div className="svc__breadcrumbs">
-              <Link to="/" className="svc__bcLink">
+              <Link reloadDocument to="/" className="svc__bcLink">
                 Главная
               </Link>
               <span className="svc__bcSep">/</span>
-              <Link to="/services" className="svc__bcLink">
+              <Link reloadDocument to="/services" className="svc__bcLink">
                 Услуги
               </Link>
             </div>
@@ -102,11 +103,11 @@ export function ServiceDetail() {
       <div className="svc__container">
         <div className="svcDetail">
           <div className="svc__breadcrumbs">
-            <Link to="/" className="svc__bcLink">
+            <Link reloadDocument to="/" className="svc__bcLink">
               Главная
             </Link>
             <span className="svc__bcSep">/</span>
-            <Link to="/services" className="svc__bcLink">
+            <Link reloadDocument to="/services" className="svc__bcLink">
               Услуги
             </Link>
             <span className="svc__bcSep">/</span>
@@ -116,7 +117,7 @@ export function ServiceDetail() {
           <div className="svcDetailHero">
             {image ? (
               <div className="svcDetailHero__media">
-                <img src={image} alt={name} className="svcDetailHero__img" />
+                <Image src={image} alt={name} className="svcDetailHero__img" />
               </div>
             ) : null}
 
@@ -153,7 +154,7 @@ export default function Services() {
       <div className="svc__container">
         <div className="svc__hero">
           <div className="svc__breadcrumbs">
-            <Link to="/" className="svc__bcLink">
+            <Link reloadDocument to="/" className="svc__bcLink">
               Главная
             </Link>
             <span className="svc__bcSep">/</span>
@@ -162,7 +163,7 @@ export default function Services() {
           <h1 className="svc__title">Услуги</h1>
         </div>
 
-        <main className="svc__main">
+        <section className="svc__main">
           <div className="svc__grid">
             {SERVICES.map((item) => {
               const image = getPrimaryImage(item);
@@ -173,9 +174,9 @@ export default function Services() {
               return (
                 <article className="svcCard" key={item?.fields?.ID || code}>
                   {image ? (
-                    <Link to={`/services/${code}`} className="svcCard__mediaBtn">
+                    <Link reloadDocument to={`/services/${code}`} className="svcCard__mediaBtn">
                       <span className="svcCard__imgWrap">
-                        <img src={image} alt={name} className="svcCard__img" />
+                        <Image src={image} alt={name} className="svcCard__img" />
                       </span>
                       <span className="svcCard__overlay">
                         <span className="svcCard__overlayPill">Подробнее</span>
@@ -185,7 +186,7 @@ export default function Services() {
 
                   <div className="svcCard__body">
                     <h3 className="svcCard__title">
-                      <Link to={`/services/${code}`} className="svcCard__titleLink">
+                      <Link reloadDocument to={`/services/${code}`} className="svcCard__titleLink">
                         {name}
                       </Link>
                     </h3>
@@ -198,7 +199,7 @@ export default function Services() {
               );
             })}
           </div>
-        </main>
+        </section>
       </div>
     </section>
   );

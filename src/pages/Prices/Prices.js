@@ -14,7 +14,7 @@ export default function Prices() {
   }, [query]);
 
   return (
-    <main className="pricesPage">
+    <section className="pricesPage">
       <div className="pricesContainer">
         <h1 className="pricesH1">Цены</h1>
 
@@ -59,6 +59,6 @@ export default function Prices() {
           )}
         </div>
       </div>
-    </main>
+    </section>
   );
 }
