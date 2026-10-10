@@ -1,7 +1,11 @@
+import Header from "../../components/Header/Header";
+import homeContent from "../../assets/info/home-content.json";
+import AppointmentForm from "../../components/Shared/AppointmentForm";
 import Image from "../../components/Shared/Image";
-import { clinic, toggleAccessibility } from "../../config/site";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Link, NavLink } from "../../utils/router";
+import { normalizeUrl } from "../../config/urls";
+import { clinic } from "../../config/site";
+import React, { useMemo } from "react";
+
 import "./home.css";
 
 /**
@@ -10,15 +14,6 @@ import "./home.css";
 import heroBg from "../../assets/home/9at58kjh5xg4451pkfzq0qxvvow2gzen.jpg";
 import logoWhite from "../../assets/home/logo-white.png";
 import goodPlace from "../../assets/home/good-place.png";
-
-/**
- * HEADER ICONS
- */
-import iconWhatsappImg from "../../assets/home/whatsapp.svg";
-import iconVkImg from "../../assets/home/whatsapp.svg";
-import iconTelegramImg from "../../assets/home/telegram_white.svg";
-import iconEyeImg from "../../assets/home/eye.svg";
-import iconSearchImg from "../../assets/home/eye.svg";
 
 /**
  * SERVICE ICONS
@@ -37,157 +32,7 @@ import docGarmanova from "../../assets/team/garmanova.png";
 import docAgapov from "../../assets/team/agapov.jpg";
 import docBabadzhanyan from "../../assets/team/babadzhanyan.jpg";
 
-/**
- * CLINICAL CASES
- */
-import ccGoodEnding from "../../assets/home/nm927mmblu9v2p8cdlne7dg9g2nc4y3d.jpg";
-import ccBigTumor from "../../assets/home/zaqfd0q1dbycfs1qoohpklb25663bki5.jpg";
-import ccLiverCancer from "../../assets/home/ex1q73nujn7g6m51r299v90asjsczpje.jpg";
-import ccHemorrhoids from "../../assets/home/ts48qoec1b6z0thcodxvmp6ukyzkch77.jpg";
-import ccAbdominalTumor from "../../assets/home/b7sadlq53giyc7ciyew8x5nq9lfy86ro.jpg";
-import ccPriceOfMistake from "../../assets/home/d6nq5h6p5hp52znck7ze0rbky14b83ov.jpg";
-import ccSimultaneous from "../../assets/home/mpaf8wq7n9txhumcjf4h8qun2mttcznt.jpg";
-import ccRectalCancer from "../../assets/home/5x0yhun8f5mon6jn1lp0m92yn9v6ji5z.jpg";
-import ccSigmoidTumor from "../../assets/home/30bk3iu6jz12d31dopl59vr3bfdz3gfm.png";
-import ccSaved2Weeks from "../../assets/home/r35ucpgr5lh3kr7lmzomwgynh03s070s.jpg";
-import ccBigColonTumor from "../../assets/home/sxwed8iachq46hg6mnufueej3q0bpdpb.jpg";
-import ccHardPath from "../../assets/home/hr8nacu54y5z6tub5qa3z9482r9cys7k.jpg";
-
-/**
- * ARTICLES
- */
-import artColonoscopy from "../../assets/home/acju4x0xicqgnkczmdlqc5b3rtuz4ahk.jpg";
-import artShameProctologist from "../../assets/home/jqwcdr70nxcextdvh1rqb5qmt4jnq79w.jpg";
-import artDetoxMyth from "../../assets/home/zzzx6qmv4wdpn2jnzuhjx96u16womx89.jpg";
-import artShamePain from "../../assets/home/550944a670145c94f53c843845dc0487.jpg";
-import artCRC from "../../assets/home/5rqb112ilflvaooalqi172kg0ughscbz.jpg";
-import artCancerTypes from "../../assets/home/m89vy4h4sgus73iy4drxdb7d2cs6fmfs.jpg";
-import artRulesDoc from "../../assets/home/kdhwmqq2gkadbr7h8z27qsluomoj2ah1.jpg";
-import artHemorrhoidsAdvice from "../../assets/home/pvtmej03a3sbaasxh2an1ct50nh1jp3s.jpeg";
-import art9Questions from "../../assets/home/hmx66e5dw3m5tyik9djfg13whhlzbc0l.jpg";
-import artHemorrhoidsMenWomen from "../../assets/home/b232xygnq34nzh2d0uewx13q06nwg5zu.jpg";
-import artMythsCRC from "../../assets/home/aj1pcxra2reqmn1o6m2vasdjwh4ii8ao.jpg";
-import artPolyps from "../../assets/home/qeqfuz6idk8cp2e3il0t9qij86wqgujj.jpg";
-
-/**
- * NEWS
- */
-import newsConference from "../../assets/home/5als3phsqzwyqtiprzykmguxn23sj8ew.jpg";
-import newsUzi from "../../assets/home/pdw6mxsei4fcok27xkzwqfjvfuzbwa6o.png";
-import newsScheduleChange from "../../assets/home/6loioo6uv0kbvvpt7eew1nyuazo29h34.png";
-import newsAmbColoproctology from "../../assets/home/403bocuyswm751ieofonkdoaq1vukswc.jpg";
-import newsChelyabinsk from "../../assets/home/g82605by3uw4b3a5glqvx2wzm2w77v8k.jpg";
-import newsKemerovo from "../../assets/home/khr8k2fgs6k53jnqub8e5mljajldb8h5.jpg";
-import newsBot from "../../assets/home/3gfti5kl4yh9lajhywn5blw1f80xzhj1.jpg";
-import newsGoodPlaceStory from "../../assets/home/nu3p062tz4zkdosk3go47nrh1se4am77.jpg";
-import newsCupFFM from "../../assets/home/wwqrd044d6qkilrluog4qc77gcq06j6x.jpg";
-import newsDiscussionClub from "../../assets/home/j1k1ly2r73e2h0qoxlehgcnaq9k95b71.png";
-import newsMasterClassProcto from "../../assets/home/a5d55v7vegm0f2qsya760miew83evc11.jpg";
-import newsMakhachkala from "../../assets/home/blx791ae4pkuu3ybxo0kjt8ml38b5hwg.jpg";
-
 export default function Home() {
-  const [isStuck, setIsStuck] = useState(false);
-  const [isPatientsOpen, setIsPatientsOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobilePatientsOpen, setIsMobilePatientsOpen] = useState(false);
-
-  const patientsMenuRef = useRef(null);
-  const mobileMenuRef = useRef(null);
-
-  useEffect(() => {
-    const onScroll = () => setIsStuck(window.scrollY > 0);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const onPointerDown = (event) => {
-      if (
-        patientsMenuRef.current &&
-        !patientsMenuRef.current.contains(event.target)
-      ) {
-        setIsPatientsOpen(false);
-      }
-
-      if (
-        mobileMenuRef.current &&
-        isMobileMenuOpen &&
-        !mobileMenuRef.current.contains(event.target) &&
-        !event.target.closest(".homeHdrBurger") &&
-        !event.target.closest(".homeHeroMobileBurger")
-      ) {
-        setIsMobileMenuOpen(false);
-        setIsMobilePatientsOpen(false);
-      }
-    };
-
-    const onKeyDown = (event) => {
-      if (event.key === "Escape") {
-        setIsPatientsOpen(false);
-        setIsMobileMenuOpen(false);
-        setIsMobilePatientsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.removeEventListener("mousedown", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [isMobileMenuOpen]);
-
-  useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isMobileMenuOpen]);
-
-  const closeMenus = () => {
-    setIsPatientsOpen(false);
-    setIsMobileMenuOpen(false);
-    setIsMobilePatientsOpen(false);
-  };
-
-  const navItems = useMemo(
-    () => [
-      { to: "/", label: "Главная", end: true },
-      { to: "/team", label: "Команда" },
-      { to: "/technologies", label: "Технологии" },
-      { to: "/prices", label: "Цены" },
-      { to: "/services", label: "Услуги" },
-      { to: "/diseases", label: "Заболевания" },
-      { to: "/reviews", label: "Отзывы" },
-      { to: "/contacts", label: "Контакты" },
-    ],
-    []
-  );
-
-  const patientsDropdownItems = useMemo(
-    () => [
-      {
-        to: "https://t.me/surgerymgu_bot",
-        label: "Онлайн консультация онколога, хирурга, колопроктолога",
-      },
-      { to: "/clinicalcases/", label: "Истории пациентов" },
-      { to: "/questions/", label: "Вопрос-ответ" },
-      { to: "/articles/", label: "Статьи" },
-      { to: "/licenses/", label: "Лицензии" },
-      {
-        to: "/fecal-incontinence-scale/",
-        label: "Шкала для оценки уровня анального недержания (кала)",
-      },
-      {
-        to: "/need-proctologist-consultation",
-        label: "Нужна ли вам консультация проктолога?",
-      },
-    ],
-    []
-  );
-
   const serviceCards = useMemo(
     () => [
       {
@@ -317,191 +162,30 @@ export default function Home() {
     []
   );
 
-  const clinicalCases = useMemo(
-    () => [
-      { title: "История с хорошим концом", subtitle: "Что было бы, если бы пациентка к нам не попала?", href: "/clinicalcases/istoriya-s-khoroshim-kontsom/", img: ccGoodEnding },
-      { title: "Большая злокачественная опухоль", subtitle: "Банальный дискомфорт в животе?", href: "/clinicalcases/bolshaya-zlokachestvennaya-opukhol/", img: ccBigTumor },
-      { title: "Рак печени?", subtitle: "История про то, что … в жизни всякое бывает!", href: "/clinicalcases/rak-pecheni/", img: ccLiverCancer },
-      { title: "История про геморрой", subtitle: "В любой момент у нас есть два варианта…", href: "/clinicalcases/istoriya-pro-gemorroy/", img: ccHemorrhoids },
-      { title: "Опухоль брюшной полости", subtitle: "История пациента, которому удалось добиться прогресса…", href: "/clinicalcases/opukhol-bryushnoy-polosti/", img: ccAbdominalTumor },
-      { title: "Цена ошибки", subtitle: "Насколько дорогой может быть цена ошибки?", href: "/clinicalcases/tsena-oshibki/", img: ccPriceOfMistake },
-      { title: "Симультанная хирургия", subtitle: "Сегодня история пациентки…", href: "/clinicalcases/simultannaya-khirurgiya/", img: ccSimultaneous },
-      { title: "Рак прямой кишки", subtitle: "«Никогда, никогда, никогда не сдавайся».", href: "/clinicalcases/rak-pryamoy-kishki/", img: ccRectalCancer },
-      { title: "Опухоль сигмовидной кишки", subtitle: "Еще одна история пациента…", href: "/clinicalcases/opukhol-sigmovidnoy-kishki-/", img: ccSigmoidTumor },
-      { title: "Спастись от рака за 2 недели?", subtitle: "Оказывается, такое возможно!", href: "/clinicalcases/spastis-ot-raka-za-2-nedeli/", img: ccSaved2Weeks },
-      { title: "История про удаление большой опухоли", subtitle: "Удаление большой опухоли правых отделов…", href: "/clinicalcases/bolshaya-opukhol-pravykh-otdelov-obodochnoy-kishki/", img: ccBigColonTumor },
-      { title: "История пациента: трудный путь лечения", subtitle: "Давно не публиковали истории…", href: "/clinicalcases/istoriya-patsienta-trudnyy-put-lecheniya/", img: ccHardPath },
-    ],
-    []
-  );
-
-  const articles = useMemo(
-    () => [
-      { title: "Колоноскопия: что надо знать о самом важном исследовании в жизни", href: "/articles/kolonoskopiya-chto-nado-znat-o-samom-vazhnom-issledovanii-v-zhizni-k/", img: artColonoscopy, date: "23 июня 2024" },
-      { title: "Как преодолеть стыд перед проктологом…", href: "/articles/kak-preodolet-styd-pered-proktologom-i-ne-proglyadet-smertelnyy-nedug/", img: artShameProctologist, date: "07 июня 2024" },
-      { title: "«Бессмысленно и вредно». Почему не стоит чистить организм от шлаков?", href: "/articles/bessmyslenno-i-vredno-pochemu-ne-stoit-chistit-organizm-ot-shlakov/", img: artDetoxMyth, date: "22 мая 2024" },
-      { title: "Стыдная боль. О чем говорит некомфорт в области толстой кишки", href: "/articles/stydnaya-bol-o-chem-govorit-nekomfort-v-oblasti-tolstoy-kishki/", img: artShamePain, date: "13 мая 2024" },
-      { title: "Колоректальный рак: почему он возникает…", href: "/articles/kolorektalnyy-rak-pochemu-on-voznikaet-kak-ego-lechat-i-pochemu-patsienty-ne-obrashchayutsya-k-vrach/", img: artCRC, date: "06 мая 2024" },
-      { title: "Врач-колопроктолог назвала типы рака…", href: "/articles/vrach-koloproktolog-nazvala-tipy-raka-nichem-sebya-ne-proyavlyayushchego-na-rannikh-stadiyakh/", img: artCancerTypes, date: "23 апреля 2024" },
-      { title: "Какие правила соблюдает врач-колопроктолог…", href: "/articles/kakie-pravila-soblyudaet-vrach-koloproktolog-chtoby-ne-stat-sobstvennym-patsientom-mozhno-li-izbezha/", img: artRulesDoc, date: "15 апреля 2024" },
-      { title: "Как распознать и лечить геморрой — советы врача", href: "/articles/kak-raspoznat-i-lechit-gemorroy-sovety-vracha/", img: artHemorrhoidsAdvice, date: "11 апреля 2024" },
-      { title: "9 неудобных вопросов колопроктологу…", href: "/articles/9-neudobnykh-voprosov-koloproktologu-vsye-chto-nuzhno-znat-pered-priyemom/", img: art9Questions, date: "04 апреля 2024" },
-      { title: "Геморрой у мужчин и женщин: есть ли разница…", href: "/articles/gemorroy-u-muzhchin-i-zhenshchin-est-li-raznitsa-v-lechenii-i-profilaktike/", img: artHemorrhoidsMenWomen, date: "01 апреля 2024" },
-      { title: "Не только пожилые. Врач развеяла 7 мифов о колоректальном раке", href: "/articles/ne-tolko-pozhilye-vrach-razveyala-7-glavnykh-mifov-o-kolorektalnom-rake/", img: artMythsCRC, date: "25 марта 2024" },
-      { title: "Страшные…полипы", href: "/articles/strashnye-polipy/", img: artPolyps, date: "20 февраля 2023" },
-    ],
-    []
-  );
-
-  const news = useMemo(
-    () => [
-      { title: "Конференция «Современная колопроктология…»", href: "/news/konferentsiya-sovremennaya-koloproktologiya-redkie-sluchai-i-nestandartnye-resheniya/", img: newsConference, date: "15 июня 2024" },
-      { title: "Уникальное 3D-УЗ исследование…", href: "/news/unikalnoe-3d-uz-issledovanie-analnogo-kanala-i-pryamoi-kishki-transrektalnoe-uzi-truzi-8-iyunya-besp/", img: newsUzi, date: "31 мая 2024" },
-      { title: "Изменение графика приема…", href: "/news/izmenenie-grafika-priema-garmanovoy-tatyany-nikolaevny/", img: newsScheduleChange, date: "30 мая 2024" },
-      { title: "Всероссийская конференция…", href: "/news/vserossiyskaya-nauchno-prakticheskaya-konferentsiya-sovremennye-metody-lecheniya-v-ambulatornoy-kolo/", img: newsAmbColoproctology, date: "17 мая 2024" },
-      { title: "Мастер-класс в Челябинске", href: "/news/master-klass-v-chelyabinske/", img: newsChelyabinsk, date: "20 апреля 2024" },
-      { title: "А у меня был случай..., г..Кемерово", href: "/news/a-u-menya-byl-sluchay-g-kemerovo/", img: newsKemerovo, date: "06 апреля 2024" },
-      { title: "У нас появился помощник для наших пациентов!", href: "/news/u-nas-poyavilsya-pomoshchnik-dlya-nashikh-patsientov/", img: newsBot, date: "01 апреля 2024" },
-      { title: "Хорошее место!", href: "/news/khoroshee-mesto/", img: newsGoodPlaceStory, date: "29 марта 2024" },
-      { title: "Кубок ФФМ МГУ.", href: "/news/vserossiyskaya-studencheskaya-olimpiada-po-meditsine-kubok-ffm-mgu/", img: newsCupFFM, date: "25 марта 2024" },
-      { title: "Дискуссионный клуб", href: "/news/diskussionnyy-klub-/", img: newsDiscussionClub, date: "26 октября 2023" },
-      { title: "Мастер-класс для проктологов", href: "/news/master-klass-dlya-proktologov/", img: newsMasterClassProcto, date: "16 октября 2023" },
-      { title: "9 сентября! А у меня был случай..., г. Махачкала", href: "/news/9-sentyabrya-a-u-menya-byl-sluchay-g-makhachkala/", img: newsMakhachkala, date: "10 сентября 2023" },
-    ],
-    []
-  );
+  const clinicalCases = homeContent.clinicalcases || [];
+  const articles = homeContent.articles || [];
+  const news = homeContent.news || [];
 
   return (
     <div className="homePage">
-      <header className={`homeHdr ${isStuck ? "isStuck" : ""}`}>
-        <div className="homeHdrTop">
-          <div className="homeContainer homeHdrTopInner">
-            <div className="homeHdrTopText">
-              Запишитесь на бесплатную онлайн-консультацию!
-            </div>
-            <a className="homeHdrTopLink" href="/services/onlayn-konsultirovanie/">
-              Подробнее
-            </a>
-          </div>
-        </div>
-
-        <div className="homeHdrNav">
-          <div className="homeContainer homeHdrNavInner">
-            <nav className="homeHdrMenu" aria-label="Навигация">
-              {navItems.map((it) => (
-                <NavLink reloadDocument
-                  key={it.to}
-                  to={it.to}
-                  end={!!it.end}
-                  className={({ isActive }) =>
-                    `homeHdrLink ${isActive ? "isActive" : ""}`
-                  }
-                >
-                  {it.label}
-                </NavLink>
-              ))}
-
-              <div ref={patientsMenuRef} className="homeHdrDrop">
-                <button
-                  type="button"
-                  className={`homeHdrLink homeHdrLinkDrop ${isPatientsOpen ? "isActive" : ""}`}
-                  onClick={() => setIsPatientsOpen((prev) => !prev)}
-                >
-                  Пациентам <span className="homeHdrCaret">▾</span>
-                </button>
-
-                {isPatientsOpen && (
-                  <div className="homeHdrDropMenu">
-                    {patientsDropdownItems.map((item) => (
-                      <Link reloadDocument
-                        key={item.to}
-                        to={item.to}
-                        className="homeHdrDropLink"
-                        onClick={closeMenus}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </nav>
-
-            <div className="homeHdrRight">
-              <a className="homeHdrPhone" href={clinic.phoneHref}>
-                {clinic.phone}
-              </a>
-
-              <div className="homeHdrIcons">
-                <a
-                  className="homeHdrIconBtn"
-                  href="https://wa.me/79671367706"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="WhatsApp"
-                >
-                  <Image src={iconWhatsappImg} alt="" />
-                </a>
-
-                <a
-                  className="homeHdrIconBtn"
-                  href="https://vk.com/surgerymgy"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="VK"
-                >
-                  <Image src={iconVkImg} alt="" />
-                </a>
-
-                <a
-                  className="homeHdrIconBtn"
-                  href="https://t.me/surgerymgu_bot"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Telegram"
-                >
-                  <Image src={iconTelegramImg} alt="" />
-                </a>
-
-                <button
-                  className="homeHdrIconBtn homeHdrExtraIcon"
-                  type="button"
-                  aria-label="Версия для слабовидящих" onClick={toggleAccessibility}
-                >
-                  <Image src={iconEyeImg} alt="" />
-                </button>
-
-                <button
-                  className="homeHdrIconBtn homeHdrExtraIcon"
-                  type="button"
-                  aria-label="Поиск" onClick={() => { window.location.href = "/search"; }}
-                >
-                  <Image src={iconSearchImg} alt="" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
+      <Header />
+      <main id="main-content" className="homeMain">
       <section
         className="homeHero"
-        style={{
-          "--hero-bg": `url(${heroBg})`,
-        }}
       >
+        <Image className="homeHeroImage" src={heroBg} alt="" loading="eager" fetchPriority="high" sizes="100vw" />
         <div className="homeHeroInfo">
           <div className="homeContainer homeHeroInfoInner">
             <a className="homeHeroBrand" href="/">
-              <Image loading="eager" className="homeHeroLogo" src={logoWhite} alt="Uniclinic" />
+              <Image loading="eager" className="homeHeroLogo" src={logoWhite} alt={clinic.name} />
               <div className="homeHeroBrandText">
-                <div className="homeHeroBrandTitle">ОТДЕЛЕНИЕ ХИРУРГИИ</div>
+                <div className="homeHeroBrandTitle">{clinic.name}</div>
                 <div className="homeHeroBrandSub">МНОЦ МГУ имени М. В. Ломоносова</div>
               </div>
             </a>
 
             <div className="homeHeroMeta">
-              <a className="homeHeroGoodPlace" href="/news/khoroshee-mesto/">
+              <a className="homeHeroGoodPlace" href="/news/khoroshee-mesto">
                 <Image src={goodPlace} alt="Хорошее место" />
               </a>
 
@@ -509,7 +193,7 @@ export default function Home() {
                 <div className="homeHeroMetroRow">
                   <span className="dot dotRed" />
                   <span>Метро «Университет»</span>
-                  <span className="homeHeroMetroGap" />
+                  <span className="homeHeroMetroGap"> · </span>
                   <span className="dot dotYellow" />
                   <span>Метро «Ломоносовский пр-кт»</span>
                 </div>
@@ -520,23 +204,12 @@ export default function Home() {
 
             <a
               className="homeHeroCta"
-              href="https://t.me/surgerymgu_bot"
-              target="_blank"
-              rel="noreferrer"
+              href="#appointment"
             >
               Онлайн запись
             </a>
 
-            <button
-              className="homeHeroMobileBurger"
-              type="button"
-              aria-label="Открыть меню"
-              onClick={() => setIsMobileMenuOpen(true)}
-            >
-              <span />
-              <span />
-              <span />
-            </button>
+
           </div>
         </div>
 
@@ -558,7 +231,6 @@ export default function Home() {
         </div>
       </section>
 
-      <main id="main-content" className="homeMain">
         <section className="homeSection">
           <div className="homeContainer">
             <h2 className="homeH1">
@@ -567,7 +239,7 @@ export default function Home() {
 
             <div className="homeServiceGrid">
               {serviceCards.map((s) => (
-                <a key={s.href} href={s.href} className="homeServiceCard">
+                <a key={s.href} href={normalizeUrl(s.href)} className="homeServiceCard">
                   <div className="homeServiceIcon">
                     <Image src={s.icon} alt="" />
                   </div>
@@ -581,7 +253,7 @@ export default function Home() {
 
             <div className="homeText">
               <p>
-                Основным направлением работы отделения хирургии Университетской клиники МГУ им. М.В. Ломоносова является лечения пациентов с
+                Основным направлением работы отделения хирургии Университетской клиники МГУ им. М.В. Ломоносова является лечение пациентов с
                 доброкачественными и злокачественными заболеваниями органов брюшной полости, малого таза и промежности.
               </p>
               <p>
@@ -597,7 +269,7 @@ export default function Home() {
                 (заведующий кафедрой – Академик РАН, профессор Валерий Алексеевич Кубышкин).
               </p>
               <p>
-                Консультации пациентов сотрудниками отделения проводятся по будним дням с 9:00 до 17:00 по предварительной записи.
+                Консультации пациентов сотрудниками отделения проводятся по предварительной записи. Часы работы: {clinic.hours}.
               </p>
             </div>
 
@@ -610,7 +282,7 @@ export default function Home() {
                   <ul className="homeList">
                     {b.items.map((it) => (
                       <li key={it.href}>
-                        <a href={it.href}>{it.label}</a>
+                        <a href={normalizeUrl(it.href)}>{it.label}</a>
                       </li>
                     ))}
                   </ul>
@@ -626,7 +298,7 @@ export default function Home() {
 
             <div className="homeDoctorsGrid">
               {doctors.map((d) => (
-                <a key={d.href} href={d.href} className="homeDoctorCard">
+                <a key={d.href} href={normalizeUrl(d.href)} className="homeDoctorCard">
                   <div className="homeDoctorImgWrap">
                     <Image src={d.img} alt={d.name} className="homeDoctorImg" />
                   </div>
@@ -642,7 +314,7 @@ export default function Home() {
             </div>
 
             <div className="homeCenterBtnRow">
-              <a className="homeOutlineBtn" href="/team/">
+              <a className="homeOutlineBtn" href="/team">
                 Все специалисты
               </a>
             </div>
@@ -655,7 +327,7 @@ export default function Home() {
 
             <div className="homeCards3">
               {clinicalCases.map((c) => (
-                <a key={c.href} href={c.href} className="homeMediaCard">
+                <a key={c.href} href={normalizeUrl(c.href)} className="homeMediaCard">
                   <div className="homeMediaImgWrap">
                     <Image src={c.img} alt={c.title} className="homeMediaImg" />
                   </div>
@@ -668,7 +340,7 @@ export default function Home() {
             </div>
 
             <div className="homeCenterBtnRow">
-              <a className="homeOutlineBtn" href="/clinicalcases/">
+              <a className="homeOutlineBtn" href="/clinicalcases">
                 Ещё кейсы
               </a>
             </div>
@@ -681,7 +353,7 @@ export default function Home() {
 
             <div className="homeCards3">
               {articles.map((a) => (
-                <a key={a.href} href={a.href} className="homeMediaCard">
+                <a key={a.href} href={normalizeUrl(a.href)} className="homeMediaCard">
                   <div className="homeMediaImgWrap">
                     <Image src={a.img} alt={a.title} className="homeMediaImg" />
                   </div>
@@ -694,7 +366,7 @@ export default function Home() {
             </div>
 
             <div className="homeCenterBtnRow">
-              <a className="homeOutlineBtn" href="/articles/">
+              <a className="homeOutlineBtn" href="/articles">
                 Все статьи
               </a>
             </div>
@@ -703,11 +375,11 @@ export default function Home() {
 
         <section className="homeSection">
           <div className="homeContainer">
-            <h3 className="homeCenterTitle">НОВОСТИ КЛИНИКИ</h3>
+            <h3 className="homeCenterTitle">АРХИВ НОВОСТЕЙ КЛИНИКИ</h3>
 
             <div className="homeCards3">
               {news.map((n) => (
-                <a key={n.href} href={n.href} className="homeMediaCard">
+                <a key={n.href} href={normalizeUrl(n.href)} className="homeMediaCard">
                   <div className="homeMediaImgWrap">
                     <Image src={n.img} alt={n.title} className="homeMediaImg" />
                   </div>
@@ -720,74 +392,15 @@ export default function Home() {
             </div>
 
             <div className="homeCenterBtnRow">
-              <a className="homeOutlineBtn" href="/news/">
+              <a className="homeOutlineBtn" href="/news">
                 Все новости
               </a>
             </div>
           </div>
         </section>
-      </main>
+      <AppointmentForm />
+</main>
 
-      {isMobileMenuOpen && (
-        <div className="homeHdrMobileOverlay">
-          <div className="homeHdrMobileSheet" ref={mobileMenuRef}>
-            <div className="homeHdrMobileTop">
-              <div className="homeHdrMobileTitle">Меню</div>
-              <button
-                className="homeHdrMobileClose"
-                type="button"
-                onClick={closeMenus}
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="homeHdrMobileBody">
-              {navItems.map((item) => (
-                <NavLink reloadDocument
-                  key={item.to}
-                  to={item.to}
-                  end={!!item.end}
-                  className={({ isActive }) =>
-                    `homeHdrMobileLink ${isActive ? "isActive" : ""}`
-                  }
-                  onClick={closeMenus}
-                >
-                  {item.label}
-                </NavLink>
-              ))}
-
-              <div className="homeHdrMobileDrop">
-                <button
-                  type="button"
-                  className={`homeHdrMobileLink homeHdrMobileDropBtn ${
-                    isMobilePatientsOpen ? "isActive" : ""
-                  }`}
-                  onClick={() => setIsMobilePatientsOpen((prev) => !prev)}
-                >
-                  <span>Пациентам</span>
-                  <span>{isMobilePatientsOpen ? "−" : "+"}</span>
-                </button>
-
-                {isMobilePatientsOpen && (
-                  <div className="homeHdrMobileDropdown">
-                    {patientsDropdownItems.map((item) => (
-                      <Link reloadDocument
-                        key={item.to}
-                        to={item.to}
-                        className="homeHdrMobileDropdownLink"
-                        onClick={closeMenus}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import AppointmentForm from "../../components/Shared/AppointmentForm";
+import Image from "../../components/Shared/Image";
 import { clinic } from "../../config/site";
 import React from "react";
 import { Link } from "../../utils/router";
@@ -97,8 +99,7 @@ export default function ContactsPage() {
                     От метро «Ломоносовский проспект»
                   </div>
                   <div className="contactsRouteText">
-                    Ближайшая станция метро - "Университет". От неё до клиники примерно 10–12
-                    минут пешком.
+                    <a href="https://yandex.ru/maps/?rtext=метро%20Ломоносовский%20проспект~55.702234,37.530498&rtt=pd" target="_blank" rel="noopener noreferrer">Пеший маршрут от метро «Ломоносовский проспект» до корпуса 10</a>. Актуальное время в пути указано на карте.
                   </div>
                 </div>
               </div>
@@ -106,10 +107,9 @@ export default function ContactsPage() {
               <div className="contactsRouteItem">
                 <div className="contactsRouteStep">2</div>
                 <div className="contactsRouteContent">
-                  <div className="contactsRouteTitle">Наземный транспорт</div>
+                  <div className="contactsRouteTitle">От метро «Университет»</div>
                   <div className="contactsRouteText">
-                    Ближайшая остановка — «Менделеевская улица». От остановки до входа
-                    около 2–3 минут пешком.
+                    <a href="https://yandex.ru/maps/?rtext=метро%20Университет%20Москва~55.702234,37.530498&rtt=pd" target="_blank" rel="noopener noreferrer">Пеший маршрут от метро «Университет» до корпуса 10</a>. Выберите удобный выход и проверьте маршрут перед визитом.
                   </div>
                 </div>
               </div>
@@ -134,6 +134,9 @@ export default function ContactsPage() {
           </aside>
         </div>
 
+        {clinic.contactPhotos.length > 0 && <section className="contentPanel"><h2>Корпус и вход в клинику</h2>
+          {clinic.contactPhotos.map(photo => <figure key={photo.src}><Image src={photo.src} alt={photo.description} /><figcaption>{photo.description}</figcaption></figure>)}
+        </section>}
         <div className="contactsMapCard">
           <div className="contactsMapHeader">
             <h2 className="contactsCardTitle">Карта</h2>
@@ -154,6 +157,7 @@ export default function ContactsPage() {
 
 
       </div>
-    </section>
+    <AppointmentForm />
+</section>
   );
 }

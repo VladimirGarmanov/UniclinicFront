@@ -1,3 +1,5 @@
+import ContentByline from "../components/Shared/ContentByline";
+import { Faq, RelatedContent, Sources } from "../components/Shared/MedicalContent";
 import Image from "../components/Shared/Image";
 import { sanitize } from "./sanitize";
 import React from "react";
@@ -233,7 +235,7 @@ export function renderScalarValue(value) {
   );
 }
 
-export function renderFileCard(file, keyPrefix = "file") {
+export function renderFileCard(file, keyPrefix = "file", description = "Иллюстрация к материалу") {
   if (!file?.src) return null;
 
   const src = getPublicFileUrl(file.src);
@@ -247,7 +249,7 @@ export function renderFileCard(file, keyPrefix = "file") {
         href={src}
         target="_blank"
         rel="noreferrer"
-        aria-label={fileName}
+        aria-label={description}
         style={{
           display: "block",
           textDecoration: "none",
@@ -261,7 +263,7 @@ export function renderFileCard(file, keyPrefix = "file") {
       >
         <Image
           src={src}
-          alt={fileName}
+          alt={description}
           style={{
             display: "block",
             width: "100%",
@@ -354,7 +356,8 @@ function renderStandardSection(title, content) {
   );
 }
 
-export function renderPropertyBlock(propKey, prop) {
+export function renderPropertyBlock(propKey, prop, item) {
+  if (["SHOW_PRICE_BLOCK", "PRICE_LIST", "PRICE_LIST_ELS", "FAQ", "VIDEOS", "AUTHOR"].includes(propKey)) return null;
   const label = normalizeLabel(propKey);
 
   if (propKey === "PARTS") {
@@ -363,7 +366,7 @@ export function renderPropertyBlock(propKey, prop) {
     const parts = values
       .map((entry, index) => ({
         id: `${propKey}-${index}`,
-        title: entry?.description || "",
+        title: (entry?.description || "").split("#")[0],
         html: entry?.value?.TEXT || entry?.value || "",
       }))
       .filter((part) => String(part.html).trim());
@@ -421,7 +424,7 @@ export function renderPropertyBlock(propKey, prop) {
           gap: 16,
         }}
       >
-        {values.map((file, index) => renderFileCard(file, `${propKey}-${index}`))}
+        {values.map((file, index) => renderFileCard(file, `${propKey}-${index}`, `${getItemName(item)}: иллюстрация ${index + 1}`))}
       </div>
     );
   }
@@ -607,9 +610,11 @@ export function AutoEntitySections({ item }) {
       ))}
 
       {propertyEntries.map(([propKey, prop]) => {
-        const rendered = renderPropertyBlock(propKey, prop);
-        return rendered;
+        return <React.Fragment key={propKey}>{renderPropertyBlock(propKey, prop, item)}</React.Fragment>;
       })}
+      <Faq entries={item.faq} />
+      <Sources item={item} />
+      <RelatedContent item={item} />
     </>
   );
 }
@@ -645,6 +650,8 @@ export function DetailTopBlock({ item, backLabel, backTo }) {
       >
         {title}
       </h1>
+
+      <ContentByline item={item} />
 
       {image ? (
         <div

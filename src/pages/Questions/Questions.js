@@ -1,8 +1,8 @@
 import { track } from "../../utils/analytics";
 import Consent, { CONSENT_VERSION } from "../../components/Shared/Consent";
 import { sanitize } from "../../utils/sanitize";
-import React, { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "../../utils/router";
+import React, { useState } from "react";
+import { Link, useParams, useLocation } from "../../utils/router";
 import legacyQuestionsData from "../../assets/info/questions.json";
 import {
   normalizeLegacyQuestion,
@@ -12,6 +12,9 @@ import {
 } from "../../utils/questions";
 import "./questions.css";
 
+import Pagination from "../../components/Shared/Pagination";
+import RecentPublications from "../../components/Shared/RecentPublications";
+import { archivePage } from "../../utils/pagination";
 const API_BASE = "";
 
 const LEGACY_QUESTIONS = Array.isArray(legacyQuestionsData?.items)
@@ -69,7 +72,7 @@ function QuestionForm() {
     }
 
     track("form_submit_success", "question");
-    setDone("Вопрос отправлен. После ответа он появится на сайте.");
+    setDone("Вопрос отправлен. Публикация возможна после проверки и обезличивания.");
     setForm({
       patient_name: "",
       email: "",
@@ -77,7 +80,7 @@ function QuestionForm() {
       question_text: "",
     });
   } catch (err) {
-
+    track("form_submit_error", "question");
     setError(err.message || "Ошибка отправки");
   } finally {
     setLoading(false);
@@ -90,7 +93,7 @@ function QuestionForm() {
         <h2 className="askBoxTitle">Задать вопрос</h2>
         <p className="askBoxText">
           Уважаемый пациент, вы можете отправить вопрос через форму ниже.
-          После ответа он будет опубликован на странице.
+          Публикация возможна только после отдельной проверки и обезличивания обращения.
         </p>
       </div>
 
@@ -191,35 +194,7 @@ function QuestionCard({ item }) {
 
 export function QuestionDetail() {
   const { slug } = useParams();
-  const [apiQuestions, setApiQuestions] = useState([]);
-
-  useEffect(() => {
-    let ignore = false;
-
-    async function load() {
-      try {
-        const res = await fetch(`${API_BASE}/api/questions`);
-        const data = await res.json();
-        if (!ignore) {
-          const items = Array.isArray(data?.items)
-            ? data.items.map(normalizeApiQuestion)
-            : [];
-          setApiQuestions(items);
-        }
-      } catch (_) {}
-    }
-
-    load();
-    return () => {
-      ignore = true;
-    };
-  }, []);
-
-  const allQuestions = useMemo(() => {
-    return sortQuestionsDesc([...LEGACY_QUESTIONS, ...apiQuestions]);
-  }, [apiQuestions]);
-
-  const item = allQuestions.find((entry) => entry.code === slug);
+  const item = LEGACY_QUESTIONS.find((entry) => entry.code === slug);
 
   if (!item) {
     return (
@@ -250,33 +225,9 @@ export function QuestionDetail() {
 }
 
 export default function Questions() {
-  const [apiQuestions, setApiQuestions] = useState([]);
-
-  useEffect(() => {
-    let ignore = false;
-
-    async function load() {
-      try {
-        const res = await fetch(`${API_BASE}/api/questions`);
-        const data = await res.json();
-        if (!ignore) {
-          const items = Array.isArray(data?.items)
-            ? data.items.map(normalizeApiQuestion)
-            : [];
-          setApiQuestions(items);
-        }
-      } catch (_) {}
-    }
-
-    load();
-    return () => {
-      ignore = true;
-    };
-  }, []);
-
-  const questions = useMemo(() => {
-    return sortQuestionsDesc([...LEGACY_QUESTIONS, ...apiQuestions]);
-  }, [apiQuestions]);
+  const { search } = useLocation();
+  const pagination = archivePage(legacyQuestionsData, sortQuestionsDesc(LEGACY_QUESTIONS), search);
+  const questions = pagination.items;
 
   return (
     <section className="questionsPage">
@@ -302,11 +253,13 @@ export default function Questions() {
           <QuestionForm />
         </div>
 
+        <RecentPublications kind="questions" />
         <div className="qaList">
           {questions.map((item) => (
             <QuestionCard key={`${item.source}-${item.id}-${item.code}`} item={item} />
           ))}
         </div>
+        <Pagination base="/questions" {...pagination} />
       </div>
     </section>
   );

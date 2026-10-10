@@ -38,8 +38,8 @@ sitemap, metadata, responsive images and nginx routing maps.
 - Images keep their original files; Sharp generates 400/800/1280px WebP derivatives,
   srcset, dimensions and lazy loading. The derivative cache lives in `.generated`.
 - `src/config/urls.js` is the shared redirect and normalization map.
-- `src/config/site.js` is the contact configuration. Hours/email currently use the existing
-  header/footer values; owner confirmation is still required before publication.
+- `src/config/site.js` is the contact configuration. Hours/email use the existing
+  header/footer values accepted by the owner on 2026-10-10.
 - `src/utils/analytics.js` emits only local technical events; no analytics vendor is
   configured. There are no patient fields, query strings or raw errors in those events.
 
@@ -52,21 +52,38 @@ maps are build/deployment metadata, and both preview and nginx keep them inacces
 
 ## Content handling and remaining inputs
 
-Medical text is not rewritten. Three previously broken treatment URLs now use their
-existing homepage summaries; no missing long-form treatment text was invented.
-`/about` redirects to the homepage because the source contained only `About`.
-The absent video footer link and generic social-network homepage links are removed.
-Two related-doctor references lack doctor pages in the supplied export, and the linked
-`colon-russian-patient.pdf` is absent. Their visible text is retained without broken links;
-restore links when the corresponding approved materials are provided. Known disease URL
-spelling mistakes have explicit redirects. Existing valid content paths are preserved.
-Historical question/review contact fields are omitted from delivered data; historical
-medical narratives still require the clinic's publication/privacy review.
+The source CMS JSON remains intact. `scripts/editorial.mjs` applies targeted corrections,
+removes irrelevant shared blocks and separates priority disease/service pages. FAQ answers
+are rendered in HTML; medical answers on the hemorrhoid pages link to their sources.
+No medical reviewer/date is invented. Add completed reviews to `src/config/editorial.js`
+using an existing `reviewerCode`, `reviewedAt` and optional sources.
+
+Existing clinic facts and prices were accepted by the owner on 2026-10-10. Prices come
+only from the existing price table; page-to-price mappings are in `ServicePrices.js`.
+The five new service pages live in `src/config/service-landings.js`. Future unpublished
+entries stay out of production builds; `PREVIEW_DRAFTS=true npm run build` includes
+those drafts with noindex for editorial preview. Drafts never enter the public list/sitemap.
+
+The shared header, responsive WebP hero and route-specific JPEG social previews are
+produced by one build. The homepage now reads full headlines and real publication dates
+from the CMS snapshot. Social previews use content hashes and 1200×630 dimensions.
+OMS/VMP/paid treatment use `/oms`, `/vmp`, `/paid-treatment`, with explicit old-URL redirects.
+
+Appointment and callback forms use the same private API; `request_type` distinguishes
+them in the admin panel. Medical documents are not requested by these forms. External
+analytics, call tracking and SMTP delivery are not activated by this local change.
+
+See [the 47-item implementation status](docs/seo-audit-2026-10-10.md) and
+[the initial intent matrix](docs/search-intent.json). Remaining editorial/marketing inputs,
+CWV measurements and production validation are distinguished from completed local code.
 
 ## Small release check
 
 ```bash
 npm run check
+npm run check:audit
+# With preview and the local API running:
+npm run check:http
 ```
 
 Checks generated content/H1/lang/title/canonical, JSON-LD syntax, internal page links and

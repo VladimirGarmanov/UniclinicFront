@@ -1,4 +1,5 @@
 import React from "react";
+import AppointmentForm from "../../components/Shared/AppointmentForm";
 import { Link, useParams } from "../../utils/router";
 import "./diseases.css";
 
@@ -63,6 +64,7 @@ export function DiseaseDetail() {
         <div style={{ padding: "24px 0 56px" }}>
           <DetailTopBlock item={item} backLabel="Заболевания" backTo="/diseases" />
           <AutoEntitySections item={item} />
+          <AppointmentForm service={getItemName(item)} />
         </div>
       </div>
     </section>

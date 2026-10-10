@@ -6,6 +6,7 @@ import "./header.css";
 
 import logoImg from "../../assets/components/header_logo.png";
 import yandexBadgeImg from "../../assets/components/good-place.png";
+import iconVkImg from "../../assets/home/vk.svg";
 import iconWhatsappImg from "../../assets/components/whatsapp.png";
 import iconTelegramImg from "../../assets/components/telegram.png";
 import iconEyeImg from "../../assets/components/eye.png";
@@ -201,7 +202,7 @@ export default function Header() {
             <div className="hdrTopText">
               Запишитесь на бесплатную онлайн-консультацию!
             </div>
-            <a className="hdrTopLink" href="https://t.me/surgerymgu_bot">
+            <a className="hdrTopLink" data-analytics="consultation_banner_click" href="/services/onlayn-konsultirovanie">
               Подробнее
             </a>
           </div>
@@ -255,6 +256,7 @@ export default function Header() {
               </a>
 
               <div className="hdrIcons">
+                <a className="hdrIconBtn" href="https://vk.com/surgerymgy" target="_blank" rel="noopener noreferrer" aria-label="VK"><Image className="hdrIconImg" src={iconVkImg} alt="" /></a>
                 <a
                   className="hdrIconBtn"
                   href="https://wa.me/79671367706"
@@ -304,13 +306,11 @@ export default function Header() {
       <div className="hdrBot">
         <div className="hdrContainer hdrBotInner">
           <div className="hdrBrand">
-            <Image loading="eager" className="hdrLogo" src={logoImg} alt="Логотип" />
+            <Image loading="eager" className="hdrLogo" src={logoImg} alt={clinic.name} />
 
             <div className="hdrTitleBlock">
               <div className="hdrTitle">
-                ОТДЕЛЕНИЕ
-                <br />
-                ХИРУРГИИ
+                {clinic.name}
               </div>
               <div className="hdrSub">МНОЦ МГУ имени М. В. Ломоносова</div>
             </div>
@@ -341,9 +341,7 @@ export default function Header() {
 
           <a
             className="hdrCta"
-            href="https://t.me/surgerymgu_bot"
-            target="_blank"
-            rel="noreferrer"
+            href="/contacts#appointment"
           >
             Онлайн запись
           </a>

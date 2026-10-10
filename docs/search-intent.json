@@ -1,0 +1,165 @@
+{
+  "status": "seed_without_search_volume_data",
+  "pages": [
+    {
+      "cluster": "Геморрой",
+      "intent": "information",
+      "query": "Геморрой: симптомы, причины, диагностика",
+      "url": "/diseases/gemorroy"
+    },
+    {
+      "cluster": "Геморрой",
+      "intent": "service",
+      "query": "Геморрой: лечение, цена, запись в Москве",
+      "url": "/services/lechenie-gemorroya"
+    },
+    {
+      "cluster": "Анальная трещина",
+      "intent": "information",
+      "query": "Анальная трещина: симптомы, причины, диагностика",
+      "url": "/diseases/analnaya-treshina"
+    },
+    {
+      "cluster": "Анальная трещина",
+      "intent": "service",
+      "query": "Анальная трещина: лечение, цена, запись в Москве",
+      "url": "/services/lechenie-analnoy-treschiny"
+    },
+    {
+      "cluster": "Парапроктит и свищи",
+      "intent": "information",
+      "query": "Парапроктит и свищи: симптомы, причины, диагностика",
+      "url": "/diseases/paraproktit-svishi-pryamoy-kishki"
+    },
+    {
+      "cluster": "Парапроктит и свищи",
+      "intent": "service",
+      "query": "Парапроктит и свищи: лечение, цена, запись в Москве",
+      "url": "/services/lechenie-paraproktita"
+    },
+    {
+      "cluster": "Эпителиальный копчиковый ход",
+      "intent": "information",
+      "query": "Эпителиальный копчиковый ход: симптомы, причины, диагностика",
+      "url": "/diseases/epitelialnyy-kopchikovyy-khod-ekkh"
+    },
+    {
+      "cluster": "Эпителиальный копчиковый ход",
+      "intent": "service",
+      "query": "Эпителиальный копчиковый ход: лечение, цена, запись в Москве",
+      "url": "/services/lechenie-epitelialnogo-kopchikovogo-khoda"
+    },
+    {
+      "cluster": "Анальные кондиломы",
+      "intent": "information",
+      "query": "Анальные кондиломы: симптомы, причины, диагностика",
+      "url": "/diseases/analnye-kondilomy"
+    },
+    {
+      "cluster": "Анальные кондиломы",
+      "intent": "service",
+      "query": "Анальные кондиломы: лечение, цена, запись в Москве",
+      "url": "/services/lechenie-analnoy-kondilomy"
+    },
+    {
+      "cluster": "Рак прямой кишки",
+      "intent": "information",
+      "query": "Рак прямой кишки: симптомы, причины, диагностика",
+      "url": "/diseases/rak-pryamoy-kishki"
+    },
+    {
+      "cluster": "Рак прямой кишки",
+      "intent": "service",
+      "query": "Рак прямой кишки: лечение, цена, запись в Москве",
+      "url": "/services/lechenie-raka-pryamoy-kishki"
+    },
+    {
+      "cluster": "Рак толстой кишки",
+      "intent": "information",
+      "query": "Рак толстой кишки: симптомы, причины, диагностика",
+      "url": "/diseases/rak-tolstoy-kishki"
+    },
+    {
+      "cluster": "Рак толстой кишки",
+      "intent": "service",
+      "query": "Рак толстой кишки: лечение, цена, запись в Москве",
+      "url": "/services/lechenie-raka-tolstoy-kishki"
+    },
+    {
+      "cluster": "Паховая грыжа",
+      "intent": "information",
+      "query": "Паховая грыжа: симптомы, причины, диагностика",
+      "url": "/diseases/pakhovaya-gryzha"
+    },
+    {
+      "cluster": "Паховая грыжа",
+      "intent": "service",
+      "query": "Паховая грыжа: лечение, цена, запись в Москве",
+      "url": "/services/lechenie-pakhovoy-gryzhi"
+    },
+    {
+      "cluster": "Пупочная грыжа",
+      "intent": "information",
+      "query": "Пупочная грыжа: симптомы, причины, диагностика",
+      "url": "/diseases/pupochnaya-gryzha"
+    },
+    {
+      "cluster": "Пупочная грыжа",
+      "intent": "service",
+      "query": "Пупочная грыжа: лечение, цена, запись в Москве",
+      "url": "/services/lechenie-pupochnoy-gryzhi"
+    },
+    {
+      "cluster": "Холецистит",
+      "intent": "information",
+      "query": "Холецистит: симптомы, причины, диагностика",
+      "url": "/diseases/kholecistit"
+    },
+    {
+      "cluster": "Холецистит",
+      "intent": "service",
+      "query": "Холецистит: лечение, цена, запись в Москве",
+      "url": "/services/lechenie-kholetsistita"
+    },
+    {
+      "intent": "service",
+      "query": "Колоноскопия: цена и запись",
+      "url": "/services/kolonoskopiya"
+    },
+    {
+      "intent": "service",
+      "query": "Консультация проктолога в Москве",
+      "url": "/services/konsultatsiya-proktologa"
+    },
+    {
+      "intent": "service",
+      "query": "Лигирование геморроидальных узлов",
+      "url": "/services/ligirovanie-gemorroidalnykh-uzlov"
+    },
+    {
+      "intent": "service",
+      "query": "Лазерное лечение геморроя",
+      "url": "/services/lazernoe-lechenie-gemorroya"
+    },
+    {
+      "intent": "service",
+      "query": "ТРУЗИ",
+      "url": "/services/truzi"
+    },
+    {
+      "intent": "service",
+      "query": "Второе мнение онколога",
+      "url": "/services/vtoroe-mnenie-onkologa"
+    },
+    {
+      "intent": "service",
+      "query": "Лечение по ОМС в Москве",
+      "url": "/oms"
+    },
+    {
+      "intent": "service",
+      "query": "Лечение по квоте ВМП",
+      "url": "/vmp"
+    }
+  ]
+}

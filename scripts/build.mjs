@@ -6,7 +6,9 @@ import { gzipSync, brotliCompressSync, constants } from 'node:zlib';
 import { build } from 'vite';
 import sharp from 'sharp';
 import { load } from 'cheerio';
-import { routes, redirects, pageData, siteOrigin, normalizeUrl } from './content.mjs';
+import { routes, redirects, pageData, siteOrigin, normalizeUrl, privacyReport, removedReviewIds } from './content.mjs';
+import { metadata, isoDate } from './metadata.mjs';
+import { auditRevision } from '../src/config/editorial.js';
 
 const out = path.resolve('build');
 const report = { pages: 0, images: 0, excludedUploads: [], brokenLinks: [], staging: process.env.STAGING === 'true' };
@@ -15,9 +17,9 @@ await build({ logLevel: 'warn', build: { ssr: 'src/entry-server.js', outDir: '.s
 const assetManifest = JSON.parse(await fs.readFile(path.join(out, '.vite/manifest.json'), 'utf8'));
 const appAsset = Object.keys(assetManifest).find(key => key === 'src/App.js' || /^_App-.*\.js$/.test(key));
 function routeModule(route) {
-  if (route.url.startsWith('/services/prices/')) return 'src/pages/Treatment.js';
+  if (['/oms', '/vmp', '/paid-treatment'].includes(route.url)) return 'src/pages/Treatment.js';
   if (route.url === '/questions/admin') return 'src/pages/AdminPanel/AdminPanel.js';
-  const section = route.url.split('/')[1];
+  const section = route.url.split('?')[0].split('/')[1];
   const name = { '': 'Home', team: 'Team', doctors: 'Team', clinicalcases: 'Clinicalcases', 'fecal-incontinence-scale': 'Fecal-incontinence-scale', 'need-proctologist-consultation': 'Need-proctologist-consultation', '404': 'NotFound' }[section] || section.charAt(0).toUpperCase() + section.slice(1);
   return ['Search', 'Sitemap'].includes(name) ? `src/pages/${name}.js` : `src/pages/${name}/${name}.js`;
 }
@@ -91,6 +93,33 @@ const broken = new Map();
 const xmlEscape = value => String(value).replace(/[<>&"']/g, char => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;' }[char]));
 const jsonScript = value => JSON.stringify(value).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
 const manifest = {};
+await fs.mkdir(path.join(out, 'social'), { recursive: true });
+await fs.mkdir('.generated/social', { recursive: true });
+const socialCache = new Map();
+async function socialPreview(route, heading, imageUrl) {
+  // Archives share a section card. Medical and editorial pages get their own card.
+  const label = route.noindex ? (route.parent === '/reviews' ? 'Отзывы пациентов' : 'Вопросы и ответы') : heading;
+  const source = route.noindex || !imageUrl || !imageUrl.startsWith('/') || /\.svg$/.test(imageUrl)
+    ? path.resolve('src/assets/home/9at58kjh5xg4451pkfzq0qxvvow2gzen.jpg') : path.join(out, imageUrl.slice(1));
+  const bytes = await fs.readFile(source);
+  const hash = crypto.createHash('sha256').update(bytes).update(label).update('social-v1').digest('hex').slice(0, 20);
+  const filename = `${hash}.jpg`;
+  if (!socialCache.has(hash)) {
+    const cached = path.join('.generated/social', filename);
+    try { await fs.access(cached); } catch {
+      const words = label.split(/\s+/); const lines = [''];
+      for (const word of words) {
+        if ((lines.at(-1) + ' ' + word).trim().length > 43) lines.push('');
+        lines[lines.length - 1] = (lines.at(-1) + ' ' + word).trim();
+      }
+      const text = lines.slice(0, 3).map((line, index) => `<text x="52" y="${438 + index * 55}" fill="white" font-family="sans-serif" font-size="40">${xmlEscape(line)}</text>`).join('');
+      await sharp(bytes).rotate().resize(1200, 630, { fit: 'cover' }).composite([{ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#183650" fill-opacity="0.38"/><rect y="330" width="1200" height="300" fill="#183650" fill-opacity="0.94"/><text x="52" y="385" fill="#b7d8ee" font-family="sans-serif" font-size="28">Клиника МГУ · Москва</text>${text}</svg>`) }]).jpeg({ quality: 85 }).toFile(cached);
+    }
+    await fs.copyFile(cached, path.join(out, 'social', filename));
+    socialCache.set(hash, '/social/' + filename);
+  }
+  return socialCache.get(hash);
+}
 const seenTitles = new Set();
 const seenDescriptions = new Set();
 for (const route of routes) {
@@ -104,31 +133,70 @@ for (const route of routes) {
     if (asset.file.endsWith('.js')) $('head').append($('<link>').attr({ rel: 'modulepreload', href: '/' + asset.file }));
   }
   const h1 = $('h1').first().text().replace(/\s+/g, ' ').trim();
-  let title = `${h1 || route.name} | Университетская клиника МГУ`;
+  let { title, description } = metadata(route, h1);
   const identity = route.item?.fields?.ID || route.item?.id || route.code || route.url;
-  if (seenTitles.has(title)) title = `${h1 || route.name} — материал №${identity} | Университетская клиника МГУ`;
+  if (seenTitles.has(title)) title = `${h1 || route.name} — №${identity} | ${clinic.name}`;
   seenTitles.add(title);
-  const mainText = $('main p, main .qaQuestionText, main .reviewsDetailText').first().text().replace(/\s+/g, ' ').trim();
-  let description = `${h1 || route.name}. ${mainText || 'Отделение хирургии МНОЦ МГУ имени М. В. Ломоносова.'}`.slice(0, 240);
   if (seenDescriptions.has(description)) description += ` Материал №${identity}.`;
   seenDescriptions.add(description);
   const canonical = siteOrigin + (route.url === '/' ? '/' : route.url);
   $('title').text(title);
   $('head').append($('<meta>').attr({ name: 'description', content: description }));
   $('head').append($('<link>').attr({ rel: 'canonical', href: canonical }));
-  if (route.noindex || report.staging) $('head').append('<meta name="robots" content="noindex, nofollow"/>');
+  if (route.noindex || report.staging) $('head').append($('<meta>').attr({ name: 'robots', content: report.staging ? 'noindex, nofollow' : route.robots || 'noindex, follow' }));
   const heroImage = $('main img').first().attr('src');
-  const socialImage = heroImage ? new URL(heroImage, siteOrigin).href : siteOrigin + '/social.png';
+  const socialImage = siteOrigin + await socialPreview(route, route.url === '/' ? 'Проктология и хирургия в Москве' : h1 || route.name, heroImage);
   for (const [property, content] of Object.entries({ 'og:title': title, 'og:description': description, 'og:url': canonical, 'og:type': route.type === 'Article' ? 'article' : 'website', 'og:locale': 'ru_RU', 'og:image': socialImage })) $('head').append($('<meta>').attr({ property, content }));
   $('head').append('<meta name="twitter:card" content="summary_large_image"/>');
-  const schema = [{ '@context': 'https://schema.org', '@type': 'MedicalClinic', '@id': siteOrigin + '/#clinic', name: clinic.name, url: siteOrigin + '/', telephone: clinic.phoneHref.slice(4), email: clinic.email }];
+  for (const [property, content] of Object.entries({ 'og:image:width': '1200', 'og:image:height': '630', 'og:image:type': 'image/jpeg', 'og:image:alt': h1 || route.name })) $('head').append($('<meta>').attr({ property, content }));
+  $('head').append($('<meta>').attr({ name: 'twitter:image', content: socialImage }));
+  const schema = [{ '@context': 'https://schema.org', '@type': 'MedicalClinic', '@id': siteOrigin + '/#clinic', name: clinic.name, legalName: clinic.legalName, url: siteOrigin + '/', telephone: clinic.phoneHref.slice(4), email: clinic.email, address: { '@type': 'PostalAddress', streetAddress: clinic.address, addressLocality: 'Москва', addressCountry: 'RU' }, openingHours: clinic.openingHours, image: socialImage, medicalSpecialty: ['https://schema.org/Surgical', 'https://schema.org/Oncologic'] }];
   if (route.url !== '/') {
     const crumbs = [{ '@type': 'ListItem', position: 1, name: 'Главная', item: siteOrigin + '/' }];
     if (route.parent) crumbs.push({ '@type': 'ListItem', position: 2, name: routes.find(x => x.url === route.parent)?.name, item: siteOrigin + route.parent });
     crumbs.push({ '@type': 'ListItem', position: crumbs.length + 1, name: h1 || route.name, item: canonical });
     schema.push({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs });
   }
-  if (route.code) schema.push({ '@context': 'https://schema.org', '@type': route.type || 'WebPage', name: h1 || route.name, ...(route.type === 'Article' ? { headline: h1 || route.name } : {}), url: canonical, ...(heroImage ? { image: socialImage } : {}) });
+  if (route.code && !route.noindex) {
+    const entity = { '@context': 'https://schema.org', '@type': route.type || 'WebPage', name: h1 || route.name,
+      ...(route.type === 'Article' ? { headline: h1 || route.name } : {}), url: canonical,
+      ...(heroImage ? { image: new URL(heroImage, siteOrigin).href } : {}) };
+    if ($('.contentByline').length) {
+      const authors = (route.item.properties?.AUTHOR?.values || []).map(value => value.value?.element).filter(author => author?.CODE && !['donchenko-konstantin-aleksandrovich', 'kakotkin-viktor-viktorovich'].includes(author.CODE));
+      if (authors.length) entity.author = authors.map(author => ({ '@type': 'Person', name: author.NAME, url: siteOrigin + '/doctors/' + author.CODE }));
+      const published = isoDate(route.item.fields?.DATE_CREATE);
+      const modified = isoDate(route.item.editorial?.updatedAt || route.item.fields?.TIMESTAMP_X);
+      if (published) entity.datePublished = published;
+      if (modified) entity.dateModified = modified;
+    }
+    if (route.type === 'Article') entity.publisher = { '@id': siteOrigin + '/#clinic' };
+    if (route.type === 'Physician') entity.memberOf = { '@id': siteOrigin + '/#clinic' };
+    if (route.item.editorial?.reviewer) {
+      entity.reviewedBy = { '@type': 'Person', name: route.item.editorial.reviewer.name, url: siteOrigin + '/doctors/' + route.item.editorial.reviewer.code };
+      entity.lastReviewed = route.item.editorial.reviewedAt;
+    }
+    if (route.item.editorial?.sources?.length) entity.citation = route.item.editorial.sources.map(source => source.url);
+    if (route.type === 'Article' && !entity.datePublished) {
+      const published = isoDate(route.item.active_from || route.item.date_create);
+      if (published) entity.datePublished = published;
+      const modified = isoDate(route.item.timestamp_x);
+      if (modified) entity.dateModified = modified;
+    }
+    schema.push(entity);
+  }
+
+  const questions = $('.faqItem').toArray().map(element => ({ '@type': 'Question', name: $(element).find('summary').text(), acceptedAnswer: { '@type': 'Answer', text: $(element).find('.faqAnswer').text() } }));
+  if (questions.length && !route.noindex) schema.push({ '@context': 'https://schema.org', '@type': 'FAQPage', '@id': canonical + '#faq', mainEntity: questions });
+  const seenVideos = new Set();
+  $('a[data-video-src]').each((_, element) => {
+    const link = $(element); const embedUrl = link.attr('data-video-src');
+    const id = embedUrl?.match(/\/embed\/([\w-]+)/)?.[1];
+    if (!id || seenVideos.has(id)) return;
+    seenVideos.add(id);
+    const name = link.closest('section').find('h2,h3').first().text() || h1;
+    schema.push({ '@context': 'https://schema.org', '@type': 'VideoObject', name, embedUrl, thumbnailUrl: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`, description: name });
+  });
+
   $('head').append(`<script type="application/ld+json">${jsonScript(schema)}</script>`);
   $('a[href]').each((_, element) => {
     const anchor = $(element), href = normalizeUrl(anchor.attr('href'));
@@ -140,28 +208,62 @@ for (const route of routes) {
   });
   $('iframe').each((_, element) => { const frame = $(element); frame.attr({ loading: 'lazy', title: frame.attr('title') || 'Видео или карта', referrerpolicy: 'strict-origin-when-cross-origin' }); });
   $('body').append(`<script type="application/json" id="page-data">${jsonScript(pageData(route))}</script><script type="application/json" id="image-data">${jsonScript(globalThis.__USED_IMAGES__)}</script>`);
-  const filename = route.url === '/' ? 'index.html' : route.url.slice(1) + '.html';
+  const filename = route.url === '/' ? 'index.html' : route.page > 1 ? `${route.url.split('?')[0].slice(1)}-page-${route.page}.html` : route.url.slice(1) + '.html';
   await fs.mkdir(path.dirname(path.join(out, filename)), { recursive: true });
   await fs.writeFile(path.join(out, filename), $.html());
-  manifest[route.url] = { file: filename, status: route.url === '/404' ? 404 : 200, noindex: Boolean(route.noindex || report.staging), title };
+  manifest[route.url] = { file: filename, status: route.status || (route.url === '/404' ? 404 : 200), noindex: Boolean(route.noindex || report.staging), robots: route.robots || 'noindex, follow', title };
   report.pages++;
 }
-await sharp(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#244b6a"/><text x="80" y="270" fill="white" font-family="sans-serif" font-size="62">Университетская клиника МГУ</text><text x="80" y="370" fill="white" font-family="sans-serif" font-size="48">Отделение хирургии</text></svg>')).png().toFile(path.join(out, 'social.png'));
+await sharp('src/assets/home/9at58kjh5xg4451pkfzq0qxvvow2gzen.jpg')
+  .resize(1200, 630, { fit: 'cover', position: 'centre' })
+  .composite([{ input: Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect y="440" width="1200" height="190" fill="#183650" fill-opacity="0.9"/><text x="56" y="515" fill="white" font-family="sans-serif" font-size="52">Клиника МГУ</text><text x="56" y="578" fill="white" font-family="sans-serif" font-size="32">Проктология и онкохирургия в Москве</text></svg>') }])
+  .png().toFile(path.join(out, 'social.png'));
+// Removed technical reviews retain their URL but return an explicit static 410 document.
+const gonePage = load(await fs.readFile(path.join(out, '404.html'), 'utf8'));
+gonePage('title').text('Публикация удалена | Клиника МГУ');
+gonePage('main h1').first().text('Публикация удалена');
+gonePage('main p').first().text('Эта публикация удалена. Перейдите к отзывам или свяжитесь с клиникой.');
+gonePage('script, link[rel="modulepreload"], link[rel="canonical"]').remove();
+await fs.writeFile(path.join(out, '410.html'), gonePage.html());
+
 function lastmod(route) {
-  const value = route.item?.fields?.TIMESTAMP_X || route.item?.timestamp_x || '';
-  const match = String(value).match(/^(\d{2})\.(\d{2})\.(\d{4})/);
-  return match ? `${match[3]}-${match[2]}-${match[1]}` : /^\d{4}-\d{2}-\d{2}/.test(value) ? value.slice(0, 10) : '';
+  // Static templates changed in this release. Never use the wall clock at build time.
+  if (!route.item) return auditRevision;
+  return isoDate(route.item.editorial?.updatedAt || route.item.fields?.TIMESTAMP_X || route.item.timestamp_x || route.item.fields?.DATE_CREATE || route.item.date_create) || '';
 }
-await fs.writeFile(path.join(out, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + routes.filter(route => !route.noindex).map(route => `<url><loc>${xmlEscape(siteOrigin + route.url)}</loc>${lastmod(route) ? `<lastmod>${lastmod(route)}</lastmod>` : ''}</url>`).join('') + '</urlset>');
-await fs.writeFile(path.join(out, 'robots.txt'), report.staging ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nDisallow: /api/\nDisallow: /questions/admin\nDisallow: /search\nSitemap: ${siteOrigin}/sitemap.xml\n`);
+await fs.writeFile(path.join(out, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + routes.filter(route => !route.noindex && (!route.page || route.page === 1) && (!route.status || route.status === 200)).map(route => `<url><loc>${xmlEscape(siteOrigin + route.url)}</loc>${lastmod(route) ? `<lastmod>${lastmod(route)}</lastmod>` : ''}</url>`).join('') + '</urlset>');
+await fs.writeFile(path.join(out, 'robots.txt'), report.staging ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nDisallow:\nSitemap: ${siteOrigin}/sitemap.xml\n`);
 await fs.writeFile(path.join(out, 'routes.json'), JSON.stringify({ routes: manifest, redirects, siteOrigin, staging: report.staging }));
 // nginx resolves only enumerated pages: an unknown slug never falls back to index.html.
 const quoteNginx = value => '"' + value.replaceAll('\\', '\\\\').replaceAll('"', '\\"').replaceAll('$', '\\$') + '"';
 const canonicalEntries = Object.entries(redirects).flatMap(([old, current]) => [old, old + '/'].map(url => `  ${quoteNginx(url)} ${quoteNginx(current)};`));
 // error_page changes $uri to /404.html. Recompute canonical after that internal
 // redirect instead of redirecting back to the cached, missing request path.
-const nginxMaps = `map $uri $clinic_canonical_path {\n  volatile;\n  default $uri;\n${canonicalEntries.join('\n')}\n  ~^(.+)/$ $1;\n}\nmap $uri $clinic_ssg_file {\n  default /__missing_page__.html;\n${Object.entries(manifest).filter(([, item]) => item.status === 200).map(([url, item]) => `  ${quoteNginx(url)} ${quoteNginx('/' + item.file)};`).join('\n')}\n}\n`;
-await fs.writeFile(path.join(out, 'nginx-maps.conf'), nginxMaps);
+const nginxMaps = `map $uri $clinic_canonical_path {\n  volatile;\n  default $uri;\n${canonicalEntries.join('\n')}\n  ~^(.+)/$ $1;\n}\nmap $uri $clinic_ssg_file {\n  default /__missing_page__.html;\n  /questions $clinic_archive_file;\n  /reviews $clinic_archive_file;\n${Object.entries(manifest).filter(([url, item]) => item.status === 200 && !url.includes('?') && !['/questions', '/reviews'].includes(url)).map(([url, item]) => `  ${quoteNginx(url)} ${quoteNginx('/' + item.file)};`).join('\n')}\n}\n`;
+const archiveMaps = `map "$uri:$arg_page" $clinic_page_redirect {
+  volatile;
+  default "";
+  "/questions:1" /questions;
+  "/reviews:1" /reviews;
+}
+map $arg_page $clinic_page {
+  default invalid;
+  "" 1;
+  ~^[1-9][0-9]*$ $arg_page;
+}
+map "$uri:$clinic_page" $clinic_archive_file {
+  default /__missing_page__.html;
+${routes.filter(route => route.page).map(route => `  "${route.url.split('?')[0]}:${route.page}" "/${manifest[route.url].file}";`).join('\n')}
+}
+map $uri $clinic_gone {
+  volatile;
+  default 0;
+${routes.filter(route => route.status === 410).map(route => `  ${quoteNginx(route.url)} 1;`).join('\n')}
+}
+`;
+await fs.writeFile(path.join(out, 'nginx-maps.conf'), nginxMaps + archiveMaps);
+await fs.mkdir('.generated', { recursive: true });
+await fs.writeFile('.generated/privacy-review.json', JSON.stringify({ withheld: privacyReport, removedReviewIds: [...removedReviewIds] }, null, 2));
 report.brokenLinks = [...broken].map(([url, count]) => ({ url, count }));
 await fs.writeFile(path.join(out, 'build-report.json'), JSON.stringify(report, null, 2));
 for (const file of await walk(out)) {

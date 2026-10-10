@@ -59,6 +59,7 @@ export function normalizeLegacyQuestion(item) {
     date: item?.date_active_from || item?.date_create || "",
     timestamp: parseDateRu(item?.date_active_from || item?.date_create || ""),
     source: "legacy",
+    withheld: item?.withheld, gone: item?.gone, active: item?.active,
   };
 }
 
@@ -80,6 +81,6 @@ export function normalizeApiQuestion(item) {
 export function sortQuestionsDesc(items) {
   return [...items].sort((a, b) => {
     if (a.timestamp !== b.timestamp) return b.timestamp - a.timestamp;
-    return String(b.code).localeCompare(String(a.code));
+    return Number(b.id) - Number(a.id) || String(b.code).localeCompare(String(a.code));
   });
 }

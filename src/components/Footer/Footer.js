@@ -6,7 +6,7 @@ import "./footer.css";
 
 // КАРТИНКИ — ТОЛЬКО ИМПОРТЫ. ПУТИ МЕНЯЕШЬ ПОД СЕБЯ.
 import footerLogoImg from "../../assets/components/footer_photo.png";
-import iconYoutubeImg from "../../assets/components/youtube.png";
+import iconVkImg from "../../assets/home/vk.svg";
 import iconTelegramImg from "../../assets/components/telegram.png";
 import iconWhatsappImg from "../../assets/components/whatsapp.png";
 
@@ -49,7 +49,7 @@ export default function Footer() {
                 <Image loading="eager" className="ftrLogo" src={footerLogoImg} alt="Логотип" />
 
                 <div className="ftrRightText">
-                  <div className="ftrRightTitle">ОТДЕЛЕНИЕ ХИРУРГИИ</div>
+                  <div className="ftrRightTitle">{clinic.name}</div>
                   <div className="ftrRightSub">МНОЦ МГУ имени М. В. Ломоносова</div>
                 </div>
               </div>
@@ -57,8 +57,10 @@ export default function Footer() {
               <a className="ftrPhone" href={clinic.phoneHref}>{clinic.phone}</a>
               <a className="ftrEmail" href={`mailto:${clinic.email}`}>{clinic.email}</a>
               <div className="ftrAddr">{clinic.address}</div>
+              <div className="ftrAddr">{clinic.hours}</div>
 
               <div className="ftrSocial">
+                <a className="ftrSocBtn" href="https://vk.com/surgerymgy" target="_blank" rel="noopener noreferrer" aria-label="VK"><Image className="ftrSocIcon" src={iconVkImg} alt="" /></a>
                 <a className="ftrSocBtn" href="https://wa.me/79671367706" target="_blank" rel="noreferrer" aria-label="WhatsApp">
                   <Image className="ftrSocIcon" src={iconWhatsappImg} alt="" />
                 </a>
@@ -66,6 +68,7 @@ export default function Footer() {
             </div>
           </div>
 
+          <p className="medicalNotice">Имеются противопоказания. Необходима консультация специалиста.</p>
           <div className="ftrLine" />
         </div>
       </div>
@@ -78,7 +81,7 @@ export default function Footer() {
 
           <Link reloadDocument className="ftrBottomLink" to="/sitemap">Карта сайта</Link>
 
-          <a className="ftrBottomLink ftrBottomLinkRight" href="https://webformula.pro" target="_blank" rel="noreferrer">
+          <a className="ftrBottomLink ftrBottomLinkRight" href="https://webformula.pro" target="_blank" rel="nofollow noopener noreferrer">
             Программирование сайта - webformula.pro
           </a>
         </div>

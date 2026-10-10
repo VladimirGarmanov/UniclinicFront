@@ -15,3 +15,39 @@ code {
 .skipLink {position:absolute;left:12px;top:-100px;z-index:9999;background:white;padding:12px;color:#164d6d}.skipLink:focus{top:12px} :focus-visible{outline:3px solid #146da0 !important;outline-offset:3px}.consentField{display:flex;gap:12px;align-items:flex-start;margin:18px 0;font-size:15px;line-height:1.5}.consentField input{width:20px;height:20px;flex-shrink:0}.utilityPage{max-width:1100px;margin:40px auto;padding:24px;line-height:1.7}.accessible{font-size:125%}.accessible body{filter:grayscale(1)}.accessible p,.accessible a,.accessible label{font-size:1.15em !important}.askGrid{align-items:center}.askGrid label{grid-column:1/-1}.askGrid input{grid-column:1/-1}
 
 img {max-width:100%;height:auto}
+
+.archivePagination { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:1rem; padding:1.5rem 0; }
+.archivePagination a, .recentPublications button { color:#244b6a; font:inherit; }
+.recentPublications { margin:1.5rem 0; }
+
+.contentByline { color:#52606c; font-size:14px; margin:0 0 1.2rem; }
+.contentByline p { margin:.3rem 0; }
+
+.appointmentBox, .servicePrices { max-width:1100px; margin:2rem auto; padding:24px; border:1px solid #dae2e9; border-radius:18px; background:#fff; color:#253040; }
+.appointmentBox h2, .servicePrices h2 { margin-top:0; }
+.appointmentGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.appointmentGrid label { display:flex; flex-direction:column; gap:8px; }
+.appointmentGrid input { padding:12px; border:1px solid #aab7c4; border-radius:8px; font:inherit; min-width:0; }
+.appointmentBox button { padding:12px 20px; border:0; border-radius:8px; background:#244b6a; color:white; font:inherit; cursor:pointer; }
+.servicePrices table { width:100%; border-collapse:collapse; text-align:left; }
+.servicePrices td, .servicePrices th { padding:12px 8px; border-bottom:1px solid #dae2e9; }
+.doctorDetailMetaLabel { margin-right:.5em; }
+@media (max-width:640px) { .appointmentGrid { grid-template-columns:1fr; } .appointmentBox, .servicePrices { padding:16px; margin:1rem 12px; } }
+
+.videoPreview { display:block; padding:3rem 1rem; text-align:center; background:#eaf1f7; border-radius:12px; color:#244b6a; }
+.loadedVideo { width:100%; aspect-ratio:16/9; border:0; }
+/* Shared medical content remains readable without JavaScript. */
+.contentPanel, .archiveNotice { margin:24px 0; padding:24px; background:#fff; border:1px solid #dce4e9; border-radius:14px; line-height:1.7; }
+.contentPanel h2 { margin:0 0 16px; color:#244b6a; }
+.contentPanel a, .archiveNotice a { color:#244b6a; text-decoration:underline; text-underline-offset:3px; }
+.faqItem { border-top:1px solid #dce4e9; padding:16px 0; }
+.faqItem summary { cursor:pointer; font-weight:600; }
+.faqAnswer { margin:12px 0 0; }
+.relatedContent ul { display:flex; flex-wrap:wrap; gap:12px 32px; padding-left:20px; }
+.appointmentBox select { font:inherit; width:100%; padding:12px; background:#fff; color:#183650; border:1px solid #9eaebb; border-radius:8px; margin:8px 0 16px; }
+.servicePrices { overflow-x:auto; }
+.servicePrices table { width:100%; border-collapse:collapse; }
+.servicePrices th, .servicePrices td { padding:12px; border-bottom:1px solid #dce4e9; text-align:left; }
+.servicePrices td:last-child { white-space:nowrap; }
+.medicalNotice { text-align:center; font-size:16px; }
+.contentByline { color:#465361; line-height:1.5; margin:16px 0 24px; }

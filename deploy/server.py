@@ -39,6 +39,7 @@ UNIT = Path('/etc/systemd/system/uniclinic-api.service')
 NODE_VERSION = '24.21.0'
 NODE_ROOT = Path('/opt/uniclinic/toolchain') / ('node-v' + NODE_VERSION)
 NODE_BIN = NODE_ROOT / 'bin'
+SHARED_RESOURCE_DIRS = ('assets', 'media', 'social')
 # Official nodejs.org v24.21.0 SHASUMS256.txt; download is also authenticated by HTTPS.
 NODE_SHA256 = {
     'x64': 'fd8e59d5a511510f6a298afb548f18c7d2b1be404d8b4a27d94fbe49f56cb2d6',
@@ -146,7 +147,7 @@ def setup():
         'build-essential', 'curl', 'ca-certificates', 'xz-utils', 'rsync', 'fonts-dejavu-core')
     runtime = ensure_account('uniclinic', '/var/lib/uniclinic')
     builder = ensure_account('uniclinic-build', str(CACHE))
-    for directory in (BASE, RELEASES, BASE / 'shared', BASE / 'shared/assets', BASE / 'shared/media'):
+    for directory in (BASE, RELEASES, BASE / 'shared', *(BASE / 'shared' / folder for folder in SHARED_RESOURCE_DIRS)):
         directory.mkdir(parents=True, exist_ok=True, mode=0o755)
     for directory in (DATABASE.parent, CACHE):
         directory.mkdir(parents=True, exist_ok=True, mode=0o700)
@@ -265,16 +266,20 @@ def build_release(backend):
     run(*common, 'npm', 'ci', '--no-audit', '--no-fund', cwd=front_work)
     run(*common, 'env', 'SITE_ORIGIN=https://uniclinic.pro', 'STAGING=false', 'npm', 'run', 'build', cwd=front_work)
     run(*common, 'npm', 'run', 'check', cwd=front_work)
+    run(*common, 'npm', 'run', 'check:audit', cwd=front_work)
     python = release / 'backend/.venv/bin/python'
     run(*common, 'python3', '-m', 'venv', release / 'backend/.venv')
     run(*common, python, '-m', 'pip', 'install', '--disable-pip-version-check', '-r', release / 'backend/requirements.lock')
+    run(*common, python, 'scripts/smoke.py', cwd=release / 'backend')
     # The venv is created at its final absolute path; moving it would break shebangs.
     shutil.copytree(front_work / 'build', release / 'frontend')
     shutil.copyfile(release / 'frontend/nginx-maps.conf', release / 'deploy/nginx-maps.conf')
     manifest = json.loads((release / 'frontend/routes.json').read_text())
     if manifest['siteOrigin'] != 'https://uniclinic.pro' or manifest['staging']:
         raise RuntimeError('Refusing to activate a staging/wrong-domain artifact.')
-    for folder in ('assets', 'media'):
+    for folder in SHARED_RESOURCE_DIRS:
+        # Upgrades must also work when setup predates a new shared resource type.
+        (BASE / 'shared' / folder).mkdir(parents=True, exist_ok=True, mode=0o755)
         run('rsync', '-a', '--ignore-existing', str(release / 'frontend' / folder) + '/', str(BASE / 'shared' / folder) + '/')
         run('chown', '-R', 'root:root', BASE / 'shared' / folder)
     atomic_text(release / 'release.json', json.dumps({'frontend': front_sha, 'backend': back_sha, 'domain': 'uniclinic.pro'}, indent=2) + '\n')
@@ -313,7 +318,25 @@ def wait_for_health():
 
 
 def verify_site():
-    for url, expected in [('/', '200'), ('/api/health', '200'), ('/sitemap.xml', '200'), ('/__deployment_missing_page__', '404')]:
+    frontend = CURRENT / 'frontend'
+    manifest = json.loads((frontend / 'routes.json').read_text())
+    homepage = (frontend / 'index.html').read_text()
+    served_homepage = run('curl', '--silent', '--show-error', '--fail', '--compressed', '--max-time', '15',
+                          '--resolve', 'uniclinic.pro:443:127.0.0.1', 'https://uniclinic.pro/', capture=True).stdout
+    if served_homepage != homepage:
+        raise RuntimeError('HTTPS serves a different homepage than the activated release.')
+    checks = [('/', '200'), ('/api/health', '200'), ('/sitemap.xml', '200'),
+              ('/robots.txt', '200'), ('/__deployment_missing_page__', '404')]
+    for url in ('/oms', '/vmp', '/contacts', '/services/lechenie-gemorroya', '/diseases/gemorroy',
+                '/services/konsultatsiya-proktologa', '/services/ligirovanie-gemorroidalnykh-uzlov',
+                '/services/lazernoe-lechenie-gemorroya', '/services/truzi', '/services/vtoroe-mnenie-onkologa'):
+        # The target manifest also makes this check compatible with older rollback releases.
+        if url in manifest['routes']:
+            checks.append((url, '200'))
+    checks.extend((url, '301') for url in manifest.get('redirects', {}))
+    resources = sorted(set(re.findall(r'/(?:assets|media|social)/[A-Za-z0-9_.-]+', homepage)))
+    checks.extend((url, '200') for url in resources)
+    for url, expected in checks:
         code = run('curl', '--silent', '--show-error', '--max-time', '15', '--resolve', 'uniclinic.pro:443:127.0.0.1',
                    '-o', '/dev/null', '-w', '%{http_code}', 'https://uniclinic.pro' + url, capture=True).stdout
         if code != expected:

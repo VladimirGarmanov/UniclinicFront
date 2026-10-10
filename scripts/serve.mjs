@@ -31,10 +31,14 @@ const server = http.createServer(async (req, res) => {
     const normalized = pathname.replace(/\/+$/, '') || '/';
     const redirect = manifest.redirects[normalized] || (normalized !== pathname ? normalized : null);
     if (redirect) { res.writeHead(301, { Location: redirect + url.search }).end(); return; }
-    const route = manifest.routes[pathname];
+    const page = url.searchParams.get('page');
+    if (['/questions', '/reviews'].includes(pathname) && page === '1') { res.writeHead(301, { Location: pathname }).end(); return; }
+    const key = ['/questions', '/reviews'].includes(pathname) && page ? `${pathname}?page=${page}` : pathname;
+    const route = manifest.routes[key];
     let file = route?.file;
     let status = route?.status || 200;
-    if (!file && /^\/(assets|media|upload)\//.test(pathname) && !pathname.split('/').some(part => part.startsWith('.')) && mime[path.extname(pathname)]) file = pathname.slice(1);
+    if (status === 410) file = '410.html';
+    if (!file && /^\/(assets|media|social|upload)\//.test(pathname) && !pathname.split('/').some(part => part.startsWith('.')) && mime[path.extname(pathname)]) file = pathname.slice(1);
     if (!file && ['/sitemap.xml', '/robots.txt', '/favicon.svg', '/social.png'].includes(pathname)) file = pathname.slice(1);
     if (!file) { file = '404.html'; status = 404; }
     let filename = path.resolve(root, file);
@@ -49,8 +53,8 @@ const server = http.createServer(async (req, res) => {
     }
     res.setHeader('Content-Type', mime[extension] || 'application/octet-stream');
     res.setHeader('Vary', 'Accept-Encoding');
-    res.setHeader('Cache-Control', status === 404 || pathname.startsWith('/questions/admin') ? 'no-store' : /^\/(assets|media)\//.test(pathname) ? 'public, max-age=31536000, immutable' : 'no-cache');
-    if (status === 404 || route?.noindex || manifest.staging) res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+    res.setHeader('Cache-Control', status === 404 || status === 410 || /^\/(questions|reviews)(?:\/|$)/.test(pathname) ? 'no-store' : /^\/(assets|media|social)\//.test(pathname) ? 'public, max-age=31536000, immutable' : 'no-cache');
+    if (status === 404 || status === 410 || route?.noindex || manifest.staging) res.setHeader('X-Robots-Tag', manifest.staging ? 'noindex, nofollow' : route?.robots || 'noindex, follow');
     res.statusCode = status;
     if (req.method === 'HEAD') { res.end(); return; }
     createReadStream(filename).pipe(res);

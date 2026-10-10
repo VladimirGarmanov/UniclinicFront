@@ -217,9 +217,8 @@ html{
 .homeHero{
   position:relative;
   min-height:760px;
-  background-image:
-    linear-gradient(180deg, rgba(0,0,0,.42), rgba(0,0,0,.68)),
-    var(--hero-bg);
+  background: #183650;
+  isolation:isolate;
   background-size:cover;
   background-position:center center;
   background-repeat:no-repeat;
@@ -231,7 +230,7 @@ html{
   position:absolute;
   left:0;
   right:0;
-  top:var(--stickyH);
+  top:24px;
   padding-top:18px;
   z-index:3;
 }
@@ -972,3 +971,6 @@ html{
     display:none;
   }
 }
+
+.homeHeroImage { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-2; }
+.homeHero::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.68)); z-index:-1; pointer-events:none; }

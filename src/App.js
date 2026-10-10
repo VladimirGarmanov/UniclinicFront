@@ -62,6 +62,9 @@ function App() {
         <Route path="/sitemap" element={<Sitemap />} />
         <Route path="/search" element={<Search />} />
         <Route path="/services/prices/:slug" element={<Treatment />} />
+        <Route path="/oms" element={<Treatment />} />
+        <Route path="/vmp" element={<Treatment />} />
+        <Route path="/paid-treatment" element={<Treatment />} />
         <Route path="/team" element={<Team />} />
         <Route path="/clinicalcases" element={<ClinicalCases />} />
         <Route path="/clinicalcases/:slug" element={<ClinicalCaseDetail />} />

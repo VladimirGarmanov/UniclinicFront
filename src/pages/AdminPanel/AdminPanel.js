@@ -1,3 +1,4 @@
+import AppointmentRequests from "./AppointmentRequests";
 import ReviewModeration from "./ReviewModeration";
 import React, { useEffect, useState } from "react";
 import "./admin-panel.css";
@@ -291,6 +292,7 @@ export default function AdminPanel() {
         {loading ? <div className="adminPanelLoading">Загрузка вопросов...</div> : null}
         {error ? <div className="adminPanelError">{error}</div> : null}
 
+        <AppointmentRequests />
         <ReviewModeration />
         <div className="adminPanelList">
           {questions.map((item) => (

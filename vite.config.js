@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import { defineConfig, transformWithEsbuild } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'node:path';
-import { datasets, catalog } from './scripts/content.mjs';
+import { datasets, catalog, routes, pageData } from './scripts/content.mjs';
 
 export default defineConfig(({ isSsrBuild }) => ({
   publicDir: false,
@@ -15,7 +15,7 @@ export default defineConfig(({ isSsrBuild }) => ({
       load(id) {
         if (!id.startsWith('\0page-content:')) return;
         const name = id.slice('\0page-content:'.length, -3);
-        const data = name === 'catalog.json' ? catalog : datasets[name];
+        const data = name === 'catalog.json' ? catalog : name === 'home-content.json' ? pageData(routes.find(route => route.url === '/'))[name] : datasets[name];
         if (!data) return;
         return isSsrBuild
           ? `export default ${JSON.stringify(data)};`
@@ -40,7 +40,10 @@ export default defineConfig(({ isSsrBuild }) => ({
         });
         server.middlewares.use('/__page-data', async (req, res) => {
           const { routes, pageData } = await import('./scripts/content.mjs');
-          const route = routes.find(item => item.url === decodeURI(req.url.split('?')[0]));
+          const requestUrl = new URL(req.url, 'http://localhost');
+          const page = requestUrl.searchParams.get('page');
+          const key = decodeURI(requestUrl.pathname) + (page && page !== '1' ? `?page=${page}` : '');
+          const route = routes.find(item => item.url === key);
           res.setHeader('Content-Type', 'application/json');
           res.end(JSON.stringify(route ? pageData(route) : {}));
         });

@@ -1,4 +1,5 @@
 import Image from "../../components/Shared/Image";
+import ContentByline from "../../components/Shared/ContentByline";
 import React from "react";
 import { Link, NavLink, useParams } from "../../utils/router";
 import "./clinicalcases.css";
@@ -88,6 +89,7 @@ export function ClinicalCaseDetail() {
             </div>
           </div>
 
+          <ContentByline item={item} />
           {detailText.trim() ? (
             detailIsHtml ? (
               <div

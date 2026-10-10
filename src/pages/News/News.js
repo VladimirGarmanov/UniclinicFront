@@ -201,6 +201,7 @@ export function NewsDetail() {
         <h1 className="newsDetailTitle">{title}</h1>
 
         {date ? <div className="newsDetailDate">{date}</div> : null}
+        <p className="archiveNotice">Архивная публикация. Указанные в новости даты событий и условия относятся к моменту её публикации. Текущий график уточняйте в разделе <Link to="/contacts">«Контакты»</Link>.</p>
 
         {image ? (
           <div className="newsDetailImageWrap">
@@ -230,7 +231,7 @@ export function NewsDetail() {
                 >
                   <Image
                     src={photo.src}
-                    alt={photo?.original_name || `${title} ${index + 1}`}
+                    alt={`${title}: фото ${index + 1}`}
                     className="newsGalleryImage"
                   />
                 </a>

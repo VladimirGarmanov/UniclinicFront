@@ -1,5 +1,12 @@
 export const redirects = {
-  '/home': '/', '/doctors': '/team', '/faq': '/questions', '/stories': '/clinicalcases', '/about': '/', '/price': '/prices',
+  '/services/prices/besplatnoe-lechenie-po-polisu-oms': '/oms',
+  '/services/prices/lechenie-po-kvote-po-programme-vmp': '/vmp',
+  '/services/prices/lechenie-na-platnoy-osnove': '/paid-treatment',
+  '/diseases/pakhovaya-gryzha-foto-simptomy-lechenie': '/diseases/pakhovaya-gryzha',
+  '/articles/kolonoskopiya-chto-nado-znat-o-samom-vazhnom-issledovanii-v-zhizni-k': '/articles/kolonoskopiya-chto-nuzhno-znat',
+  '/articles/kolorektalnyy-rak-pochemu-on-voznikaet-kak-ego-lechat-i-pochemu-patsienty-ne-obrashchayutsya-k-vrach': '/articles/kolorektalnyy-rak-prichiny-i-lechenie',
+  '/articles/kakie-pravila-soblyudaet-vrach-koloproktolog-chtoby-ne-stat-sobstvennym-patsientom-mozhno-li-izbezha': '/articles/pravila-profilaktiki-koloproktologa',
+  '/price-mnoc2023.pdf': '/prices', '/home': '/', '/doctors': '/team', '/faq': '/questions', '/stories': '/clinicalcases', '/about': '/', '/price': '/prices',
   '/diseases/diastaz-pryamykh-myshc-zhivota': '/diseases/diastaz-pryamykh-myshts-zhivota',
   '/diseases/epitelialnyy-kopchikovyy-khod-(ekkh)': '/diseases/epitelialnyy-kopchikovyy-khod-ekkh',
 };

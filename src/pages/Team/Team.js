@@ -1,3 +1,4 @@
+import AppointmentForm from "../../components/Shared/AppointmentForm";
 import Image from "../../components/Shared/Image";
 import React from "react";
 import { Link, useParams } from "../../utils/router";
@@ -76,28 +77,28 @@ export function DoctorDetail() {
               <div className="doctorDetailMeta">
                 {roles ? (
                   <p className="doctorDetailMetaItem">
-                    <span className="doctorDetailMetaLabel">Специализация</span>
+                    <span className="doctorDetailMetaLabel">Специализация</span>{" "}
                     {roles}
                   </p>
                 ) : null}
 
                 {degree ? (
                   <p className="doctorDetailMetaItem">
-                    <span className="doctorDetailMetaLabel">Учёная степень</span>
+                    <span className="doctorDetailMetaLabel">Учёная степень</span>{" "}
                     {degree}
                   </p>
                 ) : null}
 
                 {position ? (
                   <p className="doctorDetailMetaItem">
-                    <span className="doctorDetailMetaLabel">Должность</span>
+                    <span className="doctorDetailMetaLabel">Должность</span>{" "}
                     {position}
                   </p>
                 ) : null}
 
                 {experience ? (
                   <p className="doctorDetailMetaItem">
-                    <span className="doctorDetailMetaLabel">Стаж</span>
+                    <span className="doctorDetailMetaLabel">Стаж</span>{" "}
                     {experience}
                   </p>
                 ) : null}
@@ -106,6 +107,7 @@ export function DoctorDetail() {
           </div>
 
           <AutoEntitySections item={item} />
+          <AppointmentForm doctor={name} />
         </div>
       </div>
     </section>

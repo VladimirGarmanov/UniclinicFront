@@ -1,11 +1,14 @@
 import { track } from "../../utils/analytics";
 import Consent, { CONSENT_VERSION } from "../../components/Shared/Consent";
-import React, { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "../../utils/router";
+import React, { useState } from "react";
+import { Link, useParams, useLocation } from "../../utils/router";
 import "./reviews.css";
 
 import reviewsData from "../../assets/info/reviews.json";
 
+import Pagination from "../../components/Shared/Pagination";
+import RecentPublications from "../../components/Shared/RecentPublications";
+import { archivePage } from "../../utils/pagination";
 const API_BASE = "";
 
 const RAW_REVIEWS = Array.isArray(reviewsData?.items) ? reviewsData.items : [];
@@ -136,17 +139,7 @@ function getReviewBySlug(slug) {
 }
 
 function getVisibleReviews() {
-  return RAW_REVIEWS
-    .filter((item) => item?.active !== false)
-    .sort((a, b) => {
-      const dateA = parseRuDate(getReviewDate(a));
-      const dateB = parseRuDate(getReviewDate(b));
-
-      const timeA = dateA ? dateA.getTime() : 0;
-      const timeB = dateB ? dateB.getTime() : 0;
-
-      return timeB - timeA;
-    });
+  return RAW_REVIEWS.filter(item => item?.active !== false);
 }
 
 function Stars({ value = 0, interactive = false, onChange = null }) {
@@ -547,13 +540,9 @@ export function ReviewDetail() {
 }
 
 export default function Reviews() {
-  const [publicReviews, setPublicReviews] = useState([]);
-  useEffect(() => {
-    const controller = new AbortController();
-    fetch('/api/reviews', { signal: controller.signal }).then(response => response.ok ? response.json() : { items: [] }).then(data => setPublicReviews(data.items || [])).catch(() => {});
-    return () => controller.abort();
-  }, []);
-  const visibleReviews = useMemo(() => getVisibleReviews(), []);
+  const { search } = useLocation();
+  const pagination = archivePage(reviewsData, getVisibleReviews(), search);
+  const visibleReviews = pagination.items;
 
   return (
     <section className="reviewsPage">
@@ -577,8 +566,8 @@ export default function Reviews() {
           </a>
         </div>
 
+        <RecentPublications kind="reviews" />
         <div className="reviewsGrid">
-          {publicReviews.map(item => <article className="reviewsCard" key={`db-${item.id}`}><div className="reviewsCardBody"><p>{item.reviewer_name || 'Пациент'} · {item.date_active_from}</p><Stars value={item.mark} /><h3 className="reviewsCardTitle">{item.name}</h3><p>{item.review_text}</p></div></article>)}
           {visibleReviews.map((item) => {
             const slug = getReviewSlug(item);
             const title = getReviewTitle(item);
@@ -606,6 +595,7 @@ export default function Reviews() {
           })}
         </div>
 
+        <Pagination base="/reviews" {...pagination} />
         <ReviewForm />
       </div>
     </section>

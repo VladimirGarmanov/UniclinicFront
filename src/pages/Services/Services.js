@@ -1,3 +1,7 @@
+import ServicePrices from "../../components/Shared/ServicePrices";
+import ContentByline from "../../components/Shared/ContentByline";
+import { ClinicReviews } from "../../components/Shared/MedicalContent";
+import AppointmentForm from "../../components/Shared/AppointmentForm";
 import Image from "../../components/Shared/Image";
 import React from "react";
 import { Link, useParams } from "../../utils/router";
@@ -141,7 +145,15 @@ export function ServiceDetail() {
             </div>
           </div>
 
+          <ContentByline item={item} />
           <AutoEntitySections item={preparedItem} />
+          <section className="contentPanel"><h2>Как подготовиться и записаться</h2>
+            <ol><li>Оставьте заявку или позвоните в клинику.</li><li>Согласуйте врача, дату и формат приёма.</li><li>Уточните индивидуальную подготовку и список документов при записи.</li></ol>
+            <p><Link to="/oms">Лечение по ОМС</Link> · <Link to="/vmp">ВМП и квота</Link> · <Link to="/reviews">Отзывы пациентов</Link></p>
+          </section>
+          <ServicePrices code={slug} />
+          <ClinicReviews entries={item.clinicReviews} />
+          <AppointmentForm service={name} />
         </div>
       </div>
     </section>
@@ -165,7 +177,7 @@ export default function Services() {
 
         <section className="svc__main">
           <div className="svc__grid">
-            {SERVICES.map((item) => {
+            {SERVICES.filter(item => !item.draft).map((item) => {
               const image = getPrimaryImage(item);
               const desc = getPreviewText(item);
               const code = getItemCode(item);
