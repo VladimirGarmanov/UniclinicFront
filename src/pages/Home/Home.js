@@ -1,3 +1,5 @@
+import QuestionForm from "../../components/Shared/QuestionForm";
+import LiveEditorial from "../../components/Shared/LiveEditorial";
 import Header from "../../components/Header/Header";
 import homeContent from "../../assets/info/home-content.json";
 import AppointmentForm from "../../components/Shared/AppointmentForm";
@@ -231,6 +233,17 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="homeContactSection homeContainer" aria-labelledby="contact-title">
+        <h2 id="contact-title">Свяжитесь с клиникой</h2>
+        <div className="homeContactActions">
+          <a href="https://t.me/surgerymgu_bot?start=website" target="_blank" rel="noopener noreferrer"><strong>Написать в Telegram</strong><span>Помощник соберёт обращение и передаст команде клиники</span></a>
+          <a href="#appointment"><strong>Перезвоните мне</strong><span>Оставьте имя и телефон для обратного звонка</span></a>
+          <a href="#ask-question"><strong>Задать вопрос</strong><span>Отправьте вопрос через сайт</span></a>
+        </div>
+        <AppointmentForm initialType="callback" compact />
+        <QuestionForm />
+      </section>
+      <LiveEditorial />
         <section className="homeSection">
           <div className="homeContainer">
             <h2 className="homeH1">
@@ -398,7 +411,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-      <AppointmentForm />
+
 </main>
 
     </div>

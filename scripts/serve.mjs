@@ -20,8 +20,9 @@ const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, `http://127.0.0.1:${port}`);
     let pathname;
     try { pathname = decodeURIComponent(url.pathname); } catch { res.writeHead(400).end(); return; }
-    if (pathname.startsWith('/api/')) {
-      const proxy = http.request(new URL(req.url, backend), { method: req.method, headers: { ...req.headers, host: backend.host } }, upstream => {
+    const editorial = /^\/(articles|clinicalcases|news)(?:\/editorial-[a-z0-9-]+)?$/.test(pathname) || pathname === '/sitemap.xml';
+    if (pathname.startsWith('/api/') || editorial) {
+      const proxy = http.request(new URL((editorial ? '/editorial-render' : '') + req.url, backend), { method: req.method, headers: { ...req.headers, host: backend.host } }, upstream => {
         res.writeHead(upstream.statusCode, { ...upstream.headers, ...securityHeaders }); upstream.pipe(res);
       });
       proxy.on('error', () => { if (!res.headersSent) res.writeHead(502, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); res.end('{"detail":"Локальный backend недоступен"}'); });

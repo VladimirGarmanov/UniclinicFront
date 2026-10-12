@@ -232,6 +232,8 @@ function lastmod(route) {
   return isoDate(route.item.editorial?.updatedAt || route.item.fields?.TIMESTAMP_X || route.item.timestamp_x || route.item.fields?.DATE_CREATE || route.item.date_create) || '';
 }
 await fs.writeFile(path.join(out, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + routes.filter(route => !route.noindex && (!route.page || route.page === 1) && (!route.status || route.status === 200)).map(route => `<url><loc>${xmlEscape(siteOrigin + route.url)}</loc>${lastmod(route) ? `<lastmod>${lastmod(route)}</lastmod>` : ''}</url>`).join('') + '</urlset>');
+// Public-only catalog lets the live CMS list old and new materials without a rebuild.
+await fs.writeFile(path.join(out, 'editorial-catalog.json'), JSON.stringify(routes.filter(route => route.item && !route.noindex && /^\/(articles|clinicalcases|news)\//.test(route.url)).map(route => ({ kind: route.url.split('/')[1], url: route.url, title: route.name, summary: '', published_at: isoDate(route.item.fields?.DATE_CREATE) || '' }))));
 await fs.writeFile(path.join(out, 'robots.txt'), report.staging ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nDisallow:\nSitemap: ${siteOrigin}/sitemap.xml\n`);
 await fs.writeFile(path.join(out, 'routes.json'), JSON.stringify({ routes: manifest, redirects, siteOrigin, staging: report.staging }));
 // nginx resolves only enumerated pages: an unknown slug never falls back to index.html.

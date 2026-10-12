@@ -51,3 +51,5 @@ img {max-width:100%;height:auto}
 .servicePrices td:last-child { white-space:nowrap; }
 .medicalNotice { text-align:center; font-size:16px; }
 .contentByline { color:#465361; line-height:1.5; margin:16px 0 24px; }
+
+.editorialAdmin{padding:24px;border:1px solid #cbdbe6;border-radius:16px;margin:24px 0}.editorialAdmin label{display:block;margin:14px 0}.editorialAdmin input:not([type=checkbox]),.editorialAdmin textarea,.editorialAdmin select{display:block;width:100%;box-sizing:border-box;padding:10px;font:inherit;border:1px solid #9fb4c3;border-radius:6px}.editorialAdmin button{padding:12px 18px;margin:6px;background:#183650;color:white;border:0;border-radius:8px}.editorialAdmin details{padding:20px;margin-top:20px;background:white}.editorialAdmin .adminPanelCheck{display:flex;gap:10px}

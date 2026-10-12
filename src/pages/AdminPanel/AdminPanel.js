@@ -1,3 +1,4 @@
+import PublicationEditor from "./PublicationEditor";
 import AppointmentRequests from "./AppointmentRequests";
 import ReviewModeration from "./ReviewModeration";
 import React, { useEffect, useState } from "react";
@@ -292,6 +293,7 @@ export default function AdminPanel() {
         {loading ? <div className="adminPanelLoading">Загрузка вопросов...</div> : null}
         {error ? <div className="adminPanelError">{error}</div> : null}
 
+        <PublicationEditor />
         <AppointmentRequests />
         <ReviewModeration />
         <div className="adminPanelList">

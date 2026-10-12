@@ -99,3 +99,18 @@ See [the Russian installation guide](deploy/README.md) for GitHub push, clone, d
 selection and `python3 deploy/server.py deploy`. The installer builds both repositories,
 configures nginx/HTTPS/systemd, and provides `update`, `rollback`, `backup` and `status`.
 No production server, DNS, counters or search-console accounts have been changed.
+
+## Главная и редактор публикаций (11 октября 2026)
+
+Сразу после первого экрана главной расположены Telegram, обратный звонок и вопрос
+через сайт; обе формы доступны прямо на главной. Telegram ведёт на `@surgerymgu_bot`.
+В `/questions/admin` добавлен редактор статей, клинических историй и новостей.
+Для живой публикации нужен обновлённый backend и nginx из `deploy/`.
+
+Новые материалы рендерятся backend в полный HTML, дополняют списки и sitemap без
+пересборки. Архивные страницы остаются статическими. Сборка сохраняет публичный
+`editorial-catalog.json` для объединения старого архива и новых материалов.
+На главной новые публикации загружаются из `/api/publications`.
+
+Самостоятельный бот находится в соседней папке `../TelegramBot`, со своим `.venv`,
+`.env`, инструкциями и systemd-службой. Он не включён в frontend или backend.

@@ -271,6 +271,7 @@ def build_release(backend):
     run(*common, 'python3', '-m', 'venv', release / 'backend/.venv')
     run(*common, python, '-m', 'pip', 'install', '--disable-pip-version-check', '-r', release / 'backend/requirements.lock')
     run(*common, python, 'scripts/smoke.py', cwd=release / 'backend')
+    run(*common, python, 'scripts/smoke_editorial.py', cwd=release / 'backend')
     # The venv is created at its final absolute path; moving it would break shebangs.
     shutil.copytree(front_work / 'build', release / 'frontend')
     shutil.copyfile(release / 'frontend/nginx-maps.conf', release / 'deploy/nginx-maps.conf')
