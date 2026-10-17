@@ -44,7 +44,7 @@ img {max-width:100%;height:auto}
 .faqItem summary { cursor:pointer; font-weight:600; }
 .faqAnswer { margin:12px 0 0; }
 .relatedContent ul { display:flex; flex-wrap:wrap; gap:12px 32px; padding-left:20px; }
-.appointmentBox select { font:inherit; width:100%; padding:12px; background:#fff; color:#183650; border:1px solid #9eaebb; border-radius:8px; margin:8px 0 16px; }
+.appointmentBox select { appearance:none; -webkit-appearance:none; box-sizing:border-box; min-height:48px; font:inherit; line-height:1.5; width:100%; padding:12px 42px 12px 12px; background-color:#fff; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m5 7 5 5 5-5' fill='none' stroke='%23183650' stroke-width='2'/%3E%3C/svg%3E"); background-size:20px; background-repeat:no-repeat; background-position:right 12px center; color:#183650; border:1px solid #9eaebb; border-radius:8px; margin:8px 0 16px; }
 .servicePrices { overflow-x:auto; }
 .servicePrices table { width:100%; border-collapse:collapse; }
 .servicePrices th, .servicePrices td { padding:12px; border-bottom:1px solid #dce4e9; text-align:left; }

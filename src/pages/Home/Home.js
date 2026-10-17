@@ -170,7 +170,7 @@ export default function Home() {
 
   return (
     <div className="homePage">
-      <Header />
+      <Header showBrand={false} />
       <main id="main-content" className="homeMain">
       <section
         className="homeHero"

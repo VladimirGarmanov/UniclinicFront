@@ -202,6 +202,11 @@
   opacity: 0.9;
 }
 
+/* The shared VK asset is white for dark backgrounds. */
+.hdrIconBtn[aria-label="VK"] .hdrIconImg {
+  filter: brightness(0) saturate(100%);
+}
+
 .hdrBurger {
   display: none;
   font-size: 18px;
@@ -447,6 +452,13 @@
   }
 }
 
+/* Switch before the full menu, phone and action buttons overflow the row. */
+@media (max-width: 1280px) {
+  .hdrMenu { display: none; }
+  .hdrMidRight { width: 100%; justify-content: space-between; }
+  .hdrBurger { display: grid; }
+}
+
 @media (max-width: 720px) {
   .hdrContainer {
     width: calc(100% - 24px);
@@ -491,4 +503,12 @@
   .hdrMetroGap {
     display: none;
   }
+}
+
+@media (max-width: 390px) {
+  .hdrIcons { gap: 6px; }
+  .hdrIconBtn, .hdrBurger { width: 30px; height: 30px; }
+  .hdrPhone { font-size: 14px; }
+  .hdrMidRight { gap: 8px; flex-wrap: wrap; padding: 8px 0; }
+  .hdrMidInner { height: auto; min-height: 58px; }
 }

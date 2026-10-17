@@ -6,7 +6,8 @@ import sharp from 'sharp';
 import { serviceLandings } from '../src/config/service-landings.js';
 const { routes, redirects, siteOrigin } = JSON.parse(await fs.readFile('build/routes.json', 'utf8'));
 const home = load(await fs.readFile('build/index.html', 'utf8'));
-const headerLinks = $ => $('header a').toArray().map(element => $(element).attr('href'));
+// The homepage's brand/contact row lives in its hero; navigation is shared.
+const headerLinks = $ => $('header .hdrTop a, header .hdrMid a').toArray().map(element => $(element).attr('href'));
 const sitemap = load(await fs.readFile('build/sitemap.xml', 'utf8'), { xmlMode: true });
 const sitemapUrls = sitemap('loc').toArray().map(element => sitemap(element).text());
 const report = { indexablePages: 0, sitemapUrls: sitemapUrls.length, faqPages: 0, videoPages: 0, socialImages: 0, physicianPages: 0, articlePages: 0, filenameAlts: 0, heroBytes: 0 };
@@ -19,6 +20,7 @@ for (const [url, route] of Object.entries(routes)) {
   }
   report.indexablePages++;
   assert.deepEqual(headerLinks($), headerLinks(home), `Header differs: ${url}`);
+  assert.equal($('.hdrBot').length, url === '/' ? 0 : 1, `Brand row differs: ${url}`);
   assert.ok($('a[href="https://webformula.pro"]').attr('rel')?.includes('nofollow'), url);
   assert.equal($('iframe[src*="youtube"]').length, 0, `Eager video: ${url}`);
   const schemas = JSON.parse($('script[type="application/ld+json"]').text());

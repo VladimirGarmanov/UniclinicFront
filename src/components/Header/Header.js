@@ -61,7 +61,7 @@ const patientsDropdownItems = [
   },
 ];
 
-export default function Header() {
+export default function Header({ showBrand = true }) {
   const stickyShellRef = useRef(null);
   const patientsMenuRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -76,7 +76,10 @@ export default function Header() {
     const el = stickyShellRef.current;
     if (!el) return;
 
-    const measure = () => setStickyH(el.offsetHeight);
+    const measure = () => {
+      setStickyH(el.offsetHeight);
+      document.documentElement.style.setProperty('--clinic-sticky-height', `${el.offsetHeight}px`);
+    };
     measure();
 
     const ro = new ResizeObserver(measure);
@@ -303,7 +306,7 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="hdrBot">
+      {showBrand && <div className="hdrBot">
         <div className="hdrContainer hdrBotInner">
           <div className="hdrBrand">
             <Image loading="eager" className="hdrLogo" src={logoImg} alt={clinic.name} />
@@ -346,7 +349,7 @@ export default function Header() {
             Онлайн запись
           </a>
         </div>
-      </div>
+      </div>}
 
       {isMobileMenuOpen && (
         <div className="hdrMobileOverlay">
