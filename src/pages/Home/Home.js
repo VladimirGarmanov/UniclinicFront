@@ -6,7 +6,7 @@ import AppointmentForm from "../../components/Shared/AppointmentForm";
 import Image from "../../components/Shared/Image";
 import { normalizeUrl } from "../../config/urls";
 import { clinic } from "../../config/site";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import "./home.css";
 
@@ -35,6 +35,25 @@ import docAgapov from "../../assets/team/agapov.jpg";
 import docBabadzhanyan from "../../assets/team/babadzhanyan.jpg";
 
 export default function Home() {
+  const [openForm, setOpenForm] = useState(null);
+
+  useEffect(() => {
+    const openLinkedForm = () => {
+      if (window.location.hash === "#appointment") setOpenForm("appointment");
+      if (window.location.hash === "#ask-question") setOpenForm("question");
+    };
+    openLinkedForm();
+    window.addEventListener("hashchange", openLinkedForm);
+    return () => window.removeEventListener("hashchange", openLinkedForm);
+  }, []);
+
+  useEffect(() => {
+    const target = openForm === "appointment" ? "#appointment" : "#ask-question";
+    if (openForm && window.location.hash === target) {
+      document.querySelector(target)?.scrollIntoView({ block: "start" });
+    }
+  }, [openForm]);
+
   const serviceCards = useMemo(
     () => [
       {
@@ -207,6 +226,7 @@ export default function Home() {
             <a
               className="homeHeroCta"
               href="#appointment"
+              onClick={() => setOpenForm("appointment")}
             >
               Онлайн запись
             </a>
@@ -237,11 +257,15 @@ export default function Home() {
         <h2 id="contact-title">Свяжитесь с клиникой</h2>
         <div className="homeContactActions">
           <a href="https://t.me/surgerymgu_bot?start=website" target="_blank" rel="noopener noreferrer"><strong>Написать в Telegram</strong><span>Помощник соберёт обращение и передаст команде клиники</span></a>
-          <a href="#appointment"><strong>Перезвоните мне</strong><span>Оставьте имя и телефон для обратного звонка</span></a>
-          <a href="#ask-question"><strong>Задать вопрос</strong><span>Отправьте вопрос через сайт</span></a>
+          <button type="button" aria-expanded={openForm === "appointment"} aria-controls="home-callback-panel" onClick={() => setOpenForm(current => current === "appointment" ? null : "appointment")}><strong>Перезвоните мне</strong><span>Оставьте имя и телефон для обратного звонка</span><span className="homeFormToggle" aria-hidden="true">{openForm === "appointment" ? "Свернуть −" : "Открыть форму +"}</span></button>
+          <button type="button" aria-expanded={openForm === "question"} aria-controls="home-question-panel" onClick={() => setOpenForm(current => current === "question" ? null : "question")}><strong>Задать вопрос</strong><span>Отправьте вопрос через сайт</span><span className="homeFormToggle" aria-hidden="true">{openForm === "question" ? "Свернуть −" : "Открыть форму +"}</span></button>
         </div>
-        <AppointmentForm initialType="callback" compact />
-        <QuestionForm />
+        <div id="home-callback-panel" hidden={openForm !== "appointment"}>
+          <AppointmentForm initialType="callback" compact />
+        </div>
+        <div id="home-question-panel" hidden={openForm !== "question"}>
+          <QuestionForm />
+        </div>
       </section>
       <LiveEditorial />
         <section className="homeSection">
